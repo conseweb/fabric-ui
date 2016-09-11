@@ -22,13 +22,16 @@ export function configRouter (router) {
     '/': {
       component: Hello
     },
-    '/account': {
+    '/login': {
       component: Account
     },
-    '/bar': {
+    '/chain': {
+      component: Account
+    },
+    '/translate': {
       component: Bar
     },
-    '/a': {
+    '/network': {
       component: Account
     },
     '*': {
@@ -40,18 +43,18 @@ export function configRouter (router) {
   //   '/info': '/account'
   // })
 
-  router.beforeEach((transition) => {
-    if (transition.to.path === '/forbidden') {
-      router.app.authenticating = true
-      setTimeout(() => {
-        router.app.authenticating = false
-        console.log('this route is forbidden by a global before hook')
-        // transition.abort()
-        router.go('/a')
-      }, 3000)
-    } else {
-      console.log('this route is not forbidden by a global before hook')
-      transition.next()
-    }
-  })
+  // router.beforeEach((transition) => {
+    // if (transition.to.path === '/forbidden') {
+    //   router.app.authenticating = true
+    //   setTimeout(() => {
+    //     router.app.authenticating = false
+    //     console.log('this route is forbidden by a global before hook')
+    //     // transition.abort()
+    //     router.go('/a')
+    //   }, 3000)
+    // } else {
+    //   console.log('this route is not forbidden by a global before hook')
+    //   transition.next()
+    // }
+  // })
 }
