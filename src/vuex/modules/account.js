@@ -4,7 +4,8 @@ import {
 } from '../types'
 
 const state = {
-  state: null
+  state: null,
+  islogin: true
 }
 
 const mutations = {

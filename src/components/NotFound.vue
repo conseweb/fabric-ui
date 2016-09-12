@@ -1,6 +1,8 @@
 <template>
   <div class="not-found">
     <h1>Not Found: {{ msg }}</h1>
+    
+    <a v-link="{path:'/'}"><h3> 回到首页</h3></a>
   </div>
 </template>
 

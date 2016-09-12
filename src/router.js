@@ -2,7 +2,9 @@ import Vue from 'vue'
 
 import Account from './components/account/Account'
 import NotFound from './components/NotFound'
-import Hello from './components/Hello'
+import MainNav from './components/MainNav'
+import Login from './components/Login'
+import DashBoard from './components/DashBoard'
 
 var Bar = Vue.extend({
   template:
@@ -20,19 +22,24 @@ var Bar = Vue.extend({
 export function configRouter (router) {
   router.map({
     '/': {
-      component: Hello
+      component: MainNav,
+      subRoutes: {
+        '/dashboard': {
+          component: DashBoard
+        },
+        '/chain': {
+          component: Account
+        },
+        '/translate': {
+          component: Bar
+        },
+        '/network': {
+          component: Account
+        }
+      }
     },
     '/login': {
-      component: Account
-    },
-    '/chain': {
-      component: Account
-    },
-    '/translate': {
-      component: Bar
-    },
-    '/network': {
-      component: Account
+      component: Login
     },
     '*': {
       component: NotFound
@@ -43,18 +50,16 @@ export function configRouter (router) {
   //   '/info': '/account'
   // })
 
-  // router.beforeEach((transition) => {
-    // if (transition.to.path === '/forbidden') {
-    //   router.app.authenticating = true
-    //   setTimeout(() => {
-    //     router.app.authenticating = false
-    //     console.log('this route is forbidden by a global before hook')
-    //     // transition.abort()
-    //     router.go('/a')
-    //   }, 3000)
-    // } else {
-    //   console.log('this route is not forbidden by a global before hook')
-    //   transition.next()
-    // }
-  // })
+  router.beforeEach((transition) => {
+    if (transition.to.path !== '/login' && !router.app.$data.isLogin) {
+      // setTimeout(() => {
+      //   router.app.authenticating = false
+      console.log('this route uuuuuuppppppp global before hook')
+      transition.redirect('/login')
+      // }, 1000)
+    } else {
+      console.log('this route is not forbidden by a global before hook')
+      transition.next()
+    }
+  })
 }
