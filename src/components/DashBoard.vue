@@ -14,10 +14,10 @@
     <div>
       Value: {{ loadCount }}      
     </div>
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-    <button @click="incrementIfOdd">Increment if odd</button>
-    <button @click="incrementAsync">Increment async</button>
+    <button type="button" class="btn btn-success" @click="increment">+</button>
+    <button type="button" class="btn btn-success" @click="decrement">-</button>
+    <button type="button" class="btn btn-success" @click="incrementIfOdd">Increment if odd</button>
+    <button type="button" class="btn btn-success" @click="incrementAsync">Increment async</button>
     <div>
       <div>Recent History: {{recentHistory}}</div>
     </div>

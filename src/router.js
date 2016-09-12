@@ -46,9 +46,9 @@ export function configRouter (router) {
     }
   })
 
-  // router.redirect({
-  //   '/info': '/account'
-  // })
+  router.redirect({
+    '/': '/dashboard'
+  })
 
   router.beforeEach((transition) => {
     if (transition.to.path !== '/login' && !router.app.$data.isLogin) {
