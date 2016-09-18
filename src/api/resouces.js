@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
-import {API_ROOT} from '../config'
+import {API_ROOT, API_FABRIC} from '../config'
 // import { getCookie,signOut } from '../utils/authService'
 
 Vue.use(VueResource)
@@ -24,7 +24,11 @@ Vue.http.interceptors.push((request, next) => {
 })
 
 export const AccountResource = Vue.resource(API_ROOT + '/account{/id}')
-export const EventResource = Vue.resource(API_ROOT + '/socket.io/')
+export const ChainResource = Vue.resource(API_FABRIC + '/chain')
+export const BlockResource = Vue.resource(API_FABRIC + '/chain/blocks/{height}')
+export const TransactionResource = Vue.resource(API_FABRIC + '/transactions/{UUID}')
+export const PeersResource = Vue.resource(API_FABRIC + '/network/peers')
+// export const EventResource = Vue.resource(API_ROOT + '/socket.io/')
 // export const AuthResource = Vue.resource(API_ROOT + 'auth{/id}')
 // export const ArticleResource = Vue.resource(API_ROOT + 'article{/id}{/controller}')
 // export const TagResource = Vue.resource(API_ROOT + 'tags{/id}')

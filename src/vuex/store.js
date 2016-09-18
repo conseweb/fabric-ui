@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import middlewares from './middlewares'
+import middlewares from './middlewares'
 import account from './modules/account'
 import count from './modules/count'
+import chain from './modules/chain'
+import network from './modules/network'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -14,7 +16,9 @@ Vue.config.warnExpressionErrors = false
 export default new Vuex.Store({
   modules: {
     account,
-    count
+    count,
+    chain,
+    network
     // apps,
     // articleList,
     // prenextArticle,
@@ -27,6 +31,7 @@ export default new Vuex.Store({
     // tagList,
     // showmsg
   },
-  strict: debug
-  // middlewares
+  strict: false,
+  debug: true,
+  middlewares
 })

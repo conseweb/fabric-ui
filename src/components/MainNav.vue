@@ -11,21 +11,13 @@
             <nav id="main-nav" class="list-group">
               <!-- <ul> -->
                 <!-- <li> -->
-                  <a class="list-group-item active" v-link="{path:'/dashboard'}">Dash Board</a>
-                <!-- </li> -->
-                <!-- <li> -->
-                  <a class="list-group-item" v-link="{path:'/dashboard'}">Home</a>
-                <!-- </li> -->
-                <!-- <li> -->
-                  <a class="list-group-item" v-link="{path:'/dashboard'}">About</a>
-                <!-- </li> -->
-                <!-- <li> -->
-                  <a class="list-group-item" v-link="{path:'/dashboard'}">Projects</a>
-                <!-- </li> -->
-                <!-- <li> -->
-                  <a class="list-group-item" v-link="{path:'/dashboard'}">Contact</a>
-                <!-- </li> -->
-              <!-- </ul> -->
+              <!-- <a class="list-group-item active" v-link="{path:'/dashboard'}">Dash Board</a> -->
+              <a v-for="link in columns"
+                class="list-group-item"
+                :class="{active: archiveKey == link.path}"
+                @click="checkout(link.path)"
+                v-link="{path:link.path}"
+                value="{link.disc}">{{link.desc}}</a>
             </nav>
           </div>
         </div>
@@ -39,22 +31,32 @@
 export default {
   data () {
     return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
       msg: 'Hello World!',
-      title: 'Welcome'
+      title: 'BalaBala',
+      columns: [
+        {path: '/dashboard', desc: 'Dash Board'},
+        {path: '/account', desc: '账户'},
+        {path: '/translate', desc: '交易'},
+        {path: '/block', desc: '区块'},
+        {path: '/network', desc: '网络'},
+        {path: '/setting', desc: '设置'}
+      ],
+      archiveKey: ''
+    }
+  },
+  methods: {
+    checkout: function (key) {
+      this.archiveKey = key
     }
   },
   computed: {
   },
-  ready () {
+  ready: function () {
     let path = this.$route.path
     if (path.length > 0) {
       let arr = path.split('/')
       if (arr.length > 1) {
-        this.$data.title = arr[1]
+        this.archiveKey = '/' + arr[1]
       }
     }
   }

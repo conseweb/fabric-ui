@@ -1,10 +1,16 @@
 import Vue from 'vue'
 
-import Account from './components/account/Account'
 import NotFound from './components/NotFound'
 import MainNav from './components/MainNav'
-import Login from './components/Login'
+
+import Login from './components/account/Login'
+import SignUp from './components/account/SignUp'
+
 import DashBoard from './components/DashBoard'
+import Account from './components/account/Account'
+import Chain from './components/blockchain/Chain'
+import Network from './components/network/Network'
+import SysSetting from './components/system/Setting'
 
 var Bar = Vue.extend({
   template:
@@ -27,19 +33,28 @@ export function configRouter (router) {
         '/dashboard': {
           component: DashBoard
         },
-        '/chain': {
+        '/account': {
           component: Account
+        },
+        '/block': {
+          component: Chain
+        },
+        '/network': {
+          component: Network
+        },
+        '/setting': {
+          component: SysSetting
         },
         '/translate': {
           component: Bar
-        },
-        '/network': {
-          component: Account
         }
       }
     },
     '/login': {
       component: Login
+    },
+    '/signup': {
+      component: SignUp
     },
     '*': {
       component: NotFound
@@ -51,15 +66,15 @@ export function configRouter (router) {
   })
 
   router.beforeEach((transition) => {
-    if (transition.to.path !== '/login' && !router.app.$data.isLogin) {
-      // setTimeout(() => {
-      //   router.app.authenticating = false
-      console.log('this route uuuuuuppppppp global before hook')
-      transition.redirect('/login')
-      // }, 1000)
-    } else {
-      console.log('this route is not forbidden by a global before hook')
-      transition.next()
-    }
+    // if (transition.to.path !== '/login' && !router.app.$data.isLogin) {
+    //   // setTimeout(() => {
+    //   //   router.app.authenticating = false
+    //   console.log('this route uuuuuuppppppp global before hook')
+    //   transition.redirect('/login')
+    //   // }, 1000)
+    // } else {
+    //   console.log('this route is not forbidden by a global before hook')
+    transition.next()
+    // }
   })
 }
