@@ -6,7 +6,8 @@ import {
   GET_CHAIN_SUCC,
   GET_BLOCK_SUCC,
   GET_PEERS_SUCC,
-  REQUEST_ERR
+  REQUEST_ERR,
+  SET_ACCOUNT
 } from './types'
 import api from '../api/api'
 
@@ -36,6 +37,10 @@ export const getAccountState = ({ dispatch }) => {
     console.log('getAccountState: ', response)
     dispatch(USERINFO_FAILURE)
   })
+}
+
+export const setAccount = ({ dispatch }, account) => {
+  dispatch(SET_ACCOUNT, account)
 }
 
 export const getChain = ({ dispatch }) => {

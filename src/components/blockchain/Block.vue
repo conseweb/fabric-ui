@@ -1,11 +1,12 @@
 <template>
   <div class="block">
-    <h1>Block</h1>
-    <div>
+    <h1 @click="chageShow">Block {{height}}</h1>
+    <div v-if="show">
       <p>previousBlockHash: {{previousBlockHash | showHash}}</p>
       <p>timestemp: {{timestemp | unixToDate}}</p>
       <div>
-        <transaction v-for="t in transactions" :trans=t></transaction>
+        <h3 v-if="transactions.length !== 0">Transactions:</h3>
+        <transaction v-for="t in transactions" track-by="txid" :trans=t></transaction>
       </div>
     </div>
   </div>
@@ -16,10 +17,21 @@ import Transaction from './Transaction'
 
 export default {
   props: {
-    block: [Object, String]
+    block: [Object, String],
+    height: Number
   },
   components: {
     Transaction
+  },
+  data () {
+    return {
+      show: false
+    }
+  },
+  methods: {
+    chageShow: function () {
+      this.show = !this.show
+    }
   },
   computed: {
     previousBlockHash: function () {
@@ -51,3 +63,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+h1 {
+  cursor:pointer;
+}
+</style>

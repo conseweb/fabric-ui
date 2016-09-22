@@ -7,9 +7,10 @@ Vue.use(VueResource)
 
 // HTTP相关
 Vue.http.options.crossOrigin = true
-Vue.http.options.credentials = false
-Vue.http.options.emulateJSON = true
+// Vue.http.options.credentials = false
+Vue.http.options.emulateJSON = false
 Vue.http.options.emulateHTTP = true
+// Vue.http.headers.post['content-type'] = 'application/json; charset=UTF-8'
 
 Vue.http.interceptors.push((request, next) => {
   // 这里对请求体进行处理
@@ -24,6 +25,8 @@ Vue.http.interceptors.push((request, next) => {
 })
 
 export const AccountResource = Vue.resource(API_ROOT + '/account{/id}')
+export const SignupResource = Vue.resource(API_ROOT + '/signup{/action}')
+
 export const ChainResource = Vue.resource(API_FABRIC + '/chain')
 export const BlockResource = Vue.resource(API_FABRIC + '/chain/blocks/{height}')
 export const TransactionResource = Vue.resource(API_FABRIC + '/transactions/{UUID}')

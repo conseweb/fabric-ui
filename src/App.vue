@@ -1,6 +1,12 @@
 <template>
   <div id="app">
+    <header>
+      <h2 v-link="{path:'/dashboard'}">Farmer</h2>
+      <h5>(dev)</h5>
+    </header>
     <router-view></router-view>
+    <footer>
+    </footer>
   </div>
 </template>
 
@@ -21,3 +27,17 @@ export default {
 }
 </script>
 
+<style>
+header {
+  color: #42b983;
+  font-size: 24px;
+  padding-left: 20px;
+  background-color: #4c0000;
+}
+h2,h4,h5 {
+  display: inline;
+}
+h2 {
+  cursor:pointer;
+}
+</style>

@@ -16,7 +16,7 @@
           :class="{'fa-spin': isSyncd}"></i>
       </a>
       <div>
-        <block  v-for="blk in blocks" track-by="$index" :block=blk></block>
+        <block  v-for="blk in blocks" track-by="$index" :height=$index :block=blk></block>
       </div>
     </div>
   </div>
@@ -72,6 +72,10 @@ export default {
 }
 </script>
 <style scoped>
+.chain {
+  border-bottom: 10px;
+}
+
 .refresh {
   color: #555;
   cursor:pointer;

@@ -1,5 +1,6 @@
 import {
   AccountResource,
+  SignupResource,
   ChainResource,
   BlockResource,
   TransactionResource,
@@ -9,6 +10,18 @@ import {
 export default {
   loadAccountState: function () {
     return AccountResource.get({id: 'state'})
+  },
+  setVerificationEmail: function (body) {
+    return SignupResource.save({action: 'email'}, body)
+  },
+  setVerificationPhone: function (body) {
+    return SignupResource.save({action: 'phone'}, body)
+  },
+  verifyCaptcha: function (body) {
+    return SignupResource.update({action: 'captcha'}, body)
+  },
+  registryUser: function (body) {
+    return SignupResource.save({}, body)
   },
   getChain: function () {
     return ChainResource.get()

@@ -2,7 +2,9 @@
   <div id="chain">
     <h1>Peers</h1>
     <div>
-      <peer v-for="peer in peers" :peer=peer></peer>
+      <ul>
+        <peer v-for="peer in peers" :peer=peer></peer>
+      </ul>
     </div >
   </div>
 </template>

@@ -1,12 +1,13 @@
 <template>
-  <div class="peer">
-    <h1>Peer</h1>
-    <div>
-      <h3>Name: {{name}}</h3>
-      <p>address: {{address}}</p>
-      <p>type: {{type}}</p>
+  <li class="peer">
+    <div class="peer-title">
+      <span><h2>Peer: {{name}}</h2></span>
+      <span class="peer-type">[{{type}}]</span>
     </div>
-  </div>
+    <div>
+      <p>address: {{address}}</p>
+    </div>
+  </li>
 </template>
 
 <script>
@@ -30,3 +31,16 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.peer-title {
+  margin-bottom: 15px;
+}
+.peer-title h2{
+  display : inline;
+  margin-right: 5px;
+}
+.peer-type {
+  color: #AAA;
+}
+</style>

@@ -1,18 +1,24 @@
 <template>
-<div>
-  <h3>Transactions</h3>
-   <p>Chaincode ID: {{chaincodeID | showHash}}</p>
-  <p>Payload: {{payload | showHash}}</p>
-  <p>Txid: <a @click="">{{txid}}</a> </p>
-  <p>type: {{type}}</p>
-  <p>timestamp: {{timestamp | unixToDate}}</p>
-</div>
+<div class="transaction">
+  <a @click="chageShow">{{txid}}</a>
+  <div v-if="show">
+    <p><strong>Chaincode ID: </strong>{{chaincodeID | showHash}}</p>
+    <p><strong>Payload: </strong>{{payload | showHash}}</p>
+    <p><strong>Txid: </strong><a @click="">{{txid}}</a> </p>
+    <p><strong>type: </strong>{{type}}</p>
+    <p><strong>timestamp: </strong>{{timestamp | unixToDate}}</p></div>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
     trans: [Object]
+  },
+  data () {
+    return {
+      show: false
+    }
   },
   computed: {
     transactions: function () {
@@ -53,7 +59,22 @@ export default {
   methods: {
     getTrans: function () {
       return ''
+    },
+    chageShow: function () {
+      this.show = !this.show
     }
   }
 }
 </script>
+
+<style scoped>
+.transaction {
+  white-space: normal;
+  word-wrap: break-word;
+  border: 3px;
+}
+
+a {
+  cursor:pointer;
+}
+</style>

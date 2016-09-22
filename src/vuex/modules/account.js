@@ -1,6 +1,7 @@
 import {
 	USERINFO_SUCCESS,
-	USERINFO_FAILURE
+	USERINFO_FAILURE,
+  SET_ACCOUNT
 } from '../types'
 
 const state = {
@@ -14,6 +15,13 @@ const mutations = {
   },
   [USERINFO_FAILURE] (state, action) {
     state.state = 'failed state'
+  },
+  [SET_ACCOUNT] (state, account) {
+    console.log('set...', account)
+    for (var key in account) {
+      console.log('key-value: ', key, account[key])
+      state[key] = account[key]
+    }
   }
 }
 

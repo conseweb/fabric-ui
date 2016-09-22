@@ -1,6 +1,5 @@
 <template>
   <div id="main-nav">
-    <header>Farmer</header>
     <div class="row">
       <div class="col-xs-6 col-md-2">
         <div id="sidebar" class="container-fluid">
@@ -14,7 +13,8 @@
               <!-- <a class="list-group-item active" v-link="{path:'/dashboard'}">Dash Board</a> -->
               <a v-for="link in columns"
                 class="list-group-item"
-                :class="{active: archiveKey == link.path}"
+                :class="{active: archiveKey === link.path}"
+                role="presentation"
                 @click="checkout(link.path)"
                 v-link="{path:link.path}"
                 value="{link.disc}">{{link.desc}}</a>
