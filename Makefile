@@ -28,7 +28,7 @@ pack:
 	-rm -rf ./dist
 	npm install
 	npm run build
-	tar zcf $(INSTALL_DIR)/$(PACKAGE_NAME) ./
+	tar zcf $(INSTALL_DIR)/$(PACKAGE_NAME) ./dist/
 
 install:
 	cp -a $(INSTALL_DIR)/$(PACKAGE_NAME) $(INSTALL_DIR)/$(APP)-$(GIT_BRANCH).tgz
