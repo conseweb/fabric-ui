@@ -10,7 +10,7 @@ INSTALL_DIR := /opt/data
 
 dev:
 	docker run --rm \
-	 --link vp0:apiserver \
+	 --link dev:apiserver \
 	 --name $(APP)-dev \
 	 -p 8080:8080 \
 	 -v $(PWD):/opt/$(APP) \

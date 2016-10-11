@@ -24,6 +24,7 @@ Vue.http.interceptors.push((request, next) => {
   })
 })
 
+export const RootResource = Vue.resource(API_ROOT + '{/action}')
 export const AccountResource = Vue.resource(API_ROOT + '/account{/id}')
 export const SignupResource = Vue.resource(API_ROOT + '/signup{/action}')
 
@@ -31,6 +32,7 @@ export const ChainResource = Vue.resource(API_FABRIC + '/chain')
 export const BlockResource = Vue.resource(API_FABRIC + '/chain/blocks/{height}')
 export const TransactionResource = Vue.resource(API_FABRIC + '/transactions/{UUID}')
 export const PeersResource = Vue.resource(API_FABRIC + '/network/peers')
+export const ChaincodeResource = Vue.resource(API_FABRIC + '/chaincode')
 // export const EventResource = Vue.resource(API_ROOT + '/socket.io/')
 // export const AuthResource = Vue.resource(API_ROOT + 'auth{/id}')
 // export const ArticleResource = Vue.resource(API_ROOT + 'article{/id}{/controller}')

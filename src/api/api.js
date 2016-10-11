@@ -1,16 +1,33 @@
 import {
+  RootResource,
   AccountResource,
   SignupResource,
   ChainResource,
   BlockResource,
   TransactionResource,
-  PeersResource
+  PeersResource,
+  ChaincodeResource
 } from './resouces.js'
 
+// get: {method: 'GET'},
+// save: {method: 'POST'},
+// query: {method: 'GET'},
+// update: {method: 'PUT'},
+// remove: {method: 'DELETE'},
+// delete: {method: 'DELETE'}
 export default {
   loadAccountState: function () {
     return AccountResource.get({id: 'state'})
   },
+
+  login: function (body) {
+    return RootResource.save({action: 'login'}, body)
+  },
+  logout: function () {
+    return RootResource.remove({action: 'logout'})
+  },
+
+  // registry Account
   setVerificationEmail: function (body) {
     return SignupResource.save({action: 'email'}, body)
   },
@@ -23,6 +40,7 @@ export default {
   registryUser: function (body) {
     return SignupResource.save({}, body)
   },
+
   getChain: function () {
     return ChainResource.get()
   },
@@ -34,5 +52,8 @@ export default {
   },
   getPeers: function () {
     return PeersResource.get()
+  },
+  callChaincode: function (body) {
+    return ChaincodeResource.save({}, body)
   }
 }

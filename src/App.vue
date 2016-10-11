@@ -32,7 +32,7 @@ header {
   color: #42b983;
   font-size: 24px;
   padding-left: 20px;
-  background-color: #4c0000;
+  background-color: #ccc;
 }
 h2,h4,h5 {
   display: inline;
