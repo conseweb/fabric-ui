@@ -9,6 +9,7 @@ import SignUp from './components/account/SignUp'
 import DashBoard from './components/DashBoard'
 import Account from './components/account/Account'
 import Chain from './components/blockchain/Chain'
+import Chaincode from './components/blockchain/Chaincode'
 import Network from './components/network/Network'
 import SysSetting from './components/system/Setting'
 
@@ -35,6 +36,9 @@ export function configRouter (router) {
         },
         '/account': {
           component: Account
+        },
+        '/chaincode': {
+          component: Chaincode
         },
         '/block': {
           component: Chain

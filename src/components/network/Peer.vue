@@ -1,7 +1,7 @@
 <template>
   <li class="peer">
     <div class="peer-title">
-      <span><h2>Peer: {{name}}</h2></span>
+      <span><h2>{{name}}</h2></span>
       <span class="peer-type">[{{type}}]</span>
     </div>
     <div>

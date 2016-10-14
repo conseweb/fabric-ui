@@ -6,6 +6,7 @@ import {
   GET_CHAIN_SUCC,
   GET_BLOCK_SUCC,
   GET_PEERS_SUCC,
+  ADD_CHAINCODE_SUCC,
   REQUEST_ERR,
   SET_ACCOUNT
 } from './types'
@@ -77,4 +78,8 @@ export const getPeers = ({ dispatch }) => {
   }, resp => {
     dispatch(REQUEST_ERR, resp.status + resp.statusText)
   })
+}
+
+export const addChaincode = ({ dispatch }, cc) => {
+  dispatch(ADD_CHAINCODE_SUCC, cc)
 }

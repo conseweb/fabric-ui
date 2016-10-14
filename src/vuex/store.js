@@ -5,6 +5,7 @@ import middlewares from './middlewares'
 import account from './modules/account'
 import count from './modules/count'
 import chain from './modules/chain'
+import chaincode from './modules/chaincode'
 import network from './modules/network'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     account,
     count,
     chain,
+    chaincode,
     network
     // apps,
     // articleList,

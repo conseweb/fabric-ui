@@ -36,7 +36,7 @@ export default {
       columns: [
         {path: '/dashboard', desc: 'Dash Board'},
         {path: '/account', desc: '账户'},
-        {path: '/translate', desc: '交易'},
+        {path: '/chaincode', desc: '交易'},
         {path: '/block', desc: '区块'},
         {path: '/network', desc: '网络'},
         {path: '/setting', desc: '设置'}

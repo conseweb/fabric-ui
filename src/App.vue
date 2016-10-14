@@ -30,9 +30,9 @@ export default {
 <style>
 header {
   color: #42b983;
-  font-size: 24px;
+  font-size: 26px;
   padding-left: 20px;
-  background-color: #ccc;
+  background-color: #efe;
 }
 h2,h4,h5 {
   display: inline;
