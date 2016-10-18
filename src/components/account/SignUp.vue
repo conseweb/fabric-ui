@@ -1,6 +1,7 @@
 <template>
 <div id="signup">
   <h1>注册账号</h1>
+  <a v-link="{path:'/login'}">Login</a>
   <passphrase :show.sync="showPassphrase" :msg.sync="passphrase"></passphrase>
   <div id="err-msg" class="alert alert-danger" role="alert" v-if="errMsgs.length !== 0">
     <p v-for="err in errMsgs">{{err}}</p>

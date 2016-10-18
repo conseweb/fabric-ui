@@ -5,8 +5,9 @@ import {
 } from '../types'
 
 const state = {
+  id: '',
   state: null,
-  islogin: true
+  logined: false
 }
 
 const mutations = {

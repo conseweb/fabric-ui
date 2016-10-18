@@ -1,6 +1,7 @@
 <template>
   <div id="login">
     <h1>Login</h1>
+    <a v-link="{path:'/signup'}">Sign Up</a>
     <div id="err-msg" class="alert alert-danger" role="alert" v-if="errMsgs.length !== 0">
       <p v-for="err in errMsgs">{{err}}</p>
     </div>

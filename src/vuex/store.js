@@ -21,17 +21,6 @@ export default new Vuex.Store({
     chain,
     chaincode,
     network
-    // apps,
-    // articleList,
-    // prenextArticle,
-    // articleDetail,
-    // auth,
-    // commentList,
-    // globalVal,
-    // options,
-    // logins,
-    // tagList,
-    // showmsg
   },
   strict: false,
   debug: true,

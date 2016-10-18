@@ -16,14 +16,20 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'vue-strap/dist/vue-strap'
 
 import store from './vuex/store'
+import {isLogin} from './vuex/getters/account'
 
 export default {
+  store,
   data () {
     return {
-      isLogin: true
+      // isLogin: true
     }
   },
-  store
+  vuex: {
+    getters: {
+      isLogin
+    }
+  }
 }
 </script>
 
