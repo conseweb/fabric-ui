@@ -18,6 +18,9 @@ const mutations = {
     state.state = 'failed state'
   },
   [SET_ACCOUNT] (state, account) {
+    if (account !== null) {
+      account.logined = true
+    }
     console.log('set...', account)
     for (var key in account) {
       console.log('key-value: ', key, account[key])

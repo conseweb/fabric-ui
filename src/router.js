@@ -56,7 +56,10 @@ export function configRouter (router) {
   })
 
   router.beforeEach((transition) => {
-    if ((transition.to.path !== '/login' &&
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('account not login, but in model', process.env.NODE_ENV)
+      transition.next()
+    } else if ((transition.to.path !== '/login' &&
       transition.to.path !== '/signup') &&
       !router.app.isLogin()) {
       // should login.

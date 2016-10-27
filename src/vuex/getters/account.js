@@ -1,15 +1,13 @@
 export const isLogin = state => {
   return () => {
     const account = state.account
-    // console.log('check is logined.', account)
+    console.log('check is logined.', account)
     if (account.logined) {
+      console.log('account is already logined')
       return true
     }
-    if (account.id !== '') {
-      return true
-    }
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('account not login, but in model', process.env.NODE_ENV)
+    if (account.id) {
+      console.log('account.id', account.id)
       return true
     }
     return false

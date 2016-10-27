@@ -1,5 +1,5 @@
 import {
-  RootResource,
+  // RootResource,
   AccountResource,
   SignupResource,
   ChainResource,
@@ -17,14 +17,14 @@ import {
 // delete: {method: 'DELETE'}
 export default {
   loadAccountState: function () {
-    return AccountResource.get({id: 'state'})
+    return AccountResource.get({action: ''})
   },
 
   login: function (body) {
-    return RootResource.save({action: 'login'}, body)
+    return AccountResource.save({action: 'login'}, body)
   },
   logout: function () {
-    return RootResource.remove({action: 'logout'})
+    return AccountResource.remove({action: 'logout'})
   },
 
   // registry Account

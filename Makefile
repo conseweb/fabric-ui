@@ -8,8 +8,10 @@ PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
 
 INSTALL_DIR := /opt/data
 
+NET := $(shell docker network inspect cknet > /dev/zero && echo "--net cknet --ip 172.16.1.6" || echo "")
 dev:
 	docker run --rm \
+	 $(NET) \
 	 --link dev:apiserver \
 	 --name $(APP)-dev \
 	 -p 8080:8080 \

@@ -79,8 +79,10 @@ export default {
         return
       }
 
-      apiActions.Login(body).then(resp => {
+      apiActions.login(body).then(resp => {
+        console.log(resp)
         setAccount(this.$store, resp.body)
+        this.$router.go({path: '/'})
       }, resp => {
         if (resp.body !== null) {
           this.errMsgs.push(resp.body.error)
@@ -89,8 +91,6 @@ export default {
         }
         console.log(resp)
       })
-      console.log(this.emailOrPhone, this.password, this.rememberMe)
-      console.log(this)
     }
   }
 }

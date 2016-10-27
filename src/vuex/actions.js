@@ -28,14 +28,14 @@ export const incrementAsync = ({ dispatch }) => {
 }
 
 export const getAccountState = ({ dispatch }) => {
-  api.loadAccountState().then(response => {
-    if (!response.ok) {
+  api.loadAccountState().then(resp => {
+    if (!resp.ok) {
       return dispatch(USERINFO_FAILURE)
     }
-    console.log('getAccountState: ', response)
-    dispatch(USERINFO_SUCCESS, { state: response.data })
-  }, response => {
-    console.log('getAccountState: ', response)
+    console.log('getAccountState: ', resp)
+    dispatch(USERINFO_SUCCESS, { state: resp.data })
+  }, resp => {
+    console.log('getAccountState: ', resp)
     dispatch(USERINFO_FAILURE)
   })
 }

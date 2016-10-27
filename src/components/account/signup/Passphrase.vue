@@ -38,12 +38,6 @@
   </div>
 </div>
 
-  <!-- 
-
-  
-
-我已经将安全种子写下来或以其它方式安全的妥善存储
-   -->
 </template>
 
 <script>
@@ -68,7 +62,7 @@ export default {
   methods: {
     completeReg: function () {
       this.show = !this.show
-      this.$route.go({path: '/'})
+      this.$router.go({path: '/login'})
     }
   }
 }

@@ -17,17 +17,36 @@ import 'vue-strap/dist/vue-strap'
 
 import store from './vuex/store'
 import {isLogin} from './vuex/getters/account'
+import {setAccount} from './vuex/actions'
+import apiActions from './api/api'
 
 export default {
   store,
   data () {
     return {
+      errMsgs: []
       // isLogin: true
     }
   },
   vuex: {
     getters: {
       isLogin
+    }
+  },
+  created: function () {
+    console.log('created App', this.isLogin())
+    if (!this.isLogin()) {
+      apiActions.loadAccountState().then(resp => {
+        setAccount(this.$store, resp.body)
+        console.log(resp)
+      }, resp => {
+        if (resp.body !== null) {
+          this.errMsgs.push(resp.body.error)
+        } else {
+          this.errMsgs.push('无法连接到服务器')
+        }
+        console.log(resp)
+      })
     }
   }
 }
