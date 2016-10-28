@@ -12,14 +12,20 @@
       </div>
 
       <div>
-        <a @click="sub">aasdafsdf</a>
+        <h3>Devices</h3>
+        <device v-for="dev in account.devices" track-by="$index" :device.sync=dev></device>
       </div>
     </div>  
   </div>
 </template>
 
 <script>
+import Device from './Device'
+
 export default {
+  components: {
+    Device
+  },
   data () {
     return {
       name: 'hello'
@@ -33,6 +39,9 @@ export default {
       console.log(this.$route)
       this.$router.go({path: '/login'})
       console.log('clicked', '[...]')
+    },
+    getTx: function () {
+      // getCoinbaseTx()
     }
   },
   vuex: {

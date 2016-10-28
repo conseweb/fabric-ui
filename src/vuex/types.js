@@ -5,6 +5,7 @@ export const USERINFO_SUCCESS = 'USERINFO_SUCCESS'
 export const USERINFO_FAILURE = 'USERINFO_FAILURE'
 
 export const SET_ACCOUNT = 'SET_ACCOUNT'
+export const UPDATE_DEVICES = 'UPDATE_DEVICES'
 
 // fabric api
 export const GET_CHAIN_SUCC = 'GET_CHAIN_SUCC'

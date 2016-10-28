@@ -34,14 +34,16 @@
       </div>
 
       <div class="form-group">
-
         <label for="inputArgs" class="col-sm-1 control-label">Args</label>
         <div class="col-sm-10">
           <div class="input-group">
             <span class="input-group-addon">
                Function
             </span>
-            <input type="text" class="form-control" v-model="ccFunction">
+            <input v-if="funcs.length===0" type="text" class="form-control" v-model="ccFunction">
+            <select v-else class="form-control" v-model="ccFunction">
+              <option v-for="item in funcs">{{item}}</option>
+            </select>
           </div>
           <div class="input-group">
             <span class="input-group-addon">
@@ -93,10 +95,28 @@ export default {
       ccSecureContext: '',
       ccMethod: 'deploy',
       ccMethodEna: ['deploy', 'invoke', 'query'],
-      args: ['a', '100', '']
+      args: ['']
     }
   },
+  vuex: {
+    getters: {
+      chaincodes: state => state.chaincode
+    }
+  },
+  ready: function () {
+    console.log('[data]', this.chaincodes)
+  },
   computed: {
+    funcs: function () {
+      for (var index in this.chaincodes) {
+        let cc = this.chaincodes[index]
+        if ((cc.name !== '' && cc.name === this.ccName) ||
+          (cc.path !== '' && cc.path === this.ccPath)) {
+          return cc.methods[this.ccMethod]
+        }
+      }
+      return []
+    },
     argString: function () {
       if (this.args.length === 1) {
         return '[]'

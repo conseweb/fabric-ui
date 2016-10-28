@@ -8,7 +8,8 @@ import {
   GET_PEERS_SUCC,
   ADD_CHAINCODE_SUCC,
   REQUEST_ERR,
-  SET_ACCOUNT
+  SET_ACCOUNT,
+  UPDATE_DEVICES
 } from './types'
 import api from '../api/api'
 
@@ -82,4 +83,21 @@ export const getPeers = ({ dispatch }) => {
 
 export const addChaincode = ({ dispatch }, cc) => {
   dispatch(ADD_CHAINCODE_SUCC, cc)
+}
+
+// Chaincode
+export const updateBalance = ({ dispatch }, ccName, addrs) => {
+  var body = {
+    name: ccName,
+    path: 'github.com/conseweb/common/assets/lepuscoin',
+    method: 'query',
+    function: 'query_addrs',
+    args: addrs
+  }
+  api.callChaincode(body).then(resp => {
+    console.log('[data]', resp)
+    dispatch(UPDATE_DEVICES)
+  }, resp => {
+    console.log('call chaincode error', resp)
+  })
 }

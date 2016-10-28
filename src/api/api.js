@@ -55,5 +55,9 @@ export default {
   },
   callChaincode: function (body) {
     return ChaincodeResource.save({}, body)
+  },
+  getCoinbaseTx: function (addr) {
+    console.log('address....', addr)
+    return AccountResource.get({action: 'coinbase_tx/' + addr})
   }
 }
