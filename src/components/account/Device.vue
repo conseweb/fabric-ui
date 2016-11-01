@@ -25,6 +25,7 @@ export default {
   computed: {
   },
   created: function () {
+    if (true) { return }
     apiActions.getCoinbaseTx(this.device.address).then(resp => {
       console.log('get coinbase tx', resp.body.message)
     }, resp => {

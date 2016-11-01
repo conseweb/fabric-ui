@@ -27,7 +27,7 @@ const mutations = {
     if (account !== null) {
       account.logined = true
     }
-    console.log('set account', state)
+    // console.log('set account', state)
     for (var k in account) {
       state[k] = account[k]
     }

@@ -10,14 +10,3 @@ export const isLogin = state => {
     return false
   }
 }
-
-export const lepuscoinCc = state => {
-  return () => {
-    console.log('get cc', state)
-    for (var i = 0; i < state.chaincode.length; i++) {
-      if (state.chaincode[i].alias === 'lepuscoin') {
-        return state.chaincode[i]
-      }
-    }
-  }
-}

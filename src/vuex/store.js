@@ -6,6 +6,7 @@ import account from './modules/account'
 import count from './modules/count'
 import chain from './modules/chain'
 import chaincode from './modules/chaincode'
+import ccLepuscoin from './modules/cc_lepuscoin'
 import network from './modules/network'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -19,8 +20,9 @@ export default new Vuex.Store({
     account,
     count,
     chain,
+    network,
     chaincode,
-    network
+    ccLepuscoin
   },
   strict: false,
   debug: true,

@@ -62,6 +62,7 @@ const mutations = {
       if (cc.path === path) {
         cc.name = name
         state.$set(i, cc)
+        console.log('set chaincode path', path)
       }
     }
   },

@@ -70,6 +70,8 @@ export default {
     return DeviceResource.get({action: addr + '/coinbase_tx'})
   },
   getTxSeque: function (body) {
-    return DeviceResource.save({action: '_/tx'}, body)
+    console.log('getTxSeque', body)
+    // if (true) { return }
+    return DeviceResource.save({action: 'tx'}, body)
   }
 }

@@ -108,12 +108,22 @@ export default {
       chaincodes: state => state.chaincode
     }
   },
-  ready: function () {
-    console.log('ready Chaincode', this.chaincodes)
+  created: function () {
+    console.log('ready Chaincode')
+    if (this.currentCC.name !== '') {
+      this.ccName = this.currentCC.name
+    }
   },
   computed: {
-    cName: function () {
-      return ''
+    currentCC: function () {
+      for (var index in this.chaincodes) {
+        let cc = this.chaincodes[index]
+        if ((cc.name !== '' && cc.name === this.ccName) ||
+          (cc.path !== '' && cc.path === this.ccPath)) {
+          return cc
+        }
+      }
+      return {}
     },
     funcs: function () {
       for (var index in this.chaincodes) {
