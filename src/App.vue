@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'vue-strap/dist/vue-strap'
 
 import store from './vuex/store'
-import {isLogin} from './vuex/getters/account'
+import {isLogin} from './vuex/getters/getters'
 import {setAccount} from './vuex/actions'
 import apiActions from './api/api'
 
@@ -38,7 +38,6 @@ export default {
     if (!this.isLogin()) {
       apiActions.loadAccountState().then(resp => {
         setAccount(this.$store, resp.body)
-        console.log(resp)
       }, resp => {
         if (resp.body !== null) {
           this.errMsgs.push(resp.body.error)

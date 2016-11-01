@@ -26,14 +26,13 @@ export default {
   },
   created: function () {
     apiActions.getCoinbaseTx(this.device.address).then(resp => {
-      console.log('get coinbase tx', resp)
+      console.log('get coinbase tx', resp.body.message)
     }, resp => {
       console.log('get coinbase tx', resp)
     })
   },
   ready: function () {
-    console.log('[data]', 'okkkk')
-    console.log('[data]', this.device)
+    // console.log('[data]', this.device)
   }
 }
 </script>

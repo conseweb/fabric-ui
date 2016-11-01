@@ -7,6 +7,7 @@ import {
   GET_BLOCK_SUCC,
   GET_PEERS_SUCC,
   ADD_CHAINCODE_SUCC,
+  UPDATE_CHAINCODE_NAME,
   REQUEST_ERR,
   SET_ACCOUNT,
   UPDATE_DEVICES
@@ -86,6 +87,35 @@ export const addChaincode = ({ dispatch }, cc) => {
 }
 
 // Chaincode
+export const deployLepuscoinCC = ({ dispatch }) => {
+  var body = {
+    path: 'github.com/conseweb/common/assets/lepuscoin',
+    method: 'deploy',
+    function: 'deploy'
+  }
+  api.callChaincode(body).then(resp => {
+    console.log('call deploy', resp)
+    if (resp.body.error != null) {
+      return resp.body.error
+    }
+    let ccName = resp.body.result.message
+    console.log('call message', ccName)
+    api.saveChaincode('lepuscoin', ccName).then(r => {
+      dispatch(UPDATE_CHAINCODE_NAME, ccName, body.path)
+      console.log('save lepuscoin chaincode successful.')
+    }, r => {
+      console.log('save lepuscoin chaincode failed.')
+    })
+    return resp.body.result.message
+  }, resp => {
+    console.log('call deploy', resp)
+    if (resp.body != null) {
+      return resp.body.error
+    }
+    return '404 not found'
+  })
+}
+
 export const updateBalance = ({ dispatch }, ccName, addrs) => {
   var body = {
     name: ccName,
@@ -95,8 +125,8 @@ export const updateBalance = ({ dispatch }, ccName, addrs) => {
     args: addrs
   }
   api.callChaincode(body).then(resp => {
-    console.log('[data]', resp)
-    dispatch(UPDATE_DEVICES)
+    console.log('update devices', resp)
+    dispatch(UPDATE_DEVICES, resp.body)
   }, resp => {
     console.log('call chaincode error', resp)
   })

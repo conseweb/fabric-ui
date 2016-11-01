@@ -1,6 +1,7 @@
 import {
   // RootResource,
   AccountResource,
+  DeviceResource,
   SignupResource,
   ChainResource,
   BlockResource,
@@ -56,8 +57,19 @@ export default {
   callChaincode: function (body) {
     return ChaincodeResource.save({}, body)
   },
+  saveChaincode: function (alisa, name, path) {
+    return ChaincodeResource.save({action: alisa}, {name: name, path: path})
+  },
+  listChaincodes: function () {
+    return ChaincodeResource.get({})
+  },
+  getLepuscoinCC: function () {
+    return ChaincodeResource.get({action: 'lepuscoin'})
+  },
   getCoinbaseTx: function (addr) {
-    console.log('address....', addr)
-    return AccountResource.get({action: 'coinbase_tx/' + addr})
+    return DeviceResource.get({action: addr + '/coinbase_tx'})
+  },
+  getTxSeque: function (body) {
+    return DeviceResource.save({action: '_/tx'}, body)
   }
 }

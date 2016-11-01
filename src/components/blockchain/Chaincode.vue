@@ -75,6 +75,10 @@
          <button type="submit" class="btn btn-default" @click="submit">Submit</button>
         </div>
       </div>
+
+      <div class="alert alert-success" role="alert" v-if="retMsg != ''">
+        <p>{{retMsg}}</p>
+      </div>
     </div>
     
   </div>
@@ -82,20 +86,21 @@
 
 <script>
 import apiActions from '../../api/api'
-import {addChaincode} from '../../vuex/actions'
+// import {addChaincode} from '../../vuex/actions'
 
 export default {
   data () {
     return {
       errMsgs: [],
-      ccPath: '',
+      ccPath: 'github.com/conseweb/common/assets/lepuscoin',
       ccName: '',
       ccFunction: '',
       useSecure: false,
       ccSecureContext: '',
       ccMethod: 'deploy',
       ccMethodEna: ['deploy', 'invoke', 'query'],
-      args: ['']
+      args: [''],
+      retMsg: ''
     }
   },
   vuex: {
@@ -104,14 +109,18 @@ export default {
     }
   },
   ready: function () {
-    console.log('[data]', this.chaincodes)
+    console.log('ready Chaincode', this.chaincodes)
   },
   computed: {
+    cName: function () {
+      return ''
+    },
     funcs: function () {
       for (var index in this.chaincodes) {
         let cc = this.chaincodes[index]
         if ((cc.name !== '' && cc.name === this.ccName) ||
           (cc.path !== '' && cc.path === this.ccPath)) {
+          this.ccFunction = cc.methods[this.ccMethod][0]
           return cc.methods[this.ccMethod]
         }
       }
@@ -151,6 +160,7 @@ export default {
     },
     submit: function () {
       this.errMsgs = []
+      this.retMsg = ''
       if (this.ccName === '' && this.ccPath === '') {
         this.errMsgs.push('Path and name need at least one')
         return
@@ -161,7 +171,17 @@ export default {
       }
 
       apiActions.callChaincode(this.ccBody).then(resp => {
-        addChaincode(this.ccBody)
+        if (resp.body.error != null) {
+          this.errMsgs.push(resp.body.error.message)
+          this.errMsgs.push(resp.body.error.code)
+          this.errMsgs.push(resp.body.error.data)
+          return
+        }
+        if (resp.body.result != null) {
+          this.retMsg = resp.body.result.message
+          return
+        }
+        // addChaincode(this.$store, this.ccBody)
         console.log(resp)
       }, resp => {
         if (resp.body !== null) {
