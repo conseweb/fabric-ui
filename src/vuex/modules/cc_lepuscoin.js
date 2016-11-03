@@ -6,6 +6,7 @@ import {
 const state = {
   name: '',
   path: 'github.com/conseweb/common/assets/lepuscoin',
+  balance: 0,
   tx: '',
   txIn: [],
   txOut: [],

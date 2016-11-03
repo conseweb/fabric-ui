@@ -1,5 +1,10 @@
 <template>
   <div id="account">
+    <transfer :show.sync="showTransfer" :devices.sync="devices"></transfer>
+    <div id="err-msg" class="alert alert-danger" role="alert" v-if="errMsgs.length !== 0">
+      <p v-for="err in errMsgs">{{err}}</p>
+    </div>
+
     <div>
       <div>
         Name: <h4>{{account.nicename}}</h4>
@@ -16,6 +21,7 @@
       <div>
         Tx...: <h4>{{lepuscoinCc.tx}}</h4>
       </div>
+      <button @click="transfer">Transfer</button>
 
       <div>
         <h3>Devices</h3>
@@ -34,16 +40,20 @@
 </template>
 
 <script>
-import Device from './Device'
 import {deployLepuscoinCC, updateTx} from '../../vuex/actions'
 import apiActions from '../../api/api'
+import Device from './Device'
+import Transfer from './Transfer'
 
 export default {
   components: {
-    Device
+    Device,
+    Transfer
   },
   data () {
     return {
+      showTransfer: false,
+      errMsgs: [],
       name: 'hello',
       txOut: [],
       txIn: [],
@@ -61,6 +71,9 @@ export default {
     },
     deploy: function () {
       console.log('deploy', deployLepuscoinCC(this.$store))
+    },
+    transfer: function () {
+      this.showTransfer = true
     },
     sshow: function () {
       var str = '{"accounts":{"mtCLPxw18uxFMK1tbWLCVxJa4Tby7My7aM":{"addr":"mtCLPxw18uxFMK1tbWLCVxJa4Tby7My7aM","balance":1000000,"txouts":{"67420b7be216f150040ea3d53b8b4be69fc357d544986a630ecd0739e6198039:0":{"value":1000000,"addr":"mtCLPxw18uxFMK1tbWLCVxJa4Tby7My7aM"}}}}}'
