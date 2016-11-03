@@ -1,5 +1,5 @@
 <template>
-  <div id="chain">
+  <div id="chain" @scroll="onScroll($event)">
     <h1>Chain {{msg}}</h1>
     <a class="refresh" @click="refreshChain">
       <i class="fa fa-refresh fa-2x fa-fw"
@@ -15,8 +15,8 @@
         <i class="fa fa-refresh fa-2x fa-fw"
           :class="{'fa-spin': isSyncd}"></i>
       </a>
-      <div>
-        <block  v-for="blk in blocks" track-by="$index" :height=$index :block=blk></block>
+      <div v-for="blk in blocks|reverse" track-by="$index">
+        <block :height="blocks.length-1-$index" v-if="blk != null" :block=blk></block>
       </div>
     </div>
   </div>
@@ -34,7 +34,9 @@ export default {
     return {
       msg: 'Hello',
       isSyncd: false,
-      show: false
+      show: false,
+      scrollTimes: 0,
+      currentMin: 0
     }
   },
   computed: {
@@ -60,8 +62,24 @@ export default {
         this.isSyncd = false
       },
       updateHand: function () {
-        for (var i = 0; i < this.height; i++) {
+        if (this.currentMin === 0) {
+          this.currentMin = this.height - 1
+        }
+        let once = 10
+        for (var i = this.currentMin; i >= 0 && once > 0; i--, once--) {
           getBlock(this.$store, i)
+          this.currentMin = i
+        }
+      }
+    }
+  },
+  methods: {
+    onScroll: function (event) {
+      if (event.target.scrollHeight === event.target.scrollTop + event.currentTarget.offsetHeight) {
+        this.scrollTimes++
+        if (this.scrollTimes > 0) {
+          this.updateHand()
+          this.scrollTimes = 0
         }
       }
     }
@@ -72,8 +90,12 @@ export default {
 }
 </script>
 <style scoped>
-.chain {
+#chain {
+  border: 0px solid;
   border-bottom: 10px;
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .refresh {

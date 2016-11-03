@@ -6,7 +6,7 @@ import { sync } from 'vuex-router-sync'
 
 import App from './App'
 import { configRouter } from './router'
-import { base64, bytesToHex, unixToDate, showHash } from './filter'
+import { base64, bytesToHex, unixToDate, showHash, reverse } from './filter'
 import store from './vuex/store'
 
 Vue.use(VueRouter)
@@ -17,6 +17,7 @@ Vue.filter('base64', base64)
 Vue.filter('bytesToHex', bytesToHex)
 Vue.filter('unixToDate', unixToDate)
 Vue.filter('showHash', showHash)
+Vue.filter('reverse', reverse)
 
 const router = new VueRouter({
   history: true,

@@ -39,3 +39,14 @@ export function showHash (val) {
   }
   return str
 }
+
+export function reverse (arr) {
+  if (arr.length <= 1) {
+    return arr
+  }
+  let ret = []
+  for (var i = 0; i < arr.length; i++) {
+    ret[arr.length - 1 - i] = arr[i]
+  }
+  return ret
+}
