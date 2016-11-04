@@ -1,6 +1,6 @@
 <template>
   <div id="account">
-    <transfer :show.sync="showTransfer" :devices.sync="devices"></transfer>
+    <transfer :show.sync="showTransfer" :devices.sync="devices" :trans.sync="trans"></transfer>
     <div id="err-msg" class="alert alert-danger" role="alert" v-if="errMsgs.length !== 0">
       <p v-for="err in errMsgs">{{err}}</p>
     </div>
@@ -28,14 +28,17 @@
         <device v-for="dev in devices" track-by="$index" :device.sync=dev></device>
       </div>
 
-      <button @click="sshow">Sshow</button>
       <button @click="coinbase">Coinbase</button>
       <br>
       <button @click="deploy">Deploy</button>
       <button @click="query">Query</button>
       <button @click="getTransfer">GetTransfer</button>
       <button @click="doTransfer">DoTransfer</button>
-    </div>  
+    </div>
+
+    <div class="transaction" v-for="tran in trans">
+      <transaction :trans=tran></transaction>
+    </div>
   </div>
 </template>
 
@@ -44,11 +47,13 @@ import {deployLepuscoinCC, updateTx} from '../../vuex/actions'
 import apiActions from '../../api/api'
 import Device from './Device'
 import Transfer from './Transfer'
+import Transaction from '../blockchain/Transaction'
 
 export default {
   components: {
     Device,
-    Transfer
+    Transfer,
+    Transaction
   },
   data () {
     return {
@@ -57,7 +62,8 @@ export default {
       name: 'hello',
       txOut: [],
       txIn: [],
-      txStr: ''
+      txStr: '',
+      trans: []
     }
   },
   methods: {
@@ -74,33 +80,6 @@ export default {
     },
     transfer: function () {
       this.showTransfer = true
-    },
-    sshow: function () {
-      var str = '{"accounts":{"mtCLPxw18uxFMK1tbWLCVxJa4Tby7My7aM":{"addr":"mtCLPxw18uxFMK1tbWLCVxJa4Tby7My7aM","balance":1000000,"txouts":{"67420b7be216f150040ea3d53b8b4be69fc357d544986a630ecd0739e6198039:0":{"value":1000000,"addr":"mtCLPxw18uxFMK1tbWLCVxJa4Tby7My7aM"}}}}}'
-      let ret = JSON.parse(str)
-      console.log('query ret: ', ret)
-      let txIn = []
-      let txOut = [{
-        addr: outAddr,
-        amount: outAmount
-      }]
-      var outAddr = 'abc'
-      var outAmount = 100
-      for (let addr in ret.accounts) {
-        let d = ret.accounts[addr]
-        for (let hi in d.txouts) {
-          let hashIndex = hi.split(':')
-          txIn.push({
-            addr: addr,
-            pre_tx_hash: hashIndex[0],
-            tx_out_index: hashIndex[1],
-            balance: d.txouts[hi].Value
-          })
-        }
-      }
-      if (txIn.length > 0) {
-        updateTx(this.$store, {in: txIn, out: txOut})
-      }
     },
     query: function () {
       console.log('query account blan')
@@ -182,7 +161,31 @@ export default {
       })
     },
     coinbase: function () {
-      console.log('[data]', '[...]')
+      let txOut = []
+      for (let i in this.devices) {
+        txOut.push({addr: this.devices[i].address, amount: 100000000})
+      }
+      apiActions.getTxSeque({out: txOut}).then(txResp => {
+        let body = {
+          name: this.lepuscoinCc.name,
+          path: 'github.com/conseweb/common/assets/lepuscoin',
+          method: 'invoke',
+          function: 'invoke_coinbase',
+          args: [txResp.body.message]
+        }
+        apiActions.callChaincode(body).then(ccResp => {
+          console.log('call deploy', ccResp)
+          if (ccResp.body.error) {
+            console.log(ccResp.body.error)
+          }
+          console.log('call message', ccResp.body.result.message)
+          this.show = false
+        }, ccResp => {
+          console.log('call deploy', ccResp)
+        })
+      }, txResp => {
+        console.log('get tx failed', txResp)
+      })
     }
   },
   vuex: {
@@ -191,9 +194,6 @@ export default {
       account: state => state.account,
       devices: state => state.account.devices
     }
-  },
-  ready: function () {
-    console.log('ready Account')
   }
 }
 </script>

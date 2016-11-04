@@ -67,6 +67,11 @@ export default {
       type: Array,
       required: true,
       twoWay: true
+    },
+    trans: {
+      type: Array,
+      required: true,
+      twoWay: true
     }
   },
   data () {
@@ -137,6 +142,7 @@ export default {
               console.log(ccResp.body.error)
             }
             console.log('call message', ccResp.body.result.message)
+            this.trans.push(ccResp.body.result.message)
             this.show = false
           }, ccResp => {
             console.log('call deploy', ccResp)

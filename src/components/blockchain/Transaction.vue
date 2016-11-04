@@ -11,13 +11,25 @@
 </template>
 
 <script>
+import apiActions from '../../api/api'
+
 export default {
   props: {
-    trans: [Object]
+    trans: [Object, String]
   },
   data () {
     return {
       show: false
+    }
+  },
+  created: function () {
+    if (typeof this.trans === 'string') {
+      let uuid = this.trans
+      setTimeout(apiActions.getTransaction(uuid).then(resp => {
+        this.trans = resp.body
+      }, resp => {
+        console.log('[get transaction failed]', resp)
+      }), 2000)
     }
   },
   computed: {
