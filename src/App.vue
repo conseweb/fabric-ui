@@ -11,10 +11,6 @@
 </template>
 
 <script>
-import 'font-awesome/css/font-awesome.css'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'vue-strap/dist/vue-strap'
-
 import store from './vuex/store'
 import {isLogin} from './vuex/getters/getters'
 import {setAccount} from './vuex/actions'

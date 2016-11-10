@@ -19,6 +19,11 @@ Vue.filter('unixToDate', unixToDate)
 Vue.filter('showHash', showHash)
 Vue.filter('reverse', reverse)
 
+// CSS
+import 'font-awesome/css/font-awesome.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'vue-strap/dist/vue-strap'
+
 const router = new VueRouter({
   history: true,
   saveScrollPosition: true,

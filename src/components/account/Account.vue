@@ -23,6 +23,8 @@
       </div>
       <button @click="transfer">Transfer</button>
 
+      <balance v-if="balance.accounts" :accounts.sync="balance.accounts"></balance>
+
       <div>
         <h3>Devices</h3>
         <device v-for="dev in devices" track-by="$index" :device.sync=dev></device>
@@ -47,13 +49,15 @@ import {deployLepuscoinCC, updateTx} from '../../vuex/actions'
 import apiActions from '../../api/api'
 import Device from './Device'
 import Transfer from './Transfer'
+import Balance from './Balance'
 import Transaction from '../blockchain/Transaction'
 
 export default {
   components: {
     Device,
     Transfer,
-    Transaction
+    Transaction,
+    Balance
   },
   data () {
     return {
@@ -63,6 +67,7 @@ export default {
       txOut: [],
       txIn: [],
       txStr: '',
+      balance: {},
       trans: []
     }
   },
@@ -102,28 +107,31 @@ export default {
         function: 'query_addrs',
         args: addrs
       }
-      var outAddr = 'abc'
-      var outAmount = 100
+      // var outAddr = 'abc'
+      // var outAmount = 100
       apiActions.callChaincode(b).then(queryResp => {
         let ret = JSON.parse(queryResp.body.result.message)
         console.log('query ret: ', ret)
-        this.txIn = []
-        this.txOut = [{
-          addr: outAddr,
-          amount: outAmount
-        }]
-        for (let addr in ret.accounts) {
-          let d = ret.accounts[addr]
-          for (let hi in d.txouts) {
-            let hashIndex = hi.split(':')
-            this.txIn.push({
-              addr: addr,
-              pre_tx_hash: hashIndex[0],
-              tx_out_index: hashIndex[1],
-              balance: d.txouts[hi].value
-            })
-          }
+        if (ret) {
+          this.balance = ret
         }
+        // this.txIn = []
+        // this.txOut = [{
+        //   addr: outAddr,
+        //   amount: outAmount
+        // }]
+        // for (let addr in ret.accounts) {
+        //   let d = ret.accounts[addr]
+        //   for (let hi in d.txouts) {
+        //     let hashIndex = hi.split(':')
+        //     this.txIn.push({
+        //       addr: addr,
+        //       pre_tx_hash: hashIndex[0],
+        //       tx_out_index: hashIndex[1],
+        //       balance: d.txouts[hi].value
+        //     })
+        //   }
+        // }
       }, queryResp => {
         console.log('get coinbase tx', queryResp)
       })

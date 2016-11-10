@@ -89,6 +89,8 @@ import apiActions from '../../api/api'
 // import {addChaincode} from '../../vuex/actions'
 
 export default {
+  components: {
+  },
   data () {
     return {
       errMsgs: [],
