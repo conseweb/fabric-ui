@@ -62,17 +62,17 @@ function config($stateProvider, $urlRouterProvider) {
         })
         .state('login', {
             url: "/login",
-            templateUrl: "views/login.html",
+            templateUrl: "views/user/login.html",
             data: { pageTitle: '登录' }
         })
         .state('register', {
             url: "/register",
-            templateUrl: "views/register.html",
+            templateUrl: "views/user/register.html",
             data: { pageTitle: '登录' }
         })
         .state('forgot_password', {
             url: "/forgot_password",
-            templateUrl: "views/forgot_password.html",
+            templateUrl: "views/user/forgot_password.html",
             data: { pageTitle: '登录' }
         })
 
