@@ -19,13 +19,34 @@ function config($stateProvider, $urlRouterProvider) {
         .state('index.main', {
             url: "/main",
             templateUrl: "views/main.html",
-            data: { pageTitle: 'Example view' }
+            data: { pageTitle: '账户总览' }
         })
-        .state('index.minor', {
-            url: "/minor",
-            templateUrl: "views/minor.html",
-            data: { pageTitle: 'Example view' }
+        .state('index.account', {
+            url: "/account",
+            templateUrl: "views/account.html",
+            data: { pageTitle: '账户' }
         })
+        .state('index.tx', {
+            url: "/tx",
+            templateUrl: "views/tx.html",
+            data: { pageTitle: '交易' }
+        })
+        .state('index.block', {
+            url: "/block",
+            templateUrl: "views/block.html",
+            data: { pageTitle: '区块' }
+        })
+        .state('index.net', {
+            url: "/net",
+            templateUrl: "views/net.html",
+            data: { pageTitle: '网络' }
+        })
+        .state('index.config', {
+            url: "/config",
+            templateUrl: "views/config.html",
+            data: { pageTitle: '设置' }
+        })
+
 }
 angular
     .module('inspinia')
