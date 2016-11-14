@@ -1,100 +1,219 @@
-/*
-Copyright DTCC 2016 All Rights Reserved.
+'use strict';
+module.exports = function (grunt) {
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+    // Load grunt tasks automatically
+    require('load-grunt-tasks')(grunt);
 
-         http://www.apache.org/licenses/LICENSE-2.0
+    // Show grunt task time
+    require('time-grunt')(grunt);
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+    // Configurable paths for the app
+    var appConfig = {
+        app: 'app',
+        dist: 'dist'
+    };
 
+    // Grunt configuration
+    grunt.initConfig({
 
-module.exports = function(grunt) {
+        // Project settings
+        inspinia: appConfig,
 
-  grunt.initConfig({
-	
-	auto_install: {
-		local : { 
-			options: {
-				stdout: true,
-				stderr: true,
-				failOnError: true,
-				exclude : ['node_modules']
-			}
-		},
-		peerintf : {
-			options: {
-				cwd :'hyperledgerpeerintf',
-				stdout: true,
-				stderr: true,
-				failOnError: true,
-				exclude : ['node_modules']
-			}
-		},
-		bower_scripts : {
-			options: {
-				cwd :'resources',
-				stdout: true,
-				stderr: true,
-				failOnError: true,
-				recursive : 'true'
-			}
-		}
-	},
-	
-	copy: {
-		fontawesome: {
-                        files: [{
-                                expand: true,
-                                cwd: 'resources/bower_components/font-awesome/',
-                                src: ['css/*min.css','fonts/*'],
-                                dest: 'webcontent/static/css/font-awesome'
-                        }]
-                },
-		scripts: {
-                        files: [{
-                                expand: true,
-                                cwd: 'resources',
-                                src: ['*.js'],
-                                dest: 'webcontent/static/scripts'
-                        }]
-                },
-                websocket: {
-                        files: [{
-                                expand: true,
-                                cwd: 'node_modules',
-                                src: ['socket.io-client/**'],
-                                dest: 'webcontent/static/scripts'
-                        }]
-                },
-                angular: {
-                        files: [{
-                                expand: true,
-                                cwd: 'resources/bower_components',
-                                src: ['angular*/**'],
-                                dest: 'webcontent/static/scripts'
-                        }]
-                },
-		charts: {
-                        files: [{
-                                expand: true,
-                                cwd: 'node_modules/chart.js/dist',
-                                src: ['Chart.min.js'],
-                                dest: 'webcontent/static/scripts'
-                        }]
+        // The grunt server settings
+        connect: {
+            options: {
+                port: 9000,
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            livereload: {
+                options: {
+                    open: true,
+                    middleware: function (connect) {
+                        return [
+                            connect.static('.tmp'),
+                            connect().use(
+                                '/bower_components',
+                                connect.static('./bower_components')
+                            ),
+                            connect.static(appConfig.app)
+                        ];
+                    }
                 }
-	}
-  });
+            },
+            dist: {
+                options: {
+                    open: true,
+                    base: '<%= inspinia.dist %>'
+                }
+            }
+        },
+        // Compile less to css
+        less: {
+            development: {
+                options: {
+                    compress: true,
+                    optimization: 2
+                },
+                files: {
+                    "app/styles/style.css": "app/less/style.less"
+                }
+            }
+        },
+        // Watch for changes in live edit
+        watch: {
+            styles: {
+                files: ['app/less/**/*.less'],
+                tasks: ['less', 'copy:styles'],
+                options: {
+                    nospawn: true,
+                    livereload: '<%= connect.options.livereload %>'
+                },
+            },
+            js: {
+                files: ['<%= inspinia.app %>/scripts/{,*/}*.js'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                }
+            },
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: [
+                    '<%= inspinia.app %>/**/*.html',
+                    '.tmp/styles/{,*/}*.css',
+                    '<%= inspinia.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
+            }
+        },
+        // If you want to turn on uglify you will need write your angular code with string-injection based syntax
+        // For example this is normal syntax: function exampleCtrl ($scope, $rootScope, $location, $http){}
+        // And string-injection based syntax is: ['$scope', '$rootScope', '$location', '$http', function exampleCtrl ($scope, $rootScope, $location, $http){}]
+        uglify: {
+            options: {
+                mangle: false
+            }
+        },
+        // Clean dist folder
+        clean: {
+            dist: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '<%= inspinia.dist %>/{,*/}*',
+                        '!<%= inspinia.dist %>/.git*'
+                    ]
+                }]
+            },
+            server: '.tmp'
+        },
+        // Copies remaining files to places other tasks can use
+        copy: {
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= inspinia.app %>',
+                        dest: '<%= inspinia.dist %>',
+                        src: [
+                            '*.{ico,png,txt}',
+                            '.htaccess',
+                            '*.html',
+                            'views/{,*/}*.html',
+                            'styles/patterns/*.*',
+                            'img/{,*/}*.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: 'bower_components/fontawesome',
+                        src: ['fonts/*.*'],
+                        dest: '<%= inspinia.dist %>'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: 'bower_components/bootstrap',
+                        src: ['fonts/*.*'],
+                        dest: '<%= inspinia.dist %>'
+                    },
+                ]
+            },
+            styles: {
+                expand: true,
+                cwd: '<%= inspinia.app %>/styles',
+                dest: '.tmp/styles/',
+                src: '{,*/}*.css'
+            }
+        },
+        // Renames files for browser caching purposes
+        filerev: {
+            dist: {
+                src: [
+                    '<%= inspinia.dist %>/scripts/{,*/}*.js',
+                    '<%= inspinia.dist %>/styles/{,*/}*.css',
+                    '<%= inspinia.dist %>/styles/fonts/*'
+                ]
+            }
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    collapseWhitespace: true,
+                    conservativeCollapse: true,
+                    collapseBooleanAttributes: true,
+                    removeCommentsFromCDATA: true,
+                    removeOptionalTags: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= inspinia.dist %>',
+                    src: ['*.html', 'views/{,*/}*.html'],
+                    dest: '<%= inspinia.dist %>'
+                }]
+            }
+        },
+        useminPrepare: {
+            html: 'app/index.html',
+            options: {
+                dest: 'dist'
+            }
+        },
+        usemin: {
+            html: ['dist/index.html']
+        }
+    });
 
-  grunt.loadNpmTasks('grunt-auto-install');
-  grunt.loadNpmTasks('grunt-contrib-copy');
+    // Run live version of app
+    grunt.registerTask('live', [
+        'clean:server',
+        'copy:styles',
+        'connect:livereload',
+        'watch'
+    ]);
 
-  grunt.registerTask('default', ['auto_install','copy']);
+    // Run build version of app
+    grunt.registerTask('server', [
+        'build',
+        'connect:dist:keepalive'
+    ]);
+
+    // Build version for production
+    grunt.registerTask('build', [
+        'clean:dist',
+        'less',
+        'useminPrepare',
+        'concat',
+        'copy:dist',
+        'cssmin',
+        'uglify',
+        'filerev',
+        'usemin',
+        'htmlmin'
+    ]);
 
 };

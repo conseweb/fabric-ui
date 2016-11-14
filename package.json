@@ -1,31 +1,26 @@
 {
-  "name": "explorer",
-  "version": "1.0.0",
-  "description": "This is the initial release of the Hyperledger explorer which provides a User Interface to explore and examine the current state of the Hyperledger blockchain in a convenient and easy to use manner. Similar to bitcoin explorers or crypto-currency explorers, information such as transaction information, network activity, recent blocks, visuals and search etc. are available that allows for information to be quickly found.",
-  "main": "exp-server.js",
-  "directories": {
-    "example": "examples"
-  },
+  "name": "INSPINIA",
+  "version": "2.5.0",
+  "description": "INSPINIA - Responsive Admin Theme",
   "dependencies": {
-    "chart.js": "^2.3.0-rc.1",
-    "dispatcher": "^0.0.2",
-    "dot": "^1.0.3",
-    "express": "^4.14.0",
-    "http": "^0.0.0",
-    "socket.io": "^1.4.8",
-    "websocket": "^1.0.23"
+    "grunt": "^0.4.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-auto-install": "^0.3.1",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-uglify": "^2.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://gerrit.hyperledger.org/r/blockchain-explorer"
-  },
-  "author": "Mahesh Gutala",
-  "license": "ISC"
+    "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-connect": "^0.8.0",
+    "grunt-contrib-copy": "^0.6.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-htmlmin": "^0.3.0",
+    "grunt-contrib-less": "^0.11.4",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-filerev": "^2.0.0",
+    "grunt-usemin": "^2.4.0",
+    "jshint-stylish": "^1.0.0",
+    "load-grunt-tasks": "^0.6.0",
+    "time-grunt": "^1.0.0"
+  }
 }
