@@ -8,3 +8,4 @@ webcontent/static/scripts/
 
 bower_components
 dist
+.tmp
