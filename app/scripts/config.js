@@ -18,8 +18,22 @@ function config($stateProvider, $urlRouterProvider) {
         })
         .state('index.main', {
             url: "/main",
-            templateUrl: "views/main.html",
+            templateUrl: "views/dashboard_5.html",
             data: { pageTitle: '账户总览' }
+            // resolve: {
+            //     loadPlugin: function ($ocLazyLoad) {
+            //         return $ocLazyLoad.load([
+            //             {
+            //                 serie: true,
+            //                 name: 'angular-flot',
+            //                 files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
+            //             },
+            //             {
+            //                 files: ['js/plugins/sparkline/jquery.sparkline.min.js']
+            //             }
+            //         ]);
+            //     }
+            // }
         })
         .state('index.account', {
             url: "/account",
@@ -45,6 +59,21 @@ function config($stateProvider, $urlRouterProvider) {
             url: "/config",
             templateUrl: "views/config.html",
             data: { pageTitle: '设置' }
+        })
+        .state('login', {
+            url: "/login",
+            templateUrl: "views/login.html",
+            data: { pageTitle: '登录' }
+        })
+        .state('register', {
+            url: "/register",
+            templateUrl: "views/register.html",
+            data: { pageTitle: '登录' }
+        })
+        .state('forgot_password', {
+            url: "/forgot_password",
+            templateUrl: "views/forgot_password.html",
+            data: { pageTitle: '登录' }
         })
 
 }
