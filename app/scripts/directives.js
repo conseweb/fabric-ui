@@ -14,7 +14,7 @@ function pageTitle($rootScope, $timeout) {
                 // Default title - load on Dashboard 1
                 var title = '信链 | LepCoin';
                 // Create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = 'INSPINIA | ' + toState.data.pageTitle;
+                if (toState.data && toState.data.pageTitle) title = '信链 | ' + toState.data.pageTitle;
                 $timeout(function() {
                     element.text(title);
                 });

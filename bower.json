@@ -4,7 +4,7 @@
   "authors": [
     "Damian Dudziak - WebAppLayers"
   ],
-  "description": "INSPINIA - Responsive Admin Theme",
+  "description": "信链 - 新一代区块链平台",
   "main": "app/index.html",
   "private": true,
   "ignore": [
