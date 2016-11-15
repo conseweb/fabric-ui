@@ -34,6 +34,7 @@ $(document).ready(function () {
 
     }
 
+
     $(window).bind("load resize scroll", function() {
         if(!$("body").hasClass('body-small')) {
             fix_height();
@@ -49,10 +50,10 @@ $(document).ready(function () {
         }
     });
 
+
     setTimeout(function(){
         fix_height();
-    });
-
+    })
 });
 
 // Minimalize menu when screen is less than 768px
@@ -64,4 +65,4 @@ $(function() {
             $('body').removeClass('body-small')
         }
     })
-});
+})

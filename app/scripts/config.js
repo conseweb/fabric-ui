@@ -36,25 +36,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                         {
                             serie: true,
                             name: 'angular-flot',
-                            files: [ 'bower_components/Flot/jquery.flot.js', 
-                                     'bower_components/Flot/jquery.flot.time.js', 
-                                     'bower_components/Flot/jquery.flot.resize.js', 
-                                     'bower_components/Flot/jquery.flot.selection.js', 
-                                     'bower_components/Flot/jquery.flot.stack.js', 
-                                     'bower_components/Flot/jquery.flot.symbol.js', 
-                                     'bower_components/Flot/jquery.colorhelpers.js',
-                                     'bower_components/Flot/jquery.flot.canvas.js',
-                                     'bower_components/Flot/jquery.flot.categories.js',
-                                     'bower_components/Flot/jquery.flot.crosshair.js',
-                                     'bower_components/Flot/jquery.flot.errorbars.js',
-                                     'bower_components/Flot/jquery.flot.fillbetween.js',
-                                     'bower_components/Flot/jquery.flot.image.js',
-                                     'bower_components/Flot/jquery.flot.navigate.js',
-                                     'bower_components/Flot/jquery.flot.pie.js',
-                                     'bower_components/Flot/jquery.flot.threshold.js']
-                        },
-                        {
-                            files: ['bower_components/sparkline/dist/jquery.sparkline.min.js']
+                            files: [ 'bower_components/flot/jquery.flot.js', 'bower_components/flot/jquery.flot.time.js', 'bower_components/flot/jquery.flot.tooltip.min.js', 'bower_components/flot/jquery.flot.spline.js', 'bower_components/flot/jquery.flot.resize.js', 'bower_components/flot/jquery.flot.pie.js', 'bower_components/flot/curvedLines.js', 'bower_components/flot/angular-flot.js', ]
                         }
                     ]);
                 }
