@@ -6,8 +6,18 @@
  * Initial there are written stat for all view in theme.
  *
  */
-function config($stateProvider, $urlRouterProvider) {
+function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdleProvider, KeepaliveProvider) {
+
+    // Configure Idle settings
+    IdleProvider.idle(5); // in seconds
+    IdleProvider.timeout(120); // in seconds
+
     $urlRouterProvider.otherwise("/index/main");
+
+    $ocLazyLoadProvider.config({
+        // Set to true if you want to see what and when is dynamically loaded
+        debug: true
+    });
 
     $stateProvider
 
@@ -19,31 +29,46 @@ function config($stateProvider, $urlRouterProvider) {
         .state('index.main', {
             url: "/main",
             templateUrl: "views/dashboard_5.html",
-            data: { pageTitle: '账户总览' }
-            // resolve: {
-            //     loadPlugin: function ($ocLazyLoad) {
-            //         return $ocLazyLoad.load([
-            //             {
-            //                 serie: true,
-            //                 name: 'angular-flot',
-            //                 files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
-            //             },
-            //             {
-            //                 files: ['js/plugins/sparkline/jquery.sparkline.min.js']
-            //             }
-            //         ]);
-            //     }
-            // }
+            data: { pageTitle: '账户总览' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            name: 'angular-flot',
+                            files: [ 'bower_components/Flot/jquery.flot.js', 
+                                     'bower_components/Flot/jquery.flot.time.js', 
+                                     'bower_components/Flot/jquery.flot.resize.js', 
+                                     'bower_components/Flot/jquery.flot.selection.js', 
+                                     'bower_components/Flot/jquery.flot.stack.js', 
+                                     'bower_components/Flot/jquery.flot.symbol.js', 
+                                     'bower_components/Flot/jquery.colorhelpers.js',
+                                     'bower_components/Flot/jquery.flot.canvas.js',
+                                     'bower_components/Flot/jquery.flot.categories.js',
+                                     'bower_components/Flot/jquery.flot.crosshair.js',
+                                     'bower_components/Flot/jquery.flot.errorbars.js',
+                                     'bower_components/Flot/jquery.flot.fillbetween.js',
+                                     'bower_components/Flot/jquery.flot.image.js',
+                                     'bower_components/Flot/jquery.flot.navigate.js',
+                                     'bower_components/Flot/jquery.flot.pie.js',
+                                     'bower_components/Flot/jquery.flot.threshold.js']
+                        },
+                        {
+                            files: ['bower_components/sparkline/dist/jquery.sparkline.min.js']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.account', {
             url: "/account",
             templateUrl: "views/account.html",
-            data: { pageTitle: '账户' }
+            data: { pageTitle: '查账' }
         })
         .state('index.tx', {
             url: "/tx",
             templateUrl: "views/tx.html",
-            data: { pageTitle: '交易' }
+            data: { pageTitle: '转账' }
         })
         .state('index.block', {
             url: "/block",
@@ -68,12 +93,12 @@ function config($stateProvider, $urlRouterProvider) {
         .state('register', {
             url: "/register",
             templateUrl: "views/user/register.html",
-            data: { pageTitle: '登录' }
+            data: { pageTitle: '注册' }
         })
         .state('forgot_password', {
             url: "/forgot_password",
             templateUrl: "views/user/forgot_password.html",
-            data: { pageTitle: '登录' }
+            data: { pageTitle: '遗忘密码' }
         })
 
 }
