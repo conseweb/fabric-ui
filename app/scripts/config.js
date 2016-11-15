@@ -60,24 +60,24 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
-        .state('index.account', {
-            url: "/account",
-            templateUrl: "views/account.html",
+        .state('index.query', {
+            url: "/query",
+            templateUrl: "views/blockchain/query.html",
             data: { pageTitle: '查账' }
         })
         .state('index.tx', {
             url: "/tx",
-            templateUrl: "views/tx.html",
+            templateUrl: "views/blockchain/tx.html",
             data: { pageTitle: '转账' }
         })
         .state('index.block', {
             url: "/block",
-            templateUrl: "views/block.html",
+            templateUrl: "views/blockchain/block.html",
             data: { pageTitle: '区块' }
         })
         .state('index.net', {
             url: "/net",
-            templateUrl: "views/net.html",
+            templateUrl: "views/blockchain/net.html",
             data: { pageTitle: '网络' }
         })
         .state('index.config', {
