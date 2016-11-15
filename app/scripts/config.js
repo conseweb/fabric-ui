@@ -80,6 +80,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/blockchain/block.html",
             data: { pageTitle: '账本' }
         })
+        .state('index.appstore', {
+            url: "/appstore",
+            templateUrl: "views/appstore.html",
+            data: { pageTitle: '应用商店' }
+        })
         .state('index.net', {
             url: "/net",
             templateUrl: "views/blockchain/net.html",
