@@ -8,7 +8,7 @@
  */
 function MainCtrl() {
 
-    this.userName = '测试用户';
+    this.userName = '飞骐';
     this.helloText = 'Welcome in SeedProject';
     this.descriptionText = 'It is an application skeleton for a typical AngularJS web app. You can use it to quickly bootstrap your angular webapp projects and dev environment for these projects.';
 

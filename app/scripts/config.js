@@ -16,7 +16,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 
     $ocLazyLoadProvider.config({
         // Set to true if you want to see what and when is dynamically loaded
-        debug: true
+        debug: false
     });
 
     $stateProvider
@@ -60,6 +60,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
+        .state('index.vault', {
+            url: "/vault",
+            templateUrl: "views/vault.html",
+            data: { pageTitle: '金库' }
+        })
         .state('index.query', {
             url: "/query",
             templateUrl: "views/blockchain/query.html",
@@ -73,7 +78,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('index.block', {
             url: "/block",
             templateUrl: "views/blockchain/block.html",
-            data: { pageTitle: '区块' }
+            data: { pageTitle: '账本' }
         })
         .state('index.net', {
             url: "/net",
