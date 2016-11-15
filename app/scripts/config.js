@@ -28,7 +28,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
         .state('index.main', {
             url: "/main",
-            templateUrl: "views/dashboard_5.html",
+            templateUrl: "views/dashboard.html",
             data: { pageTitle: '账户总览' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
