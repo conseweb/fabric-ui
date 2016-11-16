@@ -23,7 +23,7 @@ function UserCtrl($scope, api, user) {
   $scope.captcha = '';
   $scope.type = 'email';
   $scope.language = '简体中文';
-  $scope.languageSupport: [
+  $scope.languageSupport = [
     '简体中文',
     '繁體中文',
     'English',
@@ -31,7 +31,7 @@ function UserCtrl($scope, api, user) {
     'español',
     'français',
     'ITALIAN'
-  ],
+  ];
 
   $scope.login = function () {
     api.loginEmail($scope.email, $scope.password)
