@@ -19,9 +19,20 @@ function UserCtrl($scope, api, user) {
   $scope.nickname = '';
   $scope.email = '';
   $scope.phone = '';
-  $scope.signType = '';
   $scope.password = '';
   $scope.captcha = '';
+  $scope.type = 'email';
+  $scope.language = '简体中文';
+  $scope.languageSupport: [
+    '简体中文',
+    '繁體中文',
+    'English',
+    '日本語',
+    'español',
+    'français',
+    'ITALIAN'
+  ],
+
   $scope.login = function () {
     api.loginEmail($scope.email, $scope.password)
       .then(function (resp) {
@@ -33,8 +44,32 @@ function UserCtrl($scope, api, user) {
     });
   };
   $scope.logout = function () {
-    $http.delete(API_ROOT + '/account/logout');
+    api.logout();
   };
+  $scope.preSignup = function () {
+    /// for send registry's captcha
+    api.preSignup($scope.email).then(function (resp) {
+        // ok
+    }, function (resp) {
+        console.log('try email failed', resp.body)
+    })
+  };
+  $scope.signup = function () {
+    /// for send registry's captcha
+    api.signup({
+        email: $scope.email,
+        captcha: $scope.captcha, 
+        language: $scope.language,
+        nickname: $scope.nickname,
+        password: $scope.password,
+        type: $scope.type
+    }).then(function (resp) {
+        // success  
+        user.set(resp.body)
+    }, function (resp) {
+        console.log('sign failed', resp.body)
+    })
+  }
 };
 
 function XCtrl($scope) {

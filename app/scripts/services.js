@@ -1,8 +1,16 @@
+/// Services
+
+/// api
+/// 
 function APIService($http) {
   const API_ROOT = 'http://192.168.5.105:9375/api';
   const API_ROUTER = {
     login: API_ROOT + '/account/login',
-    logout: API_ROOT + '/account/logout'
+    logout: API_ROOT + '/account/logout',
+    preSignup: function (typ) {
+      return API_ROOT + '/signup/' +(typ==='phone'?'phone':'email');
+    },
+    signup: API_ROOT + '/signup'
   };
 
   return {
@@ -11,6 +19,13 @@ function APIService($http) {
     },
     logout: function () {
       return $http.delete(API_ROUTER.logout)
+    },
+    preSignup: function (val, typ) {
+      let body = typ==='phone'?{phone: val}:{email: val};
+      return $http.post(API_ROUTERS.preSignup(typ), body);
+    },
+    signup: function (body) {
+      return $http.post(API_ROUTERS.signup, body)
     }
   };
 };
