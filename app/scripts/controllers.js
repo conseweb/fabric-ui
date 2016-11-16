@@ -37,6 +37,9 @@ function UserCtrl($scope, api, user) {
   };
 };
 
+function XCtrl($scope) {
+    $scope.title = 'My Contacts';
+}
 
 /**
  * flotChartCtrl - Controller for data for All flot chart
@@ -351,4 +354,5 @@ angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('UserCtrl', UserCtrl)
+    .controller('XCtrl', XCtrl)
     .controller('flotChartCtrl', flotChartCtrl);

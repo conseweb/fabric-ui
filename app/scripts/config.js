@@ -20,7 +20,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     });
 
     $stateProvider
-
         .state('index', {
             abstract: true,
             url: "/index",
@@ -45,7 +44,8 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('index.vault', {
             url: "/vault",
             templateUrl: "views/vault.html",
-            data: { pageTitle: '金库' }
+            data: { pageTitle: '金库' },
+            controller: 'XCtrl'
         })
         .state('index.query', {
             url: "/query",
@@ -94,9 +94,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
 
 }
+
 angular
     .module('inspinia')
     .config(config)
     .run(function($rootScope, $state) {
         $rootScope.$state = $state;
     });
+
