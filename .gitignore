@@ -8,3 +8,4 @@ webcontent/static/scripts/
 
 dist
 .tmp
+npm-debug.log

@@ -8,10 +8,33 @@
  * Contains several global data used in different view
  *
  */
-function MainCtrl() {
+/// Services' functions
 
+/// Controllers
+function MainCtrl($scope, $http) {
     this.userName = '飞骐';
+};
 
+function UserCtrl($scope, api, user) {
+  $scope.nickname = '';
+  $scope.email = '';
+  $scope.phone = '';
+  $scope.signType = '';
+  $scope.password = '';
+  $scope.captcha = '';
+  $scope.login = function () {
+    api.loginEmail($scope.email, $scope.password)
+      .then(function (resp) {
+        console.log('login', user.get());
+        user.set(resp.body);
+        console.log('login', user.get());
+    }, function (resp) {
+      console.log('login failed', resp.error);
+    });
+  };
+  $scope.logout = function () {
+    $http.delete(API_ROOT + '/account/logout');
+  };
 };
 
 
@@ -327,5 +350,5 @@ function flotChartCtrl() {
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
+    .controller('UserCtrl', UserCtrl)
     .controller('flotChartCtrl', flotChartCtrl);
-
