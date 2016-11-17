@@ -30,6 +30,34 @@ function APIService($http) {
   };
 };
 
+function AlertService(){
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    showMethod: 'slideDown',
+    positionClass: 'toast-top-full-width',//'toast-top-center',
+    timeOut: 4000
+  };
+
+  return {
+    success: function () {
+      setTimeout(function(content, title) {
+        toastr.success(content, title);
+      }, 1300);
+    },
+    error: function (content, title) {
+      setTimeout(function() {
+        toastr.error(content, title);
+      }, 1300);
+    },
+    warn: function (content, title) {
+      setTimeout(function() {
+        toastr.warning(content, title);
+      }, 1300);
+    }
+  };
+}
+
 function StoreService($http) {
   return {
     store: {},
@@ -82,5 +110,6 @@ function UserService($q) {
 
 angular
   .module('inspinia')
+  .factory('alert', AlertService)
   .factory('api', APIService)
   .factory('user', UserService)

@@ -15,7 +15,7 @@ function MainCtrl($scope, $http) {
     this.userName = '飞骐';
 };
 
-function UserCtrl($scope, $state, api, user) {
+function UserCtrl($scope, $state, alert, api, user) {
   $scope.nickname = '';
   $scope.email = '';
   $scope.phone = '';
@@ -51,9 +51,13 @@ function UserCtrl($scope, $state, api, user) {
     /// for send registry's captcha
     api.preSignup($scope.email).then(function (resp) {
         // ok
-        console.log('send email ...')
+        console.log('send email ...');
     }, function (resp) {
-        console.log('try email failed', resp.data)
+        if (resp.data) {
+            alert.error(resp.data.error);
+        } else {
+            alert.error('无法连接到服务器');
+        }
     })
   };
   $scope.signup = function () {
@@ -71,7 +75,11 @@ function UserCtrl($scope, $state, api, user) {
         user.set(resp.data);
         $state.go('login');
     }, function (resp) {
-        console.log('sign failed', resp.data)
+        if (resp.data) {
+            alert.error(resp.data.error);
+        } else {
+            alert.error('无法连接到服务器');
+        }
     })
   }
 };
@@ -382,8 +390,6 @@ function flotChartCtrl() {
     this.flotMultiData = multiData;
     this.flotMultiOptions = multiOptions;
 }
-
-
 
 /**
  *
