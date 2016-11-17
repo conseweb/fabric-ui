@@ -15,7 +15,7 @@ function MainCtrl($scope, $http) {
     this.userName = '飞骐';
 };
 
-function UserCtrl($scope, api, user) {
+function UserCtrl($scope, $state, api, user) {
   $scope.nickname = '';
   $scope.email = '';
   $scope.phone = '';
@@ -36,9 +36,10 @@ function UserCtrl($scope, api, user) {
   $scope.login = function () {
     api.loginEmail($scope.email, $scope.password)
       .then(function (resp) {
+        console.log('login successful,', resp)
+        user.set(resp.data);
         console.log('login', user.get());
-        user.set(resp.body);
-        console.log('login', user.get());
+        $state.go('index.main');
     }, function (resp) {
       console.log('login failed', resp.error);
     });
@@ -46,12 +47,13 @@ function UserCtrl($scope, api, user) {
   $scope.logout = function () {
     api.logout();
   };
-  $scope.preSignup = function () {
+  $scope.sendCaptchaMail = function () {
     /// for send registry's captcha
     api.preSignup($scope.email).then(function (resp) {
         // ok
+        console.log('send email ...')
     }, function (resp) {
-        console.log('try email failed', resp.body)
+        console.log('try email failed', resp.data)
     })
   };
   $scope.signup = function () {
@@ -65,9 +67,11 @@ function UserCtrl($scope, api, user) {
         type: $scope.type
     }).then(function (resp) {
         // success  
-        user.set(resp.body)
+        console.log('registry a user; ', resp.data);
+        user.set(resp.data);
+        $state.go('login');
     }, function (resp) {
-        console.log('sign failed', resp.body)
+        console.log('sign failed', resp.data)
     })
   }
 };

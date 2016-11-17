@@ -22,10 +22,10 @@ function APIService($http) {
     },
     preSignup: function (val, typ) {
       let body = typ==='phone'?{phone: val}:{email: val};
-      return $http.post(API_ROUTERS.preSignup(typ), body);
+      return $http.post(API_ROUTER.preSignup(typ), body);
     },
     signup: function (body) {
-      return $http.post(API_ROUTERS.signup, body)
+      return $http.post(API_ROUTER.signup, body)
     }
   };
 };
@@ -51,19 +51,28 @@ function UserService($q) {
     },
 
     get: function () {
+      var deferred = $q.defer();
+
       if (!store.user.id) {
         angular.copy(store._getFromLocalStorage(), store.user);        
       }
+      deferred.resolve(store.user);
 
-      return store.user;
+      return deferred.promise;
     },
 
     set: function (u) {
+      var deferred = $q.defer();
+
       for (var k in u) {
         store.user[k] = u[k];
       }
 
       store._saveToLocalStorage(store.user);
+      
+      deferred.resolve(store.user);
+
+      return deferred.promise;
     }
   }
 
