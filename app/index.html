@@ -12,6 +12,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Page title set in pageTitle directive -->
     <title page-title></title>
@@ -21,29 +22,29 @@
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <!-- Font awesome -->
-    <link href="bower_components/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    
 
     <!-- Bootstrap -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bower_components/toastr/toastr.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font awesome -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="js/plugins/toastr/toastr.min.css" rel="stylesheet">
 
     <!-- Main Inspinia CSS files -->
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:css({.tmp,app}) styles/style.css -->
-    <link href="styles/animate.css" rel="stylesheet">
-    <link id="loadBefore" href="styles/style.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link id="loadBefore" href="css/style.css" rel="stylesheet">
     <!-- endbuild -->
-
-
 
 </head>
 
 <!-- ControllerAs syntax -->
 <!-- Main controller with serveral data used in Inspinia theme on diferent view -->
-<body ng-controller="MainCtrl as main" id="page-top">
+<body ng-controller="MainCtrl as main" class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
 
 <!-- Main view  -->
 <div ui-view></div>
@@ -52,28 +53,29 @@
 <!-- build:js(.) scripts/vendor.js -->
 
 <!-- jQuery and Bootstrap -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="js/jquery/jquery-2.1.1.min.js"></script>
+<script src="js/plugins/jquery-ui/jquery-ui.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
 
 <!-- MetsiMenu -->
-<script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
 <!-- SlimScroll -->
-<script src="bower_components/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- Peace JS -->
-<script src="bower_components/pace/pace.min.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
 
 <!-- Angular scripts-->
-<script src="bower_components/angular/angular.min.js"></script>
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="bower_components/oclazyload/dist/ocLazyLoad.min.js"></script>
-<script src="bower_components/angular-translate/angular-translate.min.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script src="bower_components/ng-idle/angular-idle.js"></script>
-<script src="bower_components/toastr/toastr.min.js"></script>
+<script src="js/angular/angular.min.js"></script>
+<script src="js/angular/angular-sanitize.js"></script>
+<script src="js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>
+<script src="js/angular-translate/angular-translate.min.js"></script>
+<script src="js/ui-router/angular-ui-router.min.js"></script>
+<script src="js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
+<script src="js/plugins/angular-idle/angular-idle.js"></script>
+<script src="js/plugins/toastr/toastr.min.js"></script>
+
 <!-- Angular Dependiences -->
 <!--                      -->
 <!--                      -->
