@@ -10,7 +10,16 @@ function APIService($http) {
     preSignup: function (typ) {
       return API_ROOT + '/signup/' +(typ==='phone'?'phone':'email');
     },
-    signup: API_ROOT + '/signup'
+    signup: API_ROOT + '/signup',
+
+    // lepuscoin
+    ldeploy: API_ROOT + "/lepuscoin/deploy",
+    lcoinbase: API_ROOT + "/lepuscoin/coinbase",
+    ltransfer: API_ROOT + "/lepuscoin/transfer",
+    lquery_addrs: function (addrs) {
+      return API_ROOT + "/lepuscoin/balance?addrs=" + addrs.join(',');
+    },
+
   };
 
   return {
@@ -26,6 +35,20 @@ function APIService($http) {
     },
     signup: function (body) {
       return $http.post(API_ROUTER.signup, body)
+    },
+
+    /// Lepuscoin
+    deployLepuscoin: function () {
+      return $http.post(API_ROUTER.ldeploy)
+    },
+    invokeCoinbase: function () {
+      return $http.post(API_ROUTER.lcoinbase)
+    },
+    invokeTransfer: function (body) {
+      return $http.post(API_ROUTER.ltransfer, body)
+    },
+    queryBalances: function (addrs) {
+      return $http.get(API_ROUTER.lquery_addrs(addrs))
     }
   };
 };

@@ -50,8 +50,7 @@ function UserCtrl($scope, $state, alert, api, user) {
   $scope.sendCaptchaMail = function () {
     /// for send registry's captcha
     api.preSignup($scope.email).then(function (resp) {
-        // ok
-        console.log('send email ...');
+       alert.success('验证码已发送，请注意查收');
     }, function (resp) {
         if (resp.data) {
             alert.error(resp.data.error);
