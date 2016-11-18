@@ -15,7 +15,7 @@ function MainCtrl($scope, $http) {
     this.userName = '飞骐';
 };
 
-function UserCtrl($scope, $state, alert, api, user) {
+function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
   $scope.nickname = '';
   $scope.email = '';
   $scope.phone = '';
@@ -38,11 +38,9 @@ function UserCtrl($scope, $state, alert, api, user) {
       .then(function (resp) {
         console.log('login successful,', resp)
         user.set(resp.data);
-        console.log('login', user.get());
+        console.log('login', user.allAddrs());
         $state.go('index.main');
-    }, function (resp) {
-      console.log('login failed', resp.error);
-    });
+    }, alert.httpFailed);
   };
   $scope.logout = function () {
     api.logout();
@@ -51,13 +49,7 @@ function UserCtrl($scope, $state, alert, api, user) {
     /// for send registry's captcha
     api.preSignup($scope.email).then(function (resp) {
        alert.success('验证码已发送，请注意查收');
-    }, function (resp) {
-        if (resp.data) {
-            alert.error(resp.data.error);
-        } else {
-            alert.error('无法连接到服务器');
-        }
-    })
+    }, alert.httpFailed)
   };
   $scope.signup = function () {
     /// for send registry's captcha
@@ -73,14 +65,43 @@ function UserCtrl($scope, $state, alert, api, user) {
         console.log('registry a user; ', resp.data);
         user.set(resp.data);
         $state.go('login');
-    }, function (resp) {
-        if (resp.data) {
-            alert.error(resp.data.error);
-        } else {
-            alert.error('无法连接到服务器');
-        }
-    })
+    }, alert.httpFailed)
   }
+};
+
+function LepuscoinCtrl($scope, alert, api, user) {
+    $scope.fromAddr = '';
+    $scope.toAmount = 0;
+    $scope.toAddr = '';
+    $scope.deploy = function () {
+        api.deployLepuscoin().then(function (resp) {
+            alert.success(resp.data.message, "部署成功");
+        }, alert.httpFailed)
+    };
+    $scope.coinbase = function () {
+        api.invokeCoinbase().then(function (resp) {
+            alert.success(resp.data.message, "执行成功");
+        }, alert.httpFailed)
+    };
+    $scope.transfer = function () {
+        let tx = {
+            in: [{
+                addr: $scope.fromAddr,
+            }],
+            out: [{
+                addr: $scope.toAddr,
+                amount: $scope.toAmount,
+            }],
+        }
+        api.invokeTransfer(tx).then(function (resp) {
+            alert.success(resp.data.message, "已提交转账请求");
+        }, alert.httpFailed)
+    };
+    $scope.balance = function () {
+        api.queryBalances([$scope.fromAddr]).then(function (resp) {
+            alert.success(resp.data.message, "查询成功");
+        }, alert.httpFailed)
+    }
 };
 
 function XCtrl($scope) {
@@ -398,5 +419,6 @@ angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('UserCtrl', UserCtrl)
+    .controller('LepuscoinCtrl', LepuscoinCtrl)
     .controller('XCtrl', XCtrl)
     .controller('flotChartCtrl', flotChartCtrl);
