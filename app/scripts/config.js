@@ -57,6 +57,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/blockchain/tx.html",
             data: { pageTitle: '转账' }
         })
+        .state('index.market', {
+            url: "/market",
+            templateUrl: "views/market.html",
+            data: { pageTitle: '交易所' }
+        })
         .state('index.block', {
             url: "/block",
             templateUrl: "views/blockchain/block.html",
