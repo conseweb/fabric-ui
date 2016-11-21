@@ -69,10 +69,29 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
   }
 };
 
-function LepuscoinCtrl($scope, alert, api, user) {
+function LepuscoinCtrl($scope, alert, api, user, contacts) {
+    $scope.ownAddrs = user.allAddrs();
     $scope.fromAddr = '';
     $scope.toAmount = 0;
     $scope.toAddr = '';
+    $scope.balance = 0;
+    $scope.txList = [];
+    $scope.email = user.get().email;
+    $scope.contacts = contacts.get();
+    $scope.init = function () {
+        if ($scope.ownAddrs.length === 0) {
+            console.log('user: ', user.get());
+            $scope.ownAddrs = user.allAddrs();
+        }
+        if ($scope.contacts.length === 0) {
+            console.log('user: ', user.get());
+            $scope.contacts = user.allAddrs();
+        }
+
+        console.log('ownAddrs: ', $scope.ownAddrs);
+        console.log('contacts:', $scope.contacts);
+        console.log('emaillll', $scope.email);
+    };
     $scope.deploy = function () {
         api.deployLepuscoin().then(function (resp) {
             alert.success(resp.data.message, "部署成功");
@@ -93,16 +112,45 @@ function LepuscoinCtrl($scope, alert, api, user) {
                 amount: $scope.toAmount,
             }],
         }
+        console.log('tx', tx);
         api.invokeTransfer(tx).then(function (resp) {
-            alert.success(resp.data.message, "已提交转账请求");
+            console.log('tx return:', resp.data.message);
+            alert.success(resp, "已提交转账请求");
         }, alert.httpFailed)
     };
-    $scope.balance = function () {
-        api.queryBalances([$scope.fromAddr]).then(function (resp) {
+    $scope.getBalance = function () {
+        $scope.init();
+        api.queryBalances($scope.ownAddrs).then(function (resp) {
+            console.log("query balance: ", resp.data);
             alert.success(resp.data.message, "查询成功");
+            $scope.txList = [];
+            $scope.balance = 0;
+            for (let i in resp.data) {
+                addr = resp.data[i];
+                console.log('account list:', addr);
+                $scope.txList.push(addr);
+                $scope.balance += addr.balance;
+            }
+            console.log("query account balance:", $scope.balance)
+        }, alert.httpFailed)
+    }
+    $scope.listTxs = function (txHash, depth) {
+        api.queryTx(txHash, depth).then(function (resp) {
+            console.log("query tx: ", resp.data);
         }, alert.httpFailed)
     }
 };
+
+function LepuscoinTxCtrl($scope, api) {
+    $scope.addrs = [];
+    $scope.tx = {};// a k-v table
+
+    $scope.getTx = function (txHash) {
+        api.queryTx(txHash, 1).then(function (resp) {
+            console.log('lasdf');
+        }, alert.httpFailed)
+    }
+}
 
 function XCtrl($scope) {
     $scope.title = 'My Contacts';
