@@ -35,7 +35,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                         {
                             serie: true,
                             name: 'angular-flot',
-                            files: [ 'bower_components/flot/jquery.flot.js', 'bower_components/flot/jquery.flot.time.js', 'bower_components/flot/jquery.flot.tooltip.min.js', 'bower_components/flot/jquery.flot.spline.js', 'bower_components/flot/jquery.flot.resize.js', 'bower_components/flot/jquery.flot.pie.js', 'bower_components/flot/curvedLines.js', 'bower_components/flot/angular-flot.js', ]
+                            files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
                         }
                     ]);
                 }
