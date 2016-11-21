@@ -77,13 +77,13 @@ function AlertService(){
       }, 1300);
     },
     error: function (content, title) {
-      setTimeout(function() {
+      setTimeout(function(content, title) {
         // toastr.error(content, title);
         console.log('alert: ', content, title);
       }, 1300);
     },
     warn: function (content, title) {
-      setTimeout(function() {
+      setTimeout(function(content, title) {
         // toastr.warning(content, title);
         console.log('alert: ', content, title);
       }, 1300);
