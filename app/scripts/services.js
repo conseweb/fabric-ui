@@ -174,3 +174,4 @@ angular
   .factory('api', APIService)
   .factory('user', UserService)
   .factory('lepuscoin', LepuscoinService)
+  

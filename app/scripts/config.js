@@ -85,12 +85,34 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('login', {
             url: "/login",
             templateUrl: "views/user/login.html",
-            data: { pageTitle: '登录' }
+            data: { pageTitle: '登录' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('register', {
             url: "/register",
             templateUrl: "views/user/register.html",
-            data: { pageTitle: '注册' }
+            data: { pageTitle: '注册' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('forgot_password', {
             url: "/forgot_password",
