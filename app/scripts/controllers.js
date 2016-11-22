@@ -37,7 +37,7 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
     api.loginEmail($scope.email, $scope.password)
       .then(function (resp) {
         console.log('login successful,', resp)
-        user.set(resp.data);
+        user.sync();
         console.log('login', user.allAddrs());
         $state.go('index.main');
     }, alert.httpFailed);

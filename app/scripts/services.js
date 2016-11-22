@@ -132,7 +132,7 @@ function UserService($q, api) {
       return store.user;
     },
 
-    sync: function (u) {
+    sync: function () {
       var deferred = $q.defer();
 
       api.getAccount().then(function (resp) {
