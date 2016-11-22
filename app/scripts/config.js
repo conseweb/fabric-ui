@@ -122,10 +122,30 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 
 }
 
+function httpProvider($q, $injector) {
+    var authRecoverer = {
+        request: function (config) {
+            return config;
+        },
+        responseError: function (resp) {
+            if (resp.status == 401){
+                window.location = '/#/login';
+            }
+            return $q.reject(resp);
+        }
+    };
+    return authRecoverer;
+};
+
 angular
     .module('inspinia')
     .config(config)
-    .run(function($rootScope, $state) {
+    .factory('httpProvider', httpProvider)
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('httpProvider');
+    }])
+    .run(function($rootScope, $state, user) {
         $rootScope.$state = $state;
+        user.get();
     });
 

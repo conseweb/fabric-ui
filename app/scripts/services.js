@@ -5,6 +5,7 @@
 function APIService($http) {
   const API_ROOT = 'http://192.168.5.105:9375/api';
   const API_ROUTER = {
+    getUser: API_ROOT + '/account',
     login: API_ROOT + '/account/login',
     logout: API_ROOT + '/account/logout',
     preSignup: function (typ) {
@@ -27,6 +28,9 @@ function APIService($http) {
   };
 
   return {
+    getAccount: function () {
+      return $http.get(API_ROUTER.getUser)
+    },
     loginEmail: function (email, password) {
       return $http.post(API_ROUTER.login, {email: email, password: password, type: 'email'})
     },
@@ -109,40 +113,34 @@ function StoreService($http) {
   }
 };
 
-function UserService($q) {
+function UserService($q, api) {
   const STORE_KEY = 'farmer-ui';
 
   let  store = {
     user: {},
 
-    _getFromLocalStorage: function () {
-      return JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
-    },
-
-    _saveToLocalStorage: function (u) {
-      localStorage.setItem(STORE_KEY, JSON.stringify(u));
-    },
-
     get: function () {
       var deferred = $q.defer();
 
       if (!store.user.id) {
-        angular.copy(store._getFromLocalStorage(), store.user);
+        api.getAccount().then(function (resp) {
+          angular.copy(resp.data, store.user);
+        })
       }
       deferred.resolve(store.user);
 
       return store.user;
     },
 
-    set: function (u) {
+    sync: function () {
       var deferred = $q.defer();
 
-      for (var k in u) {
-        store.user[k] = u[k];
-      }
+      api.getAccount().then(function (resp) {
+        angular.copy(resp.data, store.user);
+      }, function (resp) {
+        console.log('get user failed,', resp)
+      });
 
-      store._saveToLocalStorage(store.user);
-      
       deferred.resolve(store.user);
 
       return deferred.promise;
