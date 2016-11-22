@@ -9,8 +9,7 @@
         
         <div class="form-group">
             <div class="col-sm-4 col-sm-offset-2">
-                <button class="btn btn-white" ng-click="getBalance();" type="submit">Sync</button>
-                <button class="btn btn-primary" type="submit">Save changes</button>
+                <button class="btn btn-white" ng-click="getBalance();" type="submit">同步</button>
             </div>
         </div>
 
@@ -21,10 +20,10 @@
     <table datatable="" dt-options="dtOptions" class="table table-striped table-bordered table-hover dataTables-example">
         <thead>
         <tr>
-            <th>Rendering engine</th>
-            <th>Browser</th>
-            <th>Platform(s)</th>
-            <th>Engine version</th>
+            <th>账户地址</th>
+            <th>账户余额</th>
+            <th>上一笔交易哈希</th>
+            <th>交易输出索引</th>
         </tr>
         </thead>
         <tbody ng-repeat="acc in txList">
@@ -35,15 +34,14 @@
             <td>{{acc.tx_out_index}}</td>
         </tr>
         </tbody>
-<!--         <tfoot>
-        <tr>
-            <th>Rendering engine</th>
-            <th>Browser</th>
-            <th>Platform(s)</th>
-            <th>Engine version</th>
-            <th>CSS grade</th>
-        </tr>
-        </tfoot> -->
+        <tfoot>
+        <!-- <tr>
+            <th>账户地址</th>
+            <th>账户余额</th>
+            <th>上一笔交易哈希</th>
+            <th>交易输出索引</th>
+        </tr> -->
+        </tfoot>
     </table>
 
 </div>

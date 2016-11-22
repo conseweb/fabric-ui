@@ -226,24 +226,29 @@ function flotChartCtrl() {
      */
     var pieData = [
         {
-            label: "Sales 1",
+            label: "住",
             data: 21,
             color: "#d3d3d3"
         },
         {
-            label: "Sales 2",
+            label: "行",
             data: 3,
             color: "#bababa"
         },
         {
-            label: "Sales 3",
+            label: "吃",
             data: 15,
             color: "#79d2c0"
         },
         {
-            label: "Sales 4",
-            data: 52,
+            label: "穿",
+            data: 40,
             color: "#1ab394"
+        },
+        {
+            label: "投资",
+            data: 12,
+            color: "#1ab284"
         }
     ];
 
