@@ -158,6 +158,7 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
                 }
 
                 tx = {
+                    timestamp: t.timestamp,
                     time: new Date(parseInt(t.timestamp) * 1000).toLocaleString(),
                     fromAddr: fromAddr,
                     balance: balance,
@@ -169,6 +170,7 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }
         api.queryBalances($scope.ownAddrs).then(function (resp) {
             let hls = resp.data;
+            $scope.historyTxs = [];
             for (let hindex in hls) {
                 api.queryTx(hls[hindex].pre_tx_hash, 5).then(decodeTxs, alert.httpFailed)
             }        
