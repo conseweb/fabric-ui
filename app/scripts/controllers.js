@@ -253,6 +253,27 @@ function flotChartCtrl() {
     ];
 
     /**
+     * Storage usage Data
+     */
+    var storageData = [
+        {
+            label: "user",
+            data: 78,
+            color: "#79d2c0"
+        },
+        {
+            label: "sys",
+            data: 10,
+            color: "#1ab394"
+        },
+        {
+            label: "core",
+            data: 12,
+            color: "#1ab284"
+        }
+    ];
+
+    /**
      * Pie Chart Options
      */
     var pieOptions = {
@@ -457,6 +478,7 @@ function flotChartCtrl() {
     this.flotBarOptions = barOptions;
     this.flotLineOptions = lineOptions;
     this.flotPieData = pieData;
+    this.storagePieData = storageData;
     this.flotPieOptions = pieOptions;
     this.flotLineAreaData = lineAreaData;
     this.flotLineAreaOptions = lineAreaOptions;
