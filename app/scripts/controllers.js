@@ -169,7 +169,7 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
             }
         }
 
-        if (preHash != "") {
+        if (preHash) {
             $scope.historyTxs = [];
             api.queryTx(preHash, 5).then(decodeTxs, alert.httpFailed)
             return
