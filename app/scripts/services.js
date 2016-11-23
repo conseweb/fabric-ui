@@ -74,23 +74,23 @@ function AlertService(){
   // };
 
   return {
-    success: function () {
-      setTimeout(function(content, title) {
+    success: function (content, title) {
+      // setTimeout(function(content, title) {
         // toastr.success(content, title);
         console.log('alert:', content, title);
-      }, 1300);
+      // }, 1300);
     },
     error: function (content, title) {
-      setTimeout(function(content, title) {
+      // setTimeout(function(content, title) {
         // toastr.error(content, title);
         console.log('alert: ', content, title);
-      }, 1300);
+      // }, 1300);
     },
     warn: function (content, title) {
-      setTimeout(function(content, title) {
+      // setTimeout(function(content, title) {
         // toastr.warning(content, title);
         console.log('alert: ', content, title);
-      }, 1300);
+      // }, 1300);
     },
     httpFailed: function (resp) {
       let errmsg = "";
@@ -99,10 +99,10 @@ function AlertService(){
       } else {
         errmsg = "无法连接到服务器";
       }
-      setTimeout(function() {
+      // setTimeout(function() {
         // toastr.warning(errmsg, "请求错误");
         console.log('alert: ',errmsg, "请求错误")
-      }, 1300);
+      // }, 1300);
     }
   };
 }

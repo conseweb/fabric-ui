@@ -78,6 +78,7 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
     $scope.txList = [];
     $scope.email = user.get().email;
     $scope.contacts = contacts.get();
+    $scope.historyTxs = [];
     $scope.init = function () {
         if ($scope.ownAddrs.length === 0) {
             console.log('user: ', user.get());
@@ -87,10 +88,6 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
             console.log('user: ', user.get());
             $scope.contacts = user.allAddrs();
         }
-
-        console.log('ownAddrs: ', $scope.ownAddrs);
-        console.log('contacts:', $scope.contacts);
-        console.log('emaillll', $scope.email);
     };
     $scope.deploy = function () {
         api.deployLepuscoin().then(function (resp) {
@@ -132,13 +129,57 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
                 $scope.balance += addr.balance;
             }
             console.log("query account balance:", $scope.balance)
+            return resp.data;
         }, alert.httpFailed)
-    }
+    };
+    $scope.getHistoryTxs = function () {
+        /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
+        let decodeTxs = function (resp) {
+            let hisList = resp.data;
+            console.log('history list:', hisList)
+            for (let hi in hisList) {
+                let t = hisList[hi];
+                let fromAddr = '';
+                let toAddr = '';
+                let balance = 0;
+                let amount = 0;
+
+                if (t.txin) {
+                    fromAddr = t.txin[0].addr;
+                }
+
+                for (let i in t.txout) {
+                    if (t.txout[i].addr === fromAddr) {
+                        balance = t.txout[i].value
+                    } else {
+                        amount = t.txout[i].value
+                        toAddr = t.txout[i].addr
+                    }
+                }
+
+                tx = {
+                    time: new Date(parseInt(t.timestamp) * 1000).toLocaleString(),
+                    fromAddr: fromAddr,
+                    balance: balance,
+                    toAddr: toAddr,
+                    amount: amount,
+                };
+                $scope.historyTxs.push(tx);
+            }
+        }
+        api.queryBalances($scope.ownAddrs).then(function (resp) {
+            let hls = resp.data;
+            for (let hindex in hls) {
+                api.queryTx(hls[hindex].pre_tx_hash, 5).then(decodeTxs, alert.httpFailed)
+            }        
+        }, alert.httpFailed)
+    };
     $scope.listTxs = function (txHash, depth) {
         api.queryTx(txHash, depth).then(function (resp) {
             console.log("query tx: ", resp.data);
         }, alert.httpFailed)
-    }
+        return [];
+    };
 };
 
 function LepuscoinTxCtrl($scope, api) {
