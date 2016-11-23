@@ -132,7 +132,7 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
             return resp.data;
         }, alert.httpFailed)
     };
-    $scope.getHistoryTxs = function () {
+    $scope.getHistoryTxs = function (preHash) {
         /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
         let decodeTxs = function (resp) {
             let hisList = resp.data;
@@ -167,6 +167,12 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
                 };
                 $scope.historyTxs.push(tx);
             }
+        }
+
+        if (preHash != "") {
+            $scope.historyTxs = [];
+            api.queryTx(preHash, 5).then(decodeTxs, alert.httpFailed)
+            return
         }
         api.queryBalances($scope.ownAddrs).then(function (resp) {
             let hls = resp.data;

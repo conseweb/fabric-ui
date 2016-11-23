@@ -40,7 +40,7 @@
         <tr class="gradeX">
             <td>{{acc.addr}}</td>
             <td>{{acc.balance}}</td>
-            <td>{{acc.pre_tx_hash}}</td>
+            <td><a ng-click="getHistoryTxs(acc.pre_tx_hash);">{{acc.pre_tx_hash}}</a></td>
             <td>{{acc.tx_out_index}}</td>
         </tr>
         </tbody>
