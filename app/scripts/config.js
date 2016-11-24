@@ -137,9 +137,19 @@ function httpProvider($q, $injector) {
     return authRecoverer;
 };
 
+function subHashFilter () {  
+    return function(h) {
+        if (h && h.length > 7) {
+            return h.substr(0, 7);
+        }
+        return h
+    }  
+}
+
 angular
     .module('inspinia')
     .config(config)
+    .filter('subhash', subHashFilter)  
     .factory('httpProvider', httpProvider)
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('httpProvider');

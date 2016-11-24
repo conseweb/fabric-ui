@@ -64,15 +64,19 @@
             <th>地址余额</th>
             <th>收款地址</th>
             <th>收款金额</th>
+            <th>上次交易</th>
         </tr>
         </thead>
-        <tbody ng-repeat="tx in historyTxs|orderBy:tx.timestamp:'desc'">
-        <tr class="gradeX">
+        <tbody>
+        <tr class="gradeX pre_tx_hash" ng-repeat="tx in historyTxs|orderBy:tx.timestamp:'desc'" id="{{tx.hash}}">
             <td>{{tx.time}}</td>
             <td>{{tx.fromAddr}}</td>
             <td>{{tx.balance}}</td>
             <td>{{tx.toAddr}}</td>
             <td>{{tx.amount}}</td>
+            <td>
+                <a ng-repeat="fh in tx.fromHashs" ng-click="toTxHash(fh)">{{fh|subhash}}  </a>
+            </td>
         </tr>
         </tbody>
         <tfoot>
