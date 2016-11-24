@@ -69,7 +69,7 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
   }
 };
 
-function LepuscoinCtrl($scope, alert, api, user, contacts, toaster) {
+function LepuscoinCtrl($scope, alert, api, user, contacts) {
     /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
     const decodeTxs = function (resp) {
         let hisList = resp.data;
@@ -161,12 +161,6 @@ function LepuscoinCtrl($scope, alert, api, user, contacts, toaster) {
         }, alert.httpFailed)
     };
     $scope.getBalance = function () {
-        alert.success('hello', 'gogogo');
-        toaster.success({
-          title: 'content',
-          body: 'title'
-        });
-        return;
         $scope.init();
         api.queryBalances($scope.ownAddrs).then(function (resp) {
             console.log("query balance: ", resp.data);

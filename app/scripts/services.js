@@ -64,8 +64,8 @@ function APIService($http) {
   };
 };
 
-function AlertService(toaster){
-  toaster.options = {
+function AlertService(){
+  toastr.options = {
     closeButton: true,
     progressBar: true,
     showMethod: 'slideDown',
@@ -76,36 +76,22 @@ function AlertService(toaster){
   return {
     success: function (c, t) {
       var content = c, title = t;
-      console.log(content, title);
-      console.log('toaster', toaster)
       setTimeout(function() {
-        toaster.success({
-          title: content,
-          body: title,
-          showCloseButton: true,
-        });
+        toastr.success(content, title)
         console.log('alert:', content, title);
       }, 1300);
     },
     error: function (c, t) {
       var content = c, title = t;
       setTimeout(function() {
-        toaster.error({
-          title: contet,
-          body: title,
-          showCloseButton: true,
-        });
+        toastr.error(contet, title)
         console.log('alert: ', content, title);
       }, 1300);
     },
     warn: function (c, t) {
       var content = c, title = t;
       setTimeout(function() {
-        toaster.warning({
-          title: content,
-          body: title,
-          showCloseButton: true,
-        });
+        toastr.warning(content, title)
         console.log('alert: ', content, title);
       }, 1300);
     },
@@ -117,11 +103,7 @@ function AlertService(toaster){
         errmsg = "无法连接到服务器";
       }
       setTimeout(function() {
-        toaster.warning({
-          title: errmsg,
-          body: '请求错误',
-          showCloseButton: true,
-        });
+        toastr.warning(errmsg, '请求错误')
         console.log('alert: ', errmsg, "请求错误")
       }, 1300);
     }
