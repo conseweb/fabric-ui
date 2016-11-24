@@ -89,6 +89,9 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
             $scope.contacts = user.allAddrs();
         }
     };
+    $scope.setToAddr = function (addr) {
+        $scope.toAddr = addr;
+    };
     $scope.deploy = function () {
         api.deployLepuscoin().then(function (resp) {
             alert.success(resp.data.message, "部署成功");
