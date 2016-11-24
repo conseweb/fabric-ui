@@ -6,85 +6,186 @@
 
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" ng-controller="flotChartCtrl as charts">
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Bar Chart Example
-                        <small>With custom colors.</small>
-                    </h5>
-                    <div ibox-tools></div>
+<div class="wrapper wrapper-content animated fadeInRight" >
+<div class="row">
+    <div class="col-lg-3">
+        <div class="widget style1">
+            <div class="row">
+                <div class="col-xs-4 text-center">
+                    <i class="fa fa-trophy fa-5x"></i>
                 </div>
-                <div class="ibox-content">
-                    <div class="flot-chart">
-                        <div flot class="flot-chart-content" dataset="charts.flotChartData" options="charts.flotBarOptions"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Line Cahrt Example</h5>
+                <div class="col-xs-8 text-right">
+                    <span> 账户余额 </span>
 
-                    <div ibox-tools></div>
-                </div>
-                <div class="ibox-content">
-
-                    <div class="flot-chart">
-                        <div flot class="flot-chart-content" dataset="charts.flotChartData" options="charts.flotLineOptions"></div>
-                    </div>
+                    <h2 class="font-bold">$ 4,232</h2>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Pie Chart Example</h5>
-
-                    <div ibox-tools></div>
+    <div class="col-lg-3">
+        <div class="widget style1 navy-bg">
+            <div class="row">
+                <div class="col-xs-4">
+                    <i class="fa fa-cloud fa-5x"></i>
                 </div>
-                <div class="ibox-content">
-                    <div class="flot-chart">
-                        <div flot class="flot-chart-content" dataset="charts.flotPieData" options="charts.flotPieOptions"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Line Area</h5>
+                <div class="col-xs-8 text-right">
+                    <span> Today degrees </span>
 
-                    <div ibox-tools></div>
-                </div>
-                <div class="ibox-content">
-
-                    <div class="flot-chart">
-                        <div flot class="flot-chart-content" dataset="charts.flotLineAreaData" options="charts.flotLineAreaOptions"></div>
-                    </div>
+                    <h2 class="font-bold">26'C</h2>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Multiple Axes Line Chart Example </h5>
-
-                    <div ibox-tools></div>
+    <div class="col-lg-3">
+        <div class="widget style1 lazur-bg">
+            <div class="row">
+                <div class="col-xs-4">
+                    <i class="fa fa-envelope-o fa-5x"></i>
                 </div>
-                <div class="ibox-content">
-                    <div class="flot-chart">
-                        <div flot class="flot-chart-content" dataset="charts.flotMultiData" options="charts.flotMultiOptions"></div>
-                    </div>
+                <div class="col-xs-8 text-right">
+                    <span> New messages </span>
+
+                    <h2 class="font-bold">260</h2>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-lg-3">
+        <div class="widget style1 yellow-bg">
+            <div class="row">
+                <div class="col-xs-4">
+                    <i class="fa fa-music fa-5x"></i>
+                </div>
+                <div class="col-xs-8 text-right">
+                    <span> New albums </span>
+
+                    <h2 class="font-bold">12</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-controller="widgetFlotChart as chart">
+    <div class="col-lg-6">
+        <div class="widget navy-bg no-padding">
+            <div class="p-m">
+                <h1 class="m-xs">$ 1,540</h1>
+
+                <h3 class="font-bold no-margins">
+                    Annual income
+                </h3>
+                <small>Income form project Alpha.</small>
+            </div>
+            <div class="flot-chart">
+                <div flot class="flot-chart-content" dataset="chart.flotChartData1" options="chart.flotChartOptions1"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="widget lazur-bg no-padding">
+            <div class="p-m">
+                <h1 class="m-xs">$ 210,660</h1>
+
+                <h3 class="font-bold no-margins">
+                    Monthly income
+                </h3>
+                <small>Income form project Beta.</small>
+            </div>
+            <div class="flot-chart">
+                <div flot class="flot-chart-content" dataset="chart.flotChartData2" options="chart.flotChartOptions2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="widget yellw-bg no-padding">
+            <div class="p-m">
+                <h1 class="m-xs">$ 50,992</h1>
+
+                <h3 class="font-bold no-margins">
+                    Half-year revenue margin
+                </h3>
+                <small>Sales marketing.</small>
+            </div>
+            <div class="flot-chart">
+                <div flot class="flot-chart-content" dataset="chart.flotChartData3" options="chart.flotChartOptions3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-controller="flotChartCtrl as charts">
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>投资收益</h5>
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+                <div class="flot-chart">
+                    <div flot class="flot-chart-content" dataset="charts.flotChartData" options="charts.flotBarOptions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>月收入</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="flot-chart">
+                    <div flot class="flot-chart-content" dataset="charts.flotChartData" options="charts.flotLineOptions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-controller="flotChartCtrl as charts">
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>个人消费占比</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+                <div class="flot-chart">
+                    <div flot class="flot-chart-content" dataset="charts.flotPieData" options="charts.flotPieOptions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>存储使用占比</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+                <div class="flot-chart">
+                    <div flot class="flot-chart-content" dataset="charts.storagePieData" options="charts.flotPieOptions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Line Area</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="flot-chart">
+                    <div flot class="flot-chart-content" dataset="charts.flotLineAreaData" options="charts.flotLineAreaOptions"></div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
 </div>

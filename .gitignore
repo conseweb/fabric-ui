@@ -6,5 +6,6 @@ templates/HyperlegerExplorer.jst.bak
 webcontent/static/css/font-awesome/
 webcontent/static/scripts/
 
-dist
+dist/
 .tmp
+npm-debug.log

@@ -1,0 +1,90 @@
+<div ng-controller="LepuscoinCtrl">
+    <form method="get" class="form-horizontal">
+        <div class="form-group"><label class="col-lg-2 control-label">用户名</label>
+            <div class="col-lg-10"><p class="form-control-static">{{email}}</p></div>
+        </div>
+
+        <div class="form-group"><label class="col-lg-2 control-label">账户地址</label>
+            <div class="col-lg-10"><p class="form-control-static">{{ownAddrs.join(',')}}</p></div>
+        </div>
+
+        <div class="form-group"><label class="col-lg-2 control-label">账户余额</label>
+            <div class="col-lg-10"><p class="form-control-static">{{balance}}</p></div>
+        </div>
+        
+        <div class="hr-line-dashed"></div>
+        
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-2">
+                <button class="btn btn-white" ng-click="getBalance();" type="submit">同步</button>
+                <button class="btn btn-white" ng-click="getHistoryTxs();" type="submit">历史详情</button>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        
+    </form>
+
+    <div class="hr-line-dashed"></div>
+    
+    <table datatable="" dt-options="dtOptions" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>账户地址</th>
+            <th>账户余额</th>
+            <th>上一笔交易哈希</th>
+            <th>交易输出索引</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="acc in txList">
+        <tr class="gradeX">
+            <td>{{acc.addr}}</td>
+            <td>{{acc.balance}}</td>
+            <td><a ng-click="getHistoryTxs(acc.pre_tx_hash);">{{acc.pre_tx_hash}}</a></td>
+            <td>{{acc.tx_out_index}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <!-- <tr>
+            <th>账户地址</th>
+            <th>账户余额</th>
+            <th>上一笔交易哈希</th>
+            <th>交易输出索引</th>
+        </tr> -->
+        </tfoot>
+    </table>
+
+    <div class="hr-line-dashed"></div>
+    
+    <table datatable="" dt-options="dtOptions" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>时间</th>
+            <th>转出地址</th>
+            <th>地址余额</th>
+            <th>收款地址</th>
+            <th>收款金额</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="tx in historyTxs|orderBy:tx.timestamp">
+        <tr class="gradeX">
+            <td>{{tx.timestamp}}</td>
+            <td>{{tx.time}}</td>
+            <td>{{tx.fromAddr}}</td>
+            <td>{{tx.balance}}</td>
+            <td>{{tx.toAddr}}</td>
+            <td>{{tx.amount}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <!-- <tr>
+            <th>账户地址</th>
+            <th>账户余额</th>
+            <th>上一笔交易哈希</th>
+            <th>交易输出索引</th>
+        </tr> -->
+        </tfoot>
+    </table>
+
+</div>

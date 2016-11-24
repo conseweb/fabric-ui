@@ -20,7 +20,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     });
 
     $stateProvider
-
         .state('index', {
             abstract: true,
             url: "/index",
@@ -36,7 +35,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                         {
                             serie: true,
                             name: 'angular-flot',
-                            files: [ 'bower_components/flot/jquery.flot.js', 'bower_components/flot/jquery.flot.time.js', 'bower_components/flot/jquery.flot.tooltip.min.js', 'bower_components/flot/jquery.flot.spline.js', 'bower_components/flot/jquery.flot.resize.js', 'bower_components/flot/jquery.flot.pie.js', 'bower_components/flot/curvedLines.js', 'bower_components/flot/angular-flot.js', ]
+                            files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
                         }
                     ]);
                 }
@@ -45,7 +44,8 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('index.vault', {
             url: "/vault",
             templateUrl: "views/vault.html",
-            data: { pageTitle: '金库' }
+            data: { pageTitle: '金库' },
+            controller: 'XCtrl'
         })
         .state('index.query', {
             url: "/query",
@@ -56,6 +56,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/tx",
             templateUrl: "views/blockchain/tx.html",
             data: { pageTitle: '转账' }
+        })
+        .state('index.market', {
+            url: "/market",
+            templateUrl: "views/market.html",
+            data: { pageTitle: '交易所' }
         })
         .state('index.block', {
             url: "/block",
@@ -80,12 +85,34 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('login', {
             url: "/login",
             templateUrl: "views/user/login.html",
-            data: { pageTitle: '登录' }
+            data: { pageTitle: '登录' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('register', {
             url: "/register",
             templateUrl: "views/user/register.html",
-            data: { pageTitle: '注册' }
+            data: { pageTitle: '注册' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('forgot_password', {
             url: "/forgot_password",
@@ -94,9 +121,31 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
 
 }
+
+function httpProvider($q, $injector) {
+    var authRecoverer = {
+        request: function (config) {
+            return config;
+        },
+        responseError: function (resp) {
+            if (resp.status == 401){
+                window.location = '/#/login';
+            }
+            return $q.reject(resp);
+        }
+    };
+    return authRecoverer;
+};
+
 angular
     .module('inspinia')
     .config(config)
-    .run(function($rootScope, $state) {
+    .factory('httpProvider', httpProvider)
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('httpProvider');
+    }])
+    .run(function($rootScope, $state, user) {
         $rootScope.$state = $state;
+        user.get();
     });
+

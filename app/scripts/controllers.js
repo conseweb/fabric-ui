@@ -8,12 +8,205 @@
  * Contains several global data used in different view
  *
  */
-function MainCtrl() {
+/// Services' functions
 
+/// Controllers
+function MainCtrl($scope, $http) {
     this.userName = '飞骐';
-
 };
 
+function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
+  $scope.nickname = '';
+  $scope.email = '';
+  $scope.phone = '';
+  $scope.password = '';
+  $scope.captcha = '';
+  $scope.type = 'email';
+  $scope.language = '简体中文';
+  $scope.languageSupport = [
+    '简体中文',
+    '繁體中文',
+    'English',
+    '日本語',
+    'español',
+    'français',
+    'ITALIAN'
+  ];
+
+  $scope.login = function () {
+    api.loginEmail($scope.email, $scope.password)
+      .then(function (resp) {
+        console.log('login successful,', resp)
+        user.sync();
+        console.log('login', user.allAddrs());
+        $state.go('index.main');
+    }, alert.httpFailed);
+  };
+  $scope.logout = function () {
+    api.logout();
+  };
+  $scope.sendCaptchaMail = function () {
+    /// for send registry's captcha
+    api.preSignup($scope.email).then(function (resp) {
+       alert.success('验证码已发送，请注意查收');
+    }, alert.httpFailed)
+  };
+  $scope.signup = function () {
+    /// for send registry's captcha
+    api.signup({
+        email: $scope.email,
+        captcha: $scope.captcha, 
+        language: $scope.language,
+        nickname: $scope.nickname,
+        password: $scope.password,
+        type: $scope.type
+    }).then(function (resp) {
+        // success  
+        console.log('registry a user; ', resp.data);
+        user.set(resp.data);
+        $state.go('login');
+    }, alert.httpFailed)
+  }
+};
+
+function LepuscoinCtrl($scope, alert, api, user, contacts) {
+    $scope.ownAddrs = user.allAddrs();
+    $scope.fromAddr = '';
+    $scope.toAmount = 0;
+    $scope.toAddr = '';
+    $scope.balance = 0;
+    $scope.txList = [];
+    $scope.email = user.get().email;
+    $scope.contacts = contacts.get();
+    $scope.historyTxs = [];
+    $scope.init = function () {
+        if ($scope.ownAddrs.length === 0) {
+            console.log('user: ', user.get());
+            $scope.ownAddrs = user.allAddrs();
+        }
+        if ($scope.contacts.length === 0) {
+            console.log('user: ', user.get());
+            $scope.contacts = user.allAddrs();
+        }
+    };
+    $scope.setToAddr = function (addr) {
+        $scope.toAddr = addr;
+    };
+    $scope.deploy = function () {
+        api.deployLepuscoin().then(function (resp) {
+            alert.success(resp.data.message, "部署成功");
+        }, alert.httpFailed)
+    };
+    $scope.coinbase = function () {
+        api.invokeCoinbase().then(function (resp) {
+            alert.success(resp.data.message, "执行成功");
+        }, alert.httpFailed)
+    };
+    $scope.transfer = function () {
+        let tx = {
+            in: [{
+                addr: $scope.fromAddr,
+            }],
+            out: [{
+                addr: $scope.toAddr,
+                amount: $scope.toAmount,
+            }],
+        }
+        console.log('tx', tx);
+        api.invokeTransfer(tx).then(function (resp) {
+            console.log('tx return:', resp.data.message);
+            alert.success(resp, "已提交转账请求");
+        }, alert.httpFailed)
+    };
+    $scope.getBalance = function () {
+        $scope.init();
+        api.queryBalances($scope.ownAddrs).then(function (resp) {
+            console.log("query balance: ", resp.data);
+            alert.success(resp.data.message, "查询成功");
+            $scope.txList = [];
+            $scope.balance = 0;
+            for (let i in resp.data) {
+                addr = resp.data[i];
+                console.log('account list:', addr);
+                $scope.txList.push(addr);
+                $scope.balance += addr.balance;
+            }
+            console.log("query account balance:", $scope.balance)
+            return resp.data;
+        }, alert.httpFailed)
+    };
+    $scope.getHistoryTxs = function (preHash) {
+        /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
+        let decodeTxs = function (resp) {
+            let hisList = resp.data;
+            console.log('history list:', hisList)
+            for (let hi in hisList) {
+                let t = hisList[hi];
+                let fromAddr = '';
+                let toAddr = '';
+                let balance = 0;
+                let amount = 0;
+
+                if (t.txin) {
+                    fromAddr = t.txin[0].addr;
+                }
+
+                for (let i in t.txout) {
+                    if (t.txout[i].addr === fromAddr) {
+                        balance = t.txout[i].value
+                    } else {
+                        amount = t.txout[i].value
+                        toAddr = t.txout[i].addr
+                    }
+                }
+
+                tx = {
+                    timestamp: t.timestamp,
+                    time: new Date(parseInt(t.timestamp) * 1000).toLocaleString(),
+                    fromAddr: fromAddr,
+                    balance: balance,
+                    toAddr: toAddr,
+                    amount: amount,
+                };
+                $scope.historyTxs.push(tx);
+            }
+        }
+
+        if (preHash) {
+            $scope.historyTxs = [];
+            api.queryTx(preHash, 5).then(decodeTxs, alert.httpFailed)
+            return
+        }
+        api.queryBalances($scope.ownAddrs).then(function (resp) {
+            let hls = resp.data;
+            $scope.historyTxs = [];
+            for (let hindex in hls) {
+                api.queryTx(hls[hindex].pre_tx_hash, 5).then(decodeTxs, alert.httpFailed)
+            }        
+        }, alert.httpFailed)
+    };
+    $scope.listTxs = function (txHash, depth) {
+        api.queryTx(txHash, depth).then(function (resp) {
+            console.log("query tx: ", resp.data);
+        }, alert.httpFailed)
+        return [];
+    };
+};
+
+function LepuscoinTxCtrl($scope, api) {
+    $scope.addrs = [];
+    $scope.tx = {};// a k-v table
+
+    $scope.getTx = function (txHash) {
+        api.queryTx(txHash, 1).then(function (resp) {
+            console.log('lasdf');
+        }, alert.httpFailed)
+    }
+}
+
+function XCtrl($scope) {
+    $scope.title = 'My Contacts';
+}
 
 /**
  * flotChartCtrl - Controller for data for All flot chart
@@ -85,24 +278,50 @@ function flotChartCtrl() {
      */
     var pieData = [
         {
-            label: "Sales 1",
+            label: "住",
             data: 21,
             color: "#d3d3d3"
         },
         {
-            label: "Sales 2",
+            label: "行",
             data: 3,
             color: "#bababa"
         },
         {
-            label: "Sales 3",
+            label: "吃",
             data: 15,
             color: "#79d2c0"
         },
         {
-            label: "Sales 4",
-            data: 52,
+            label: "穿",
+            data: 40,
             color: "#1ab394"
+        },
+        {
+            label: "投资",
+            data: 12,
+            color: "#1ab284"
+        }
+    ];
+
+    /**
+     * Storage usage Data
+     */
+    var storageData = [
+        {
+            label: "user",
+            data: 78,
+            color: "#79d2c0"
+        },
+        {
+            label: "sys",
+            data: 10,
+            color: "#1ab394"
+        },
+        {
+            label: "core",
+            data: 12,
+            color: "#1ab284"
         }
     ];
 
@@ -311,6 +530,7 @@ function flotChartCtrl() {
     this.flotBarOptions = barOptions;
     this.flotLineOptions = lineOptions;
     this.flotPieData = pieData;
+    this.storagePieData = storageData;
     this.flotPieOptions = pieOptions;
     this.flotLineAreaData = lineAreaData;
     this.flotLineAreaOptions = lineAreaOptions;
@@ -318,7 +538,169 @@ function flotChartCtrl() {
     this.flotMultiOptions = multiOptions;
 }
 
+function toastrCtrl($scope, toaster){
 
+    $scope.demo1 = function(){
+        toaster.success({ body:"Hi, welcome to Inspinia. This is example of Toastr notification box."});
+    };
+
+    $scope.demo2 = function(){
+        toaster.warning({ title: "Title example", body:"This is example of Toastr notification box."});
+    };
+
+    $scope.demo3 = function(){
+        toaster.pop({
+            type: 'info',
+            title: 'Title example',
+            body: 'This is example of Toastr notification box.',
+            showCloseButton: true
+
+        });
+    };
+
+    $scope.demo4 = function(){
+        toaster.pop({
+            type: 'error',
+            title: 'Title example',
+            body: 'This is example of Toastr notification box.',
+            showCloseButton: true,
+            timeout: 600
+        });
+    };
+
+}
+
+/**
+ * widgetFlotChart - Data for Flot chart
+ * used in Widget view
+ */
+function widgetFlotChart() {
+
+
+    /**
+     * Flot chart data and options
+     */
+    var d1 = [[1262304000000, 6], [1264982400000, 3057], [1267401600000, 20434], [1270080000000, 31982], [1272672000000, 26602], [1275350400000, 27826], [1277942400000, 24302], [1280620800000, 24237], [1283299200000, 21004], [1285891200000, 12144], [1288569600000, 10577], [1291161600000, 10295]];
+    var d2 = [[1262304000000, 5], [1264982400000, 200], [1267401600000, 1605], [1270080000000, 6129], [1272672000000, 11643], [1275350400000, 19055], [1277942400000, 30062], [1280620800000, 39197], [1283299200000, 37000], [1285891200000, 27000], [1288569600000, 21000], [1291161600000, 17000]];
+
+    var flotChartData1 = [
+        { label: "Data 1", data: d1, color: '#17a084'},
+        { label: "Data 2", data: d2, color: '#127e68' }
+    ];
+
+    var flotChartOptions1 = {
+        xaxis: {
+            tickDecimals: 0
+        },
+        series: {
+            lines: {
+                show: true,
+                fill: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 1
+                    }, {
+                        opacity: 1
+                    }]
+                }
+            },
+            points: {
+                width: 0.1,
+                show: false
+            }
+        },
+        grid: {
+            show: false,
+            borderWidth: 0
+        },
+        legend: {
+            show: false
+        }
+    };
+
+    var flotChartData2 = [
+        { label: "Data 1", data: d1, color: '#19a0a1'}
+    ];
+
+    var flotChartOptions2 = {
+        xaxis: {
+            tickDecimals: 0
+        },
+        series: {
+            lines: {
+                show: true,
+                fill: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 1
+                    }, {
+                        opacity: 1
+                    }]
+                }
+            },
+            points: {
+                width: 0.1,
+                show: false
+            }
+        },
+        grid: {
+            show: false,
+            borderWidth: 0
+        },
+        legend: {
+            show: false
+        }
+    };
+
+    var flotChartData3 = [
+        { label: "Data 1", data: d1, color: '#fbbe7b'},
+        { label: "Data 2", data: d2, color: '#f8ac59' }
+    ];
+
+    var flotChartOptions3 = {
+        xaxis: {
+            tickDecimals: 0
+        },
+        series: {
+            lines: {
+                show: true,
+                fill: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 1
+                    }, {
+                        opacity: 1
+                    }]
+                }
+            },
+            points: {
+                width: 0.1,
+                show: false
+            }
+        },
+        grid: {
+            show: false,
+            borderWidth: 0
+        },
+        legend: {
+            show: false
+        }
+    };
+
+    /**
+     * Definition of variables
+     * Flot chart
+     */
+
+    this.flotChartData1 = flotChartData1;
+    this.flotChartOptions1 = flotChartOptions1;
+    this.flotChartData2 = flotChartData2;
+    this.flotChartOptions2 = flotChartOptions2;
+    this.flotChartData3 = flotChartData3;
+    this.flotChartOptions3 = flotChartOptions3;
+
+
+}
 
 /**
  *
@@ -327,5 +709,9 @@ function flotChartCtrl() {
 angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
+    .controller('UserCtrl', UserCtrl)
+    .controller('LepuscoinCtrl', LepuscoinCtrl)
+    .controller('XCtrl', XCtrl)
+    .controller('toastrCtrl', toastrCtrl)
+    .controller('widgetFlotChart', widgetFlotChart)
     .controller('flotChartCtrl', flotChartCtrl);
-
