@@ -75,25 +75,16 @@ function AlertService(){
 
   return {
     success: function (c, t) {
-      var content = c, title = t;
-      setTimeout(function() {
-        toastr.success(content, title)
-        console.log('alert:', content, title);
-      }, 1300);
+      toastr.success(c, t);
+      console.log('success:', c, t);
     },
     error: function (c, t) {
-      var content = c, title = t;
-      setTimeout(function() {
-        toastr.error(contet, title)
-        console.log('alert: ', content, title);
-      }, 1300);
+      toastr.error(contet, title)
+      console.log('error: ', c, t);
     },
     warn: function (c, t) {
-      var content = c, title = t;
-      setTimeout(function() {
-        toastr.warning(content, title)
-        console.log('alert: ', content, title);
-      }, 1300);
+      toastr.warning(c, t)
+      console.log('warning: ', c, t);
     },
     httpFailed: function (resp) {
       let errmsg = "";
@@ -102,10 +93,8 @@ function AlertService(){
       } else {
         errmsg = "无法连接到服务器";
       }
-      setTimeout(function() {
-        toastr.warning(errmsg, '请求错误')
-        console.log('alert: ', errmsg, "请求错误")
-      }, 1300);
+      toastr.warning(errmsg, '请求错误');
+      console.log('alert: ', errmsg, "请求错误")
     }
   };
 }
