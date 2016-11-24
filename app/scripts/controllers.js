@@ -69,7 +69,7 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
   }
 };
 
-function LepuscoinCtrl($scope, alert, api, user, contacts) {
+function LepuscoinCtrl($scope, alert, api, user, contacts, toaster) {
     /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
     const decodeTxs = function (resp) {
         let hisList = resp.data;
@@ -161,6 +161,12 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }, alert.httpFailed)
     };
     $scope.getBalance = function () {
+        alert.success('hello', 'gogogo');
+        toaster.success({
+          title: 'content',
+          body: 'title'
+        });
+        return;
         $scope.init();
         api.queryBalances($scope.ownAddrs).then(function (resp) {
             console.log("query balance: ", resp.data);
@@ -174,7 +180,6 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
                 $scope.balance += addr.balance;
             }
             console.log("query account balance:", $scope.balance)
-            return resp.data;
         }, alert.httpFailed)
     };
     $scope.getHistoryTxs = function (preHash) {
@@ -557,38 +562,6 @@ function flotChartCtrl() {
     this.flotMultiOptions = multiOptions;
 }
 
-function toastrCtrl($scope, toaster){
-
-    $scope.demo1 = function(){
-        toaster.success({ body:"Hi, welcome to Inspinia. This is example of Toastr notification box."});
-    };
-
-    $scope.demo2 = function(){
-        toaster.warning({ title: "Title example", body:"This is example of Toastr notification box."});
-    };
-
-    $scope.demo3 = function(){
-        toaster.pop({
-            type: 'info',
-            title: 'Title example',
-            body: 'This is example of Toastr notification box.',
-            showCloseButton: true
-
-        });
-    };
-
-    $scope.demo4 = function(){
-        toaster.pop({
-            type: 'error',
-            title: 'Title example',
-            body: 'This is example of Toastr notification box.',
-            showCloseButton: true,
-            timeout: 600
-        });
-    };
-
-}
-
 /**
  * widgetFlotChart - Data for Flot chart
  * used in Widget view
@@ -731,6 +704,5 @@ angular
     .controller('UserCtrl', UserCtrl)
     .controller('LepuscoinCtrl', LepuscoinCtrl)
     .controller('XCtrl', XCtrl)
-    .controller('toastrCtrl', toastrCtrl)
     .controller('widgetFlotChart', widgetFlotChart)
     .controller('flotChartCtrl', flotChartCtrl);

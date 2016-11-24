@@ -36,6 +36,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                             serie: true,
                             name: 'angular-flot',
                             files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
+                        },
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
                         }
                     ]);
                 }
@@ -45,42 +50,130 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/vault",
             templateUrl: "views/vault.html",
             data: { pageTitle: '金库' },
-            controller: 'XCtrl'
+            controller: 'XCtrl',
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.query', {
             url: "/query",
             templateUrl: "views/blockchain/query.html",
-            data: { pageTitle: '查账' }
+            data: { pageTitle: '查账' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.tx', {
             url: "/tx",
             templateUrl: "views/blockchain/tx.html",
-            data: { pageTitle: '转账' }
+            data: { pageTitle: '转账' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.market', {
             url: "/market",
             templateUrl: "views/market.html",
-            data: { pageTitle: '交易所' }
+            data: { pageTitle: '交易所' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.block', {
             url: "/block",
             templateUrl: "views/blockchain/block.html",
-            data: { pageTitle: '账本' }
+            data: { pageTitle: '账本' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.appstore', {
             url: "/appstore",
             templateUrl: "views/appstore.html",
-            data: { pageTitle: '应用商店' }
+            data: { pageTitle: '应用商店' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.net', {
             url: "/net",
             templateUrl: "views/blockchain/net.html",
-            data: { pageTitle: '网络' }
+            data: { pageTitle: '网络' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('index.config', {
             url: "/config",
             templateUrl: "views/config.html",
-            data: { pageTitle: '设置' }
+            data: { pageTitle: '设置' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
         .state('login', {
             url: "/login",
@@ -117,7 +210,18 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('forgot_password', {
             url: "/forgot_password",
             templateUrl: "views/user/forgot_password.html",
-            data: { pageTitle: '遗忘密码' }
+            data: { pageTitle: '遗忘密码' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            insertBefore: '#loadBefore',
+                            name: 'toaster',
+                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
+                        }
+                    ]);
+                }
+            }
         })
 
 }

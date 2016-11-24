@@ -64,33 +64,50 @@ function APIService($http) {
   };
 };
 
-function AlertService(){
-  // toastr.options = {
-  //   closeButton: true,
-  //   progressBar: true,
-  //   showMethod: 'slideDown',
-  //   positionClass: 'toast-top-full-width',//'toast-top-center',
-  //   timeOut: 4000
-  // };
+function AlertService(toaster){
+  toaster.options = {
+    closeButton: true,
+    progressBar: true,
+    showMethod: 'slideDown',
+    positionClass: 'toast-top-full-width',//'toast-top-center',
+    timeOut: 4000
+  };
 
   return {
-    success: function (content, title) {
-      // setTimeout(function(content, title) {
-        // toastr.success(content, title);
+    success: function (c, t) {
+      var content = c, title = t;
+      console.log(content, title);
+      console.log('toaster', toaster)
+      setTimeout(function() {
+        toaster.success({
+          title: content,
+          body: title,
+          showCloseButton: true,
+        });
         console.log('alert:', content, title);
-      // }, 1300);
+      }, 1300);
     },
-    error: function (content, title) {
-      // setTimeout(function(content, title) {
-        // toastr.error(content, title);
+    error: function (c, t) {
+      var content = c, title = t;
+      setTimeout(function() {
+        toaster.error({
+          title: contet,
+          body: title,
+          showCloseButton: true,
+        });
         console.log('alert: ', content, title);
-      // }, 1300);
+      }, 1300);
     },
-    warn: function (content, title) {
-      // setTimeout(function(content, title) {
-        // toastr.warning(content, title);
+    warn: function (c, t) {
+      var content = c, title = t;
+      setTimeout(function() {
+        toaster.warning({
+          title: content,
+          body: title,
+          showCloseButton: true,
+        });
         console.log('alert: ', content, title);
-      // }, 1300);
+      }, 1300);
     },
     httpFailed: function (resp) {
       let errmsg = "";
@@ -99,10 +116,14 @@ function AlertService(){
       } else {
         errmsg = "无法连接到服务器";
       }
-      // setTimeout(function() {
-        // toastr.warning(errmsg, "请求错误");
-        console.log('alert: ',errmsg, "请求错误")
-      // }, 1300);
+      setTimeout(function() {
+        toaster.warning({
+          title: errmsg,
+          body: '请求错误',
+          showCloseButton: true,
+        });
+        console.log('alert: ', errmsg, "请求错误")
+      }, 1300);
     }
   };
 }
