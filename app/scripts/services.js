@@ -13,6 +13,12 @@ function APIService($http) {
     },
     signup: API_ROOT + '/signup',
 
+    // contacts
+    contacts: API_ROOT + '/account/contacts',
+    contactOne: function (id) {
+      return API_ROOT + '/account/contacts/'+id
+    },
+
     // lepuscoin
     ldeploy: API_ROOT + "/lepuscoin/deploy",
     lcoinbase: API_ROOT + "/lepuscoin/coinbase",
@@ -43,6 +49,20 @@ function APIService($http) {
     },
     signup: function (body) {
       return $http.post(API_ROUTER.signup, body)
+    },
+
+    /// contacts.
+    addContact: function (body) {
+      return $http.post(API_ROUTER.contacts, body)
+    },
+    listContacts: function () {
+      return $http.get(API_ROUTER.contacts)
+    },
+    updateContact: function (id, body) {
+      return $http.patch(API_ROUTER.contactOne(id), body)
+    },
+    removeContact: function (id) {
+      return $http.delete(API_ROUTER.contactOne(id))
     },
 
     /// Lepuscoin
@@ -160,35 +180,19 @@ function UserService($q, api) {
   return store;
 }
 
-function ContactService ($q) {
+function ContactService ($q, api, alert) {
   const STORE_KEY = 'farmer-ui-contacts';
 
   let store = {
-    person: [
-      {
-        name: 'asdf',
-        desc: 'a test user',
-        addr: 'lalalala'
-      }, {
-        name: 'fdsa',
-        desc: 'another test user',
-        addr: 'gagagaga'
-      }
-    ],
-
-    _getFromLocalStorage: function () {
-      return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
-    },
-
-    _saveToLocalStorage: function (u) {
-      localStorage.setItem(STORE_KEY, JSON.stringify(u));
-    },
+    person: [],
 
     get: function () {
       var deferred = $q.defer();
 
       if (store.person.length === 0) {
-        angular.copy(store._getFromLocalStorage(), store.person);
+        api.listContacts().then(function (resp) {
+          store.person = resp.data
+        }, alert.httpFailed)
       }
 
       deferred.resolve(store.person);
@@ -196,16 +200,27 @@ function ContactService ($q) {
       return store.person;
     },
 
-    set: function (u) {
+    add: function (u) {
       var deferred = $q.defer();
 
       store.person.push(u);
 
-      store._saveToLocalStorage(store.person);
-      
       deferred.resolve(store.person);
 
       return deferred.promise;
+    },
+
+    sync: function () {
+      var deferred = $q.defer();
+
+      api.listContacts().then(function (resp) {
+        store.person = resp.data
+        alert.success(resp.data, resp.status)
+      }, alert.httpFailed)
+      
+      deferred.resolve(store.person);
+
+      return deferred.promise; 
     }
   }
 

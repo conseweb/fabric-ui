@@ -119,16 +119,17 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
     $scope.balance = 0;
     $scope.txList = [];
     $scope.email = user.get().email;
-    $scope.contacts = contacts.get();
     $scope.historyTxs = [];
+    $scope.contacts = function () {
+        if (contacts) {
+            return contacts.get()
+        }
+        return [];        
+    };
     $scope.init = function () {
         if ($scope.ownAddrs.length === 0) {
             console.log('user: ', user.get());
             $scope.ownAddrs = user.allAddrs();
-        }
-        if ($scope.contacts.length === 0) {
-            console.log('user: ', user.get());
-            $scope.contacts = user.allAddrs();
         }
     };
     $scope.setToAddr = function (addr) {
@@ -210,6 +211,30 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         return;
     };
 };
+
+function ContactsCtrl($scope, alert, api, contacts) {
+    $scope.name = '';
+    $scope.email = '';
+    $scope.phone = '';
+    $scope.addr = '';
+    $scope.tag = '';
+    $scope.description = '';
+    $scope.addContact = function () {
+        let body = {
+            name: $scope.name,
+            email: $scope.email,
+            phone: $scope.phone,
+            addr: $scope.addr,
+            tag: $scope.tag,
+            description: $scope.description,
+        };
+        api.addContact(body).then(function (resp) {
+            alert.success(resp.data, resp.status);
+            contacts.add(resp.data);
+        }, alert.httpFailed)
+        return false;
+    };
+}
 
 function LepuscoinTxCtrl($scope, api) {
     $scope.addrs = [];
@@ -696,6 +721,7 @@ angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('UserCtrl', UserCtrl)
+    .controller('ContactsCtrl', ContactsCtrl)
     .controller('LepuscoinCtrl', LepuscoinCtrl)
     .controller('XCtrl', XCtrl)
     .controller('widgetFlotChart', widgetFlotChart)
