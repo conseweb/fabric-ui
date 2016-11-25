@@ -36,7 +36,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                             serie: true,
                             name: 'angular-flot',
                             files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
-                        }
+                        },
                     ]);
                 }
             }
@@ -85,34 +85,12 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('login', {
             url: "/login",
             templateUrl: "views/user/login.html",
-            data: { pageTitle: '登录' },
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            insertBefore: '#loadBefore',
-                            name: 'toaster',
-                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
-                        }
-                    ]);
-                }
-            }
+            data: { pageTitle: '登录' }
         })
         .state('register', {
             url: "/register",
             templateUrl: "views/user/register.html",
-            data: { pageTitle: '注册' },
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            insertBefore: '#loadBefore',
-                            name: 'toaster',
-                            files: ['js/plugins/toastr/toastr.min.js', 'css/plugins/toastr/toastr.min.css']
-                        }
-                    ]);
-                }
-            }
+            data: { pageTitle: '注册' }
         })
         .state('forgot_password', {
             url: "/forgot_password",
@@ -137,9 +115,19 @@ function httpProvider($q, $injector) {
     return authRecoverer;
 };
 
+function subHashFilter () {  
+    return function(h) {
+        if (h && h.length > 7) {
+            return h.substr(0, 7);
+        }
+        return h
+    }  
+}
+
 angular
     .module('inspinia')
     .config(config)
+    .filter('subhash', subHashFilter)  
     .factory('httpProvider', httpProvider)
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('httpProvider');

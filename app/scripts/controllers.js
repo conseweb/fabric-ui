@@ -70,6 +70,48 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
 };
 
 function LepuscoinCtrl($scope, alert, api, user, contacts) {
+    /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
+    const decodeTxs = function (resp) {
+        let hisList = resp.data;
+        console.log('history list:', hisList)
+        for (let hi in hisList) {
+            let t = hisList[hi];
+            let fromAddr = '';
+            let toAddr = '';
+            let balance = 0;
+            let amount = 0;
+            let inHashs = [];
+
+            if (t.txin) {
+                fromAddr = t.txin[0].addr;
+            }
+            for (let i in t.txin) {
+                inHashs.push(t.txin[i].sourceHash);
+            }
+
+            for (let i in t.txout) {
+                if (t.txout[i].addr === fromAddr) {
+                    balance = t.txout[i].value
+                } else {
+                    amount = t.txout[i].value
+                    toAddr = t.txout[i].addr
+                }
+            }
+
+            tx = {
+                timestamp: t.timestamp,
+                hash: t.hash,
+                time: new Date(parseInt(t.timestamp) * 1000).toLocaleString(),
+                fromAddr: fromAddr,
+                fromHashs: inHashs,
+                balance: balance,
+                toAddr: toAddr,
+                amount: amount,
+            };
+            $scope.historyTxs.push(tx);
+        }
+    }
+
     $scope.ownAddrs = user.allAddrs();
     $scope.fromAddr = '';
     $scope.toAmount = 0;
@@ -77,16 +119,17 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
     $scope.balance = 0;
     $scope.txList = [];
     $scope.email = user.get().email;
-    $scope.contacts = contacts.get();
     $scope.historyTxs = [];
+    $scope.contacts = function () {
+        if (contacts) {
+            return contacts.get()
+        }
+        return [];        
+    };
     $scope.init = function () {
         if ($scope.ownAddrs.length === 0) {
             console.log('user: ', user.get());
             $scope.ownAddrs = user.allAddrs();
-        }
-        if ($scope.contacts.length === 0) {
-            console.log('user: ', user.get());
-            $scope.contacts = user.allAddrs();
         }
     };
     $scope.setToAddr = function (addr) {
@@ -132,46 +175,9 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
                 $scope.balance += addr.balance;
             }
             console.log("query account balance:", $scope.balance)
-            return resp.data;
         }, alert.httpFailed)
     };
     $scope.getHistoryTxs = function (preHash) {
-        /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
-        let decodeTxs = function (resp) {
-            let hisList = resp.data;
-            console.log('history list:', hisList)
-            for (let hi in hisList) {
-                let t = hisList[hi];
-                let fromAddr = '';
-                let toAddr = '';
-                let balance = 0;
-                let amount = 0;
-
-                if (t.txin) {
-                    fromAddr = t.txin[0].addr;
-                }
-
-                for (let i in t.txout) {
-                    if (t.txout[i].addr === fromAddr) {
-                        balance = t.txout[i].value
-                    } else {
-                        amount = t.txout[i].value
-                        toAddr = t.txout[i].addr
-                    }
-                }
-
-                tx = {
-                    timestamp: t.timestamp,
-                    time: new Date(parseInt(t.timestamp) * 1000).toLocaleString(),
-                    fromAddr: fromAddr,
-                    balance: balance,
-                    toAddr: toAddr,
-                    amount: amount,
-                };
-                $scope.historyTxs.push(tx);
-            }
-        }
-
         if (preHash) {
             $scope.historyTxs = [];
             api.queryTx(preHash, 5).then(decodeTxs, alert.httpFailed)
@@ -191,7 +197,44 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }, alert.httpFailed)
         return [];
     };
+    $scope.toTxHash = function (h) {
+        console.log('hash: ', h);
+        var el = angular.element('#'+h);
+        if (el.hasClass('pre_tx_hash')) {
+            el.toggleClass('success');
+            setTimeout(function() {
+                el.toggleClass('success');
+            }, 1300);
+        } else {
+            api.queryTx(h, 1).then(decodeTxs, alert.httpFailed);
+        }
+        return;
+    };
 };
+
+function ContactsCtrl($scope, alert, api, contacts) {
+    $scope.name = '';
+    $scope.email = '';
+    $scope.phone = '';
+    $scope.addr = '';
+    $scope.tag = '';
+    $scope.description = '';
+    $scope.addContact = function () {
+        let body = {
+            name: $scope.name,
+            email: $scope.email,
+            phone: $scope.phone,
+            addr: $scope.addr,
+            tag: $scope.tag,
+            description: $scope.description,
+        };
+        api.addContact(body).then(function (resp) {
+            alert.success(resp.data, resp.status);
+            contacts.add(resp.data);
+        }, alert.httpFailed)
+        return false;
+    };
+}
 
 function LepuscoinTxCtrl($scope, api) {
     $scope.addrs = [];
@@ -538,38 +581,6 @@ function flotChartCtrl() {
     this.flotMultiOptions = multiOptions;
 }
 
-function toastrCtrl($scope, toaster){
-
-    $scope.demo1 = function(){
-        toaster.success({ body:"Hi, welcome to Inspinia. This is example of Toastr notification box."});
-    };
-
-    $scope.demo2 = function(){
-        toaster.warning({ title: "Title example", body:"This is example of Toastr notification box."});
-    };
-
-    $scope.demo3 = function(){
-        toaster.pop({
-            type: 'info',
-            title: 'Title example',
-            body: 'This is example of Toastr notification box.',
-            showCloseButton: true
-
-        });
-    };
-
-    $scope.demo4 = function(){
-        toaster.pop({
-            type: 'error',
-            title: 'Title example',
-            body: 'This is example of Toastr notification box.',
-            showCloseButton: true,
-            timeout: 600
-        });
-    };
-
-}
-
 /**
  * widgetFlotChart - Data for Flot chart
  * used in Widget view
@@ -710,8 +721,8 @@ angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('UserCtrl', UserCtrl)
+    .controller('ContactsCtrl', ContactsCtrl)
     .controller('LepuscoinCtrl', LepuscoinCtrl)
     .controller('XCtrl', XCtrl)
-    .controller('toastrCtrl', toastrCtrl)
     .controller('widgetFlotChart', widgetFlotChart)
     .controller('flotChartCtrl', flotChartCtrl);

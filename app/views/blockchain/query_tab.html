@@ -40,18 +40,10 @@
         <tr class="gradeX">
             <td>{{acc.addr}}</td>
             <td>{{acc.balance}}</td>
-            <td><a ng-click="getHistoryTxs(acc.pre_tx_hash);">{{acc.pre_tx_hash}}</a></td>
+            <td><a ng-click="toTxHash(acc.pre_tx_hash);">{{acc.pre_tx_hash}}</a></td>
             <td>{{acc.tx_out_index}}</td>
         </tr>
         </tbody>
-        <tfoot>
-        <!-- <tr>
-            <th>账户地址</th>
-            <th>账户余额</th>
-            <th>上一笔交易哈希</th>
-            <th>交易输出索引</th>
-        </tr> -->
-        </tfoot>
     </table>
 
     <div class="hr-line-dashed"></div>
@@ -64,25 +56,21 @@
             <th>地址余额</th>
             <th>收款地址</th>
             <th>收款金额</th>
+            <th>上次交易</th>
         </tr>
         </thead>
-        <tbody ng-repeat="tx in historyTxs|orderBy:tx.timestamp:'desc'">
-        <tr class="gradeX">
+        <tbody>
+        <tr class="gradeX pre_tx_hash" ng-repeat="tx in historyTxs|orderBy:tx.timestamp:'desc'" id="{{tx.hash}}">
             <td>{{tx.time}}</td>
             <td>{{tx.fromAddr}}</td>
             <td>{{tx.balance}}</td>
             <td>{{tx.toAddr}}</td>
             <td>{{tx.amount}}</td>
+            <td>
+                <a ng-repeat="fh in tx.fromHashs" ng-click="toTxHash(fh)">{{fh|subhash}}  </a>
+            </td>
         </tr>
         </tbody>
-        <tfoot>
-        <!-- <tr>
-            <th>账户地址</th>
-            <th>账户余额</th>
-            <th>上一笔交易哈希</th>
-            <th>交易输出索引</th>
-        </tr> -->
-        </tfoot>
     </table>
 
 </div>
