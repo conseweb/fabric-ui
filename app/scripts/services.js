@@ -89,7 +89,7 @@ function AlertService(){
     closeButton: true,
     progressBar: true,
     showMethod: 'slideDown',
-    positionClass: 'toast-top-full-width',//'toast-top-center',
+    positionClass: 'toast-top-center',
     timeOut: 4000
   };
 
