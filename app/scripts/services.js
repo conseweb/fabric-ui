@@ -185,11 +185,13 @@ function ContactService ($q, api, alert) {
 
   let store = {
     person: [],
+    inited: false,
 
     get: function () {
       var deferred = $q.defer();
 
-      if (store.person.length === 0) {
+      if (!store.inited) {
+        store.inited = true;
         api.listContacts().then(function (resp) {
           store.person = resp.data
         }, alert.httpFailed)
