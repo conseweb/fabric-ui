@@ -112,13 +112,13 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }
     }
 
-    $scope.ownAddrs = [];
+    $scope.ownAddrs = user.allAddrs();
     $scope.fromAddr = '';
     $scope.toAmount = 0;
     $scope.toAddr = '';
     $scope.balance = 0;
     $scope.txList = [];
-    $scope.email = '';
+    $scope.email = user.get().email;
     $scope.historyTxs = [];
     $scope.contacts = function () {
         if (contacts) {
@@ -144,10 +144,18 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }, alert.httpFailed)
     };
     $scope.coinbase = function () {
-        api.invokeCoinbase().then(function (resp) {
-            alert.success(resp.data.message, "执行成功");
-        }, alert.httpFailed)
+        if ($scope.ownAddrs && $scope.ownAddrs.length > 0) {
+            api.invokeCoinbase($scope.ownAddrs[0]).then(function (resp) {
+                alert.success(resp.data.message, "申请成功");
+                setTimeout(function () {
+                    $scope.getBalance();
+                }, 1000)
+            }, alert.httpFailed)
+        }
     };
+    $scope.checkIn = function () {
+        $scope.coinbase()
+    }
     $scope.transfer = function () {
         let tx = {
             in: [{
@@ -162,6 +170,9 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         api.invokeTransfer(tx).then(function (resp) {
             console.log('tx return:', resp.data.message);
             alert.success(resp, "已提交转账请求");
+            setTimeout(function () {
+                $scope.getBalance();
+            }, 2000)
         }, alert.httpFailed)
     };
     $scope.getBalance = function () {

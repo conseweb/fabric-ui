@@ -69,8 +69,8 @@ function APIService($http) {
     deployLepuscoin: function () {
       return $http.post(API_ROUTER.ldeploy);
     },
-    invokeCoinbase: function () {
-      return $http.post(API_ROUTER.lcoinbase);
+    invokeCoinbase: function (addr) {
+      return $http.post(API_ROUTER.lcoinbase, {addrs: [addr]});
     },
     invokeTransfer: function (body) {
       return $http.post(API_ROUTER.ltransfer, body);
