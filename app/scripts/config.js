@@ -41,6 +41,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
+        .state('index.upload', {
+            url: "/upload",
+            templateUrl: "views/poe/upload.html",
+            data: { pageTitle: '存证' }
+        })
         .state('index.config', {
             url: "/config",
             templateUrl: "views/config.html",
@@ -64,9 +69,6 @@ function httpProvider($q, $injector) {
             return config;
         },
         responseError: function (resp) {
-            // if (resp.status == 401){
-            //     window.location = '/#/login';
-            // }
             return $q.reject(resp);
         }
     };

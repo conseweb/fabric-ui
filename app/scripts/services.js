@@ -3,15 +3,37 @@
 /// api
 /// 
 function APIService($http) {
-  const API_ROOT = 'http://192.168.5.105:9375/api';
+  const API_ROOT = 'http://192.168.5.105:9694/api/v1';
   const API_ROUTER = {
-    getUser: API_ROOT + '/account',
+    docs: API_ROOT + '/documents',
+    result: API_ROOT + '/documents/result',
+    status: function (id) {
+      if (id) {
+        return API_ROOT + '/documents/' + id + "/status"
+      }
+    }
   };
 
   return {
-    getAccount: function () {
-      return $http.get(API_ROUTER.getUser)
+    getDoc: function (doc) {
+      return $http.post(API_ROUTER.result, {rawDocument: doc})
     },
+    getDocList: function (count, type) {
+      if (!count || count < 0) {
+        count = 10
+      }
+      if (!type || type != 'register') {
+        type = 'proof'
+      }
+      return $http.get(API_ROUTER.docs + '?count=' + count + '&type=' + type)
+    },
+    newDoc: function (doc, cost) {
+      return $http.post(API_ROUTER.docs, {proofWaitPeriod: cost,rawDocument: doc})
+    },
+    checkNew: function (id) {
+      return $http.get(API_ROUTER.status(id))
+    }
+
   };
 };
 

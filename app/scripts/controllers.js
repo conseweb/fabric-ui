@@ -481,6 +481,68 @@ function widgetFlotChart() {
 
 }
 
+function POECtrl($scope, alert, api) {
+    $scope.hashStr = '';
+    $scope.cost = '1m';
+    $scope.costMap = {
+        '1440 c': '1m',
+        '144 c': '10m',
+        '48 c': '30m',
+        '24 c': '1h',
+        '8 c': '3h',
+        '2 c': '12h',
+        '1 c': '24h'
+    };
+    $scope.costDesc = '期待文件证明完成所需代价,即完成证明所要的时间,代价值越高，等待时间越短,相对应的API请求次数越少,或者请求代价越高。';
+    $scope.file = {}
+    $scope.upload = function () {
+        if ($scope.hashStr === '') {
+            alert.warn('hash 不能为空');
+            return ;
+        }
+        api.newDoc($scope.hashStr, $scope.cost).then(function (resp) {
+            alert.success(resp.data.documentId)
+        }, alert.httpFailed);
+    }
+    $scope.test = function () {
+        console.log('cost', $scope.cost);
+        console.log('hast', $scope.hashStr);
+        console.log('file', $scope.file);
+    };
+    $scope.getHash = function (input) {
+        console.log('upload')
+        console.log('file', input)
+        //支持chrome IE10
+        if (window.FileReader) {
+            var file = input.files[0];
+            filename = file.name.split(".")[0];
+            var reader = new FileReader();
+            reader.onload = function() {
+                console.log(this.result)
+                alert.warn(this.result);
+            }
+            reader.readAsText(file);
+        } 
+        //支持IE 7 8 9 10
+        else if (typeof window.ActiveXObject != 'undefined'){
+            var xmlDoc; 
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
+            xmlDoc.async = false; 
+            xmlDoc.load(input.value); 
+            alert.warn(xmlDoc.xml); 
+        } 
+        //支持FF
+        else if (document.implementation && document.implementation.createDocument) { 
+            var xmlDoc; 
+            xmlDoc = document.implementation.createDocument("", "", null); 
+            xmlDoc.async = false; 
+            xmlDoc.load(input.value); 
+            alert.warn(xmlDoc.xml);
+        } else { 
+            alert.error('error');
+        }
+    }
+}
 /**
  *
  * Pass all functions into module
@@ -489,5 +551,6 @@ angular
     .module('inspinia')
     .controller('MainCtrl', MainCtrl)
     .controller('XCtrl', XCtrl)
+    .controller('POECtrl', POECtrl)
     .controller('widgetFlotChart', widgetFlotChart)
     .controller('flotChartCtrl', flotChartCtrl);

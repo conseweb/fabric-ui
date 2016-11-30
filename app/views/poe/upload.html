@@ -1,0 +1,70 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2>存在性证明</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">信链</a>
+            </li>
+            <li class="active">
+                <strong>应用之家</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="form-horizontal" ng-controller="POECtrl">
+    <div class="ibox float-e-margins form-group">
+        <div class="ibox-content">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">文件哈希</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" ng-model="hashStr">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">转出金额</label>
+                <div class="col-sm-10">
+                    <select class="select2" ng-model="cost">
+                        <option ng-repeat="(k, v) in costMap" value="{{v}}">{{k}}</option>
+                    </select>
+                    <label>{{costDesc}}</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="upload();">Hi</button>
+            </div>
+            <div class="form-group">
+                <input type="file" ng-change="getHash(file)" ng-model="file" />
+            </div>
+
+<!--                 <div class="file-manager">
+                <h5>Show:</h5>
+                <div class="hr-line-dashed"></div>
+                <button class="btn btn-primary btn-block">Upload Files</button>
+                <div class="hr-line-dashed"></div>
+                <h5>Folders</h5>
+                <ul class="folder-list" style="padding: 0">
+                    <li><a href=""><i class="fa fa-folder"></i> Files</a></li>
+                    <li><a href=""><i class="fa fa-folder"></i> Pictures</a></li>
+                    <li><a href=""><i class="fa fa-folder"></i> Web pages</a></li>
+                </ul>
+                <h5 class="tag-title">Tags</h5>
+                <ul class="tag-list" style="padding: 0">
+                    <li><a href="">Family</a></li>
+                    <li><a href="">Work</a></li>
+                    <li><a href="">Home</a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class=" animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+
+            </div>
+        </div>
+    </div>
+</div>
