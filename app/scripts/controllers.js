@@ -112,24 +112,27 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }
     }
 
-    $scope.ownAddrs = user.allAddrs();
+    $scope.ownAddrs = [];
     $scope.fromAddr = '';
     $scope.toAmount = 0;
     $scope.toAddr = '';
     $scope.balance = 0;
     $scope.txList = [];
-    $scope.email = user.get().email;
+    $scope.email = '';
     $scope.historyTxs = [];
     $scope.contacts = function () {
         if (contacts) {
             return contacts.get()
         }
-        return [];        
+        return [];
     };
     $scope.init = function () {
+        console.log('init Lepuscoin')
+        console.log('user', user.get())
         if ($scope.ownAddrs.length === 0) {
             console.log('user: ', user.get());
             $scope.ownAddrs = user.allAddrs();
+            $scope.email = user.get().email;
         }
     };
     $scope.setToAddr = function (addr) {
