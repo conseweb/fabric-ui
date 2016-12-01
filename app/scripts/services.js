@@ -7,7 +7,7 @@ function APIService($http) {
   const API_ROUTER = {
     docs: API_ROOT + '/documents',
     result: API_ROOT + '/documents/result',
-    status: function (id) {
+    state: function (id) {
       if (id) {
         return API_ROOT + '/documents/' + id + "/status"
       }
@@ -30,8 +30,8 @@ function APIService($http) {
     newDoc: function (doc, cost) {
       return $http.post(API_ROUTER.docs, {proofWaitPeriod: cost,rawDocument: doc})
     },
-    checkNew: function (id) {
-      return $http.get(API_ROUTER.status(id))
+    checkState: function (id) {
+      return $http.get(API_ROUTER.state(id))
     }
 
   };
@@ -42,7 +42,7 @@ function AlertService(){
     closeButton: true,
     progressBar: true,
     showMethod: 'slideDown',
-    positionClass: 'toast-top-full-width',//'toast-top-center',
+    positionClass: 'toast-top-center',
     timeOut: 4000
   };
 

@@ -44,7 +44,18 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('index.upload', {
             url: "/upload",
             templateUrl: "views/poe/upload.html",
-            data: { pageTitle: '存证' }
+            data: { pageTitle: '存证' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            name: 'angularFileUpload',
+                            files: ['js/plugins/angular-file-upload/angular-file-upload.min.js']
+                        },
+                    ]);
+                }
+            }
         })
         .state('index.config', {
             url: "/config",

@@ -482,6 +482,13 @@ function widgetFlotChart() {
 }
 
 function POECtrl($scope, alert, api) {
+    const State = {
+        OK: '<i class="fa fa-check text-navy"></i>已完成',
+        Applying: '<i class="fa fa-spinner fa-spin text-navy"></i>申请中',
+        Waiting: '<i class="fa fa-soccer-ball-o fa-spin text-navy" aria-hidden="true"></i>处理中',
+        Unknown: '<i class="fa fa-question text-navy" aria-hidden="true"></i>未知',
+    };
+
     $scope.hashStr = '';
     $scope.cost = '1m';
     $scope.costMap = {
@@ -494,17 +501,92 @@ function POECtrl($scope, alert, api) {
         '1 c': '24h'
     };
     $scope.costDesc = '期待文件证明完成所需代价,即完成证明所要的时间,代价值越高，等待时间越短,相对应的API请求次数越少,或者请求代价越高。';
-    $scope.file = {}
+    $scope.file = '';
+    $scope.docList = [
+        {id: 'hello', state: State.OK},
+        {id: 'hell2', state: State.Waiting}
+    ];
+    const Docs = {
+        add(newDoc) {
+            for (let i in $scope.docList) {
+                doc = $scope.docList[i];
+                if (doc.id === newDoc.id) {
+                    doc = newDoc;
+                    return;
+                }
+            }
+            $scope.docList.push(newDoc);
+        },
+        setState: function (id, state) {
+            for (let i in $scope.docList) {
+                doc = $scope.docList[i];
+                if (doc.id === id) {
+                    doc.state = state;
+                    if (state === State.OK) {
+                        doc.perdictTime = '';
+                    }
+                    return;
+                }
+            }
+            $scope.docList.push({id: id, state: state});
+        },
+    };
     $scope.upload = function () {
         if ($scope.hashStr === '') {
             alert.warn('hash 不能为空');
             return ;
         }
         api.newDoc($scope.hashStr, $scope.cost).then(function (resp) {
-            alert.success(resp.data.documentId)
+            alert.success(resp.data.documentId);
+            $scope.addDoc({
+                id: resp.data.documentId,
+                perdictTime: resp.data.perdictProofTime,
+                state: State.Applying,
+            });
         }, alert.httpFailed);
+    };
+    $scope.addDoc = function (doc) {
+        if (!doc.id) {return}
+        Docs.add(doc);
+        let getStatus = function (id, tty) {
+            return function () {
+                if (tty) {
+                    if (tty <= 0) {
+                        alert.error(id, "查询超时")
+                        return
+                    }
+                } else {
+                    tty = 10
+                }
+
+                api.checkState(id).then(function (resp) {
+                    console.log('status', resp.data)
+                    if (resp.data.status === 'wait') {
+                        Docs.setState(id, State.Waiting);
+                        setTimeout(getStatus(id, 10), 15 * 1000);
+                    } else {
+                        Docs.setState(id, State.OK);
+                        console.log('ok', id)
+                    }
+                }, function (resp) {
+                    if (resp.status === 404) {
+                        Docs.setState(id, State.Applying);
+                        setTimeout(getStatus(id, tty--), 1500)
+                    }
+                })
+            }
+        }
+        setTimeout(getStatus(doc.id), 1500)        
     }
+    $scope.checkState = function (id) {
+        api.checkState(id).then(function (resp) {
+            //
+        }, function (resp) {
+            //
+        })
+    };
     $scope.test = function () {
+        console.log('docs', $scope.docList);
         console.log('cost', $scope.cost);
         console.log('hast', $scope.hashStr);
         console.log('file', $scope.file);
@@ -512,6 +594,7 @@ function POECtrl($scope, alert, api) {
     $scope.getHash = function (input) {
         console.log('upload')
         console.log('file', input)
+        if (true) {return}
         //支持chrome IE10
         if (window.FileReader) {
             var file = input.files[0];
@@ -542,6 +625,7 @@ function POECtrl($scope, alert, api) {
             alert.error('error');
         }
     }
+    // $scope.uploader = new FileUploader();
 }
 /**
  *
