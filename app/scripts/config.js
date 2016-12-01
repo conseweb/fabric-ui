@@ -82,6 +82,20 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/config.html",
             data: { pageTitle: '设置' }
         })
+        .state('stela', {
+            url: "/stela",
+            templateUrl: "views/stela.html",
+            data: { pageTitle: 'Stela演示' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['css/plugins/dropzone/basic.css','css/plugins/dropzone/dropzone.css','js/plugins/dropzone/dropzone.js']
+                        }
+                    ]);
+                }
+            }
+        })
         .state('login', {
             url: "/login",
             templateUrl: "views/user/login.html",
