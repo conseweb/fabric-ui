@@ -54,22 +54,4 @@ export function configRouter (router) {
   router.redirect({
     '/': '/dashboard'
   })
-
-  router.beforeEach((transition) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('account not login, but in model', process.env.NODE_ENV)
-      transition.next()
-    } else if ((transition.to.path !== '/login' &&
-      transition.to.path !== '/signup') &&
-      !router.app.isLogin()) {
-      // should login.
-      console.log('redirect ')
-      transition.redirect('/login')
-      // setTimeout(() => {
-      //   router.app.authenticating = false
-      // }, 1000)
-    } else {
-      transition.next()
-    }
-  })
 }
