@@ -2,11 +2,25 @@ PWD := $(shell pwd)
 APP := farmer-ui
 IMAGE := ckeyer/dev:node
 
+ifdef GIT_COMMIT
+GIT_COMMIT := $(shell echo $(GIT_COMMIT)|cut -b -7)
+else
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
+endif
+
+ifdef GIT_BRANCH
+GIT_BRANCH := $(notdir $(GIT_BRANCH))
+else
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+endif
+
 PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
 
 INSTALL_DIR := /opt/data
+
+echo:
+	echo $(GIT_COMMIT)
+	echo $(GIT_BRANCH)
 
 build-pack:
 	docker run --rm \
