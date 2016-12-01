@@ -2,27 +2,21 @@ PWD := $(shell pwd)
 APP := farmer-ui
 IMAGE := ckeyer/dev:node
 
+ifdef GIT_COMMIT
+GIT_COMMIT := $(shell echo $(GIT_COMMIT)|cut -b -7)
+else
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
+endif
+
+ifdef GIT_BRANCH
+GIT_BRANCH := $(notdir $(GIT_BRANCH))
+else
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+endif
+
 PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
 
 INSTALL_DIR := /opt/data
-
-init: init-indocker
-
-init-indocker:
-	docker run --rm \
-	 --name init-ui \
-	 -v $(PWD):/opt/$(APP) \
-	 -w /opt/$(APP) \
-	 $(IMAGE) make init-node
-
-init-node:
-	npm install -g grunt grunt-cli bower uglifyjs
-	npm install
-	bower install --allow-root
-	-$(shell cd bower_components/slimscroll || ln -s bower_components/jquery-slimscroll bower_components/slimscroll)
-	cd bower_components/sparkline && make
 
 build-pack:
 	docker run --rm \
@@ -34,6 +28,7 @@ build-pack:
 
 pack: init-node
 	-rm -rf dist
+	npm install
 	grunt build
 	tar zcf $(INSTALL_DIR)/$(PACKAGE_NAME) ./dist/
 
