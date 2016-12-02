@@ -72,24 +72,24 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
 function LepuscoinCtrl($scope, alert, api, user, contacts) {
     /// docs: https://github.com/conseweb/farmer/blob/master/docs/farmer.md
     const decodeTxs = function (resp) {
-        let hisList = resp.data;
+        var hisList = resp.data;
         console.log('history list:', hisList)
-        for (let hi in hisList) {
-            let t = hisList[hi];
-            let fromAddr = '';
-            let toAddr = '';
-            let balance = 0;
-            let amount = 0;
-            let inHashs = [];
+        for (var hi in hisList) {
+            var t = hisList[hi];
+            var fromAddr = '';
+            var toAddr = '';
+            var balance = 0;
+            var amount = 0;
+            var inHashs = [];
 
             if (t.txin) {
                 fromAddr = t.txin[0].addr;
             }
-            for (let i in t.txin) {
+            for (var i in t.txin) {
                 inHashs.push(t.txin[i].sourceHash);
             }
 
-            for (let i in t.txout) {
+            for (var i in t.txout) {
                 if (t.txout[i].addr === fromAddr) {
                     balance = t.txout[i].value
                 } else {
@@ -157,7 +157,7 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         $scope.coinbase()
     }
     $scope.transfer = function () {
-        let tx = {
+        var tx = {
             in: [{
                 addr: $scope.fromAddr,
             }],
@@ -176,13 +176,15 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
         }, alert.httpFailed)
     };
     $scope.getBalance = function () {
+        console.log('[data]', '[...]')
+        console.log('hello', process.env);
         $scope.init();
         api.queryBalances($scope.ownAddrs).then(function (resp) {
             console.log("query balance: ", resp.data);
             alert.success(resp.data.message, "查询成功");
             $scope.txList = [];
             $scope.balance = 0;
-            for (let i in resp.data) {
+            for (var i in resp.data) {
                 addr = resp.data[i];
                 console.log('account list:', addr);
                 $scope.txList.push(addr);
@@ -198,9 +200,9 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
             return
         }
         api.queryBalances($scope.ownAddrs).then(function (resp) {
-            let hls = resp.data;
+            var hls = resp.data;
             $scope.historyTxs = [];
-            for (let hindex in hls) {
+            for (var hindex in hls) {
                 api.queryTx(hls[hindex].pre_tx_hash, 5).then(decodeTxs, alert.httpFailed)
             }        
         }, alert.httpFailed)
@@ -234,7 +236,7 @@ function ContactsCtrl($scope, alert, api, contacts) {
     $scope.tag = '';
     $scope.description = '';
     $scope.addContact = function () {
-        let body = {
+        var body = {
             name: $scope.name,
             email: $scope.email,
             phone: $scope.phone,

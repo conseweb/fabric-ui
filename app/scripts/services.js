@@ -44,8 +44,11 @@ function APIService($http) {
       return $http.delete(API_ROUTER.logout)
     },
     preSignup: function (val, typ) {
-      let body = typ==='phone'?{phone: val}:{email: val};
-      return $http.post(API_ROUTER.preSignup(typ), body);
+      if (typ === 'phone') {
+        return $http.post(API_ROUTER.preSignup(typ), {phone: val});
+      } else {
+        return $http.post(API_ROUTER.preSignup(typ), {email: val});
+      }
     },
     signup: function (body) {
       return $http.post(API_ROUTER.signup, body)
@@ -107,14 +110,12 @@ function AlertService(){
       console.log('warning: ', c, t);
     },
     httpFailed: function (resp) {
-      let errmsg = "";
+      var errMsg = '无法连接到服务器'
       if (resp.data) { 
-        errmsg = resp.data.error;
-      } else {
-        errmsg = "无法连接到服务器";
+        errMsg = resp.data.error
       }
-      toastr.warning(errmsg, '请求错误');
-      console.log('alert: ', errmsg, "请求错误")
+      toastr.warning(errMsg, '请求错误');
+      console.log('alert: ', errMsg, "请求错误")
     }
   };
 }
@@ -128,7 +129,7 @@ function StoreService($http) {
 function UserService($q, api) {
   const STORE_KEY = 'farmer-ui';
 
-  let  store = {
+  var store = {
     user: {},
 
     get: function () {
@@ -167,7 +168,7 @@ function UserService($q, api) {
     },
 
     allAddrs: function () {
-      let addrs = [];
+      var addrs = [];
       if (store.user.devices) {
         for (var index in store.user.devices) {
           addrs.push(store.user.devices[index].address);
@@ -183,7 +184,7 @@ function UserService($q, api) {
 function ContactService ($q, api, alert) {
   const STORE_KEY = 'farmer-ui-contacts';
 
-  let store = {
+  var store = {
     person: [],
     inited: false,
 

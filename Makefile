@@ -11,12 +11,18 @@ endif
 ifdef GIT_BRANCH
 GIT_BRANCH := $(notdir $(GIT_BRANCH))
 else
-GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH_TMP := $(shell git rev-parse HEAD | git branch -a --contains | grep remotes | grep -o "[^ ]\+\( \+[^ ]\+\)*")
+GIT_BRANCH := $(notdir $(GIT_BRANCH_TMP))
 endif
 
 PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
 
 INSTALL_DIR := /opt/data
+
+echo:
+	env
+	echo $(GIT_COMMIT)
+	echo $(GIT_BRANCH)
 
 build-pack:
 	docker run --rm \
@@ -26,11 +32,14 @@ build-pack:
 	 -w /opt/$(APP) \
 	 $(IMAGE) make pack
 
-pack:
-	-rm -rf dist
+pack: echo clean
 	npm install
 	grunt build
 	tar zcf $(INSTALL_DIR)/$(PACKAGE_NAME) ./dist/
 
 install:
 	cp -a $(INSTALL_DIR)/$(PACKAGE_NAME) $(INSTALL_DIR)/$(APP)-$(GIT_BRANCH).tgz
+
+clean:
+	-rm -rf .tmp
+	-rm -rf dist
