@@ -196,6 +196,17 @@ module.exports = function (grunt) {
         'watch'
     ]);
 
+    // on the dev server, only concat
+    // grunt.registerTask('default', ['concat']);
+
+    // on develop, concat 
+    grunt.registerTask('dev', [
+        'clean:dist',
+        'less',
+        'concat',
+        'copy:dist'
+    ]);
+
     // Run build version of app
     grunt.registerTask('server', [
         'build',
@@ -215,5 +226,18 @@ module.exports = function (grunt) {
         'usemin',
         'htmlmin'
     ]);
+
+    // grunt.initConfig({
+    //   min: {
+    //     dev: {
+    //       // dev server minify config
+    //     },
+    //     prod: {
+    //       // production server minify config
+    //     }
+    //   }
+    // });
+    // grunt.registerTask('default', ['min:dev']);
+    // grunt.registerTask('prod', ['min:prod']);
 
 };
