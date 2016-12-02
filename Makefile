@@ -11,7 +11,8 @@ endif
 ifdef GIT_BRANCH
 GIT_BRANCH := $(notdir $(GIT_BRANCH))
 else
-GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH_TMP := $(shell git rev-parse HEAD | git branch -a --contains | grep remotes | grep -o "[^ ]\+\( \+[^ ]\+\)*")
+GIT_BRANCH := $(notdir $(GIT_BRANCH_TMP))
 endif
 
 PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
@@ -19,6 +20,7 @@ PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
 INSTALL_DIR := /opt/data
 
 echo:
+	env
 	echo $(GIT_COMMIT)
 	echo $(GIT_BRANCH)
 
@@ -29,7 +31,7 @@ build-pack:
 	 -w /opt/$(APP) \
 	 $(IMAGE) make pack
 
-pack:
+pack: echo
 	-rm -rf ./dist
 	npm install
 	npm run build
