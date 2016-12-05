@@ -60,7 +60,7 @@ function AlertService(){
       console.log('warning: ', c, t);
     },
     httpFailed: function (resp) {
-      let errmsg = "";
+      var errmsg = "";
       if (resp.data) { 
         errmsg = resp.data.error;
       } else {

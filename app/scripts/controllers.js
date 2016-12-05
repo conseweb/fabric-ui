@@ -507,8 +507,8 @@ function POECtrl($scope, alert, api) {
         {id: 'hell2', state: State.Waiting}
     ];
     const Docs = {
-        add(newDoc) {
-            for (let i in $scope.docList) {
+        add: function(newDoc) {
+            for (var i in $scope.docList) {
                 doc = $scope.docList[i];
                 if (doc.id === newDoc.id) {
                     doc = newDoc;
@@ -518,7 +518,7 @@ function POECtrl($scope, alert, api) {
             $scope.docList.push(newDoc);
         },
         setState: function (id, state) {
-            for (let i in $scope.docList) {
+            for (var i in $scope.docList) {
                 doc = $scope.docList[i];
                 if (doc.id === id) {
                     doc.state = state;
@@ -548,7 +548,7 @@ function POECtrl($scope, alert, api) {
     $scope.addDoc = function (doc) {
         if (!doc.id) {return}
         Docs.add(doc);
-        let getStatus = function (id, tty) {
+        var getStatus = function (id, tty) {
             return function () {
                 if (tty) {
                     if (tty <= 0) {
