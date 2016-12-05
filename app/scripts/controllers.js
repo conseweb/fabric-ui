@@ -540,7 +540,7 @@ function POECtrl($scope, alert, api) {
             alert.success(resp.data.documentId);
             $scope.addDoc({
                 id: resp.data.documentId,
-                perdictTime: resp.data.perdictProofTime,
+                perdictTime: resp.data.perdictProofTime * 1000,
                 state: State.Applying,
             });
         }, alert.httpFailed);
