@@ -481,16 +481,15 @@ function widgetFlotChart() {
 
 }
 
-function POECtrl($scope, alert, api) {
+function POECtrl($scope, alert, api, crypto) {
     const State = {
         OK: '<i class="fa fa-check text-navy"></i>已完成',
+        Ready: `<i class="fa fa-circle-o text-navy"></i>已就绪`,
         Applying: '<i class="fa fa-spinner fa-spin text-navy"></i>申请中',
         Waiting: '<i class="fa fa-soccer-ball-o fa-spin text-navy" aria-hidden="true"></i>处理中',
         Unknown: '<i class="fa fa-question text-navy" aria-hidden="true"></i>未知',
     };
 
-    $scope.hashStr = '';
-    $scope.cost = '1m';
     $scope.costMap = {
         '1440 c': '1m',
         '144 c': '10m',
@@ -501,48 +500,54 @@ function POECtrl($scope, alert, api) {
         '1 c': '24h'
     };
     $scope.costDesc = '期待文件证明完成所需代价,即完成证明所要的时间,代价值越高，等待时间越短,相对应的API请求次数越少,或者请求代价越高。';
-    $scope.file = '';
-    $scope.docList = [
-        {id: 'hello', state: State.OK},
-        {id: 'hell2', state: State.Waiting}
-    ];
+    $scope.docList = [];
     const Docs = {
-        add: function(newDoc) {
+        add: function(d) {
             for (var i in $scope.docList) {
                 doc = $scope.docList[i];
-                if (doc.id === newDoc.id) {
-                    doc = newDoc;
+                if (doc.hash === d.hash) {
+                    doc = d;
+                    console.log('docList update', d);
                     return;
                 }
             }
-            $scope.docList.push(newDoc);
+            console.log('docList add', d);
+            $scope.docList.push(d);
         },
         setState: function (id, state) {
             for (var i in $scope.docList) {
                 doc = $scope.docList[i];
                 if (doc.id === id) {
                     doc.state = state;
+                    doc.isReady = false;
                     if (state === State.OK) {
                         doc.perdictTime = '';
+                        doc.isOK = true;
                     }
                     return;
                 }
             }
-            $scope.docList.push({id: id, state: state});
+            console.error('can not found file', hash, state);
         },
     };
-    $scope.upload = function () {
-        if ($scope.hashStr === '') {
-            alert.warn('hash 不能为空');
-            return ;
+    $scope.upload = function (doc) {
+        if (!doc.hash) {
+            alert.warn('哈希不能为空');
+            return
         }
-        api.newDoc($scope.hashStr, $scope.cost).then(function (resp) {
+        var meta = {
+            name: doc.name,
+            size: doc.size,
+            lastModified: doc.lastModified,
+            type: doc.type,
+            desc: doc.desc,
+        }
+        api.newDoc(doc.hash, doc.cost, meta).then(function (resp) {
             alert.success(resp.data.documentId);
-            $scope.addDoc({
-                id: resp.data.documentId,
-                perdictTime: resp.data.perdictProofTime * 1000,
-                state: State.Applying,
-            });
+            doc.id = resp.data.documentId;
+            doc.perdictTime = resp.data.perdictProofTime * 1000;
+            doc.state = State.Applying;
+            $scope.addDoc(doc);
         }, alert.httpFailed);
     };
     $scope.addDoc = function (doc) {
@@ -563,8 +568,8 @@ function POECtrl($scope, alert, api) {
                     console.log('status', resp.data)
                     if (resp.data.status === 'wait') {
                         Docs.setState(id, State.Waiting);
-                        setTimeout(getStatus(id, 10), 15 * 1000);
-                    } else {
+                        setTimeout(getStatus(id, 10), 5 * 1000);
+                    } else if (resp.data.status === 'ok') {
                         Docs.setState(id, State.OK);
                         console.log('ok', id)
                     }
@@ -578,51 +583,57 @@ function POECtrl($scope, alert, api) {
         }
         setTimeout(getStatus(doc.id), 1500)        
     }
-    $scope.checkState = function (id) {
-        api.checkState(id).then(function (resp) {
-            //
-        }, function (resp) {
-            //
-        })
-    };
-    $scope.test = function () {
+    $scope.test = function (val) {
+        console.log('input: ', val);
         console.log('docs', $scope.docList);
-        console.log('cost', $scope.cost);
-        console.log('hast', $scope.hashStr);
-        console.log('file', $scope.file);
+        console.log('md5 hello:', crypto.hash('hello'))
     };
     $scope.getHash = function (input) {
-        console.log('upload')
         console.log('file', input)
-        if (true) {return}
         //支持chrome IE10
         if (window.FileReader) {
+            console.log('use window.FileReader');
             var file = input.files[0];
             filename = file.name.split(".")[0];
             var reader = new FileReader();
             reader.onload = function() {
-                console.log(this.result)
-                alert.warn(this.result);
+                var d = {
+                    name: file.name,
+                    size: file.size,
+                    lastModified: file.lastModified,
+                    type: file.type,
+                    hash: crypto.hash(this.result),
+                    desc: '',
+                    state: State.Ready,
+                    cost: '1m',
+                    isReady: true,
+                };
+                Docs.add(d);
+                $scope.$digest();
+                
+                console.info('added.', $scope.docList);
             }
             reader.readAsText(file);
         } 
         //支持IE 7 8 9 10
         else if (typeof window.ActiveXObject != 'undefined'){
-            var xmlDoc; 
+            console.log('use window.ActiveXObject');
+            var xmlDoc;
             xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
             xmlDoc.async = false; 
             xmlDoc.load(input.value); 
-            alert.warn(xmlDoc.xml); 
+            console.log(xmlDoc.xml); 
         } 
         //支持FF
         else if (document.implementation && document.implementation.createDocument) { 
+            console.log('use document.implementation');
             var xmlDoc; 
             xmlDoc = document.implementation.createDocument("", "", null); 
             xmlDoc.async = false; 
             xmlDoc.load(input.value); 
-            alert.warn(xmlDoc.xml);
+            console.log(xmlDoc.xml);
         } else { 
-            alert.error('error');
+            console.log('error');
         }
     }
     // $scope.uploader = new FileUploader();

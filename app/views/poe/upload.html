@@ -13,11 +13,37 @@
 </div>
 
 <div class="form-horizontal" ng-controller="POECtrl">
-
-    <input type="file" ng-file-select="getHash($files)" ngf-select ng-model="file"/>
-
     <div class="ibox float-e-margins form-group">
         <div class="ibox-content">
+
+<!--             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Dropzone Area</h5>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="dropzone" action="#" dropzone="angular.element(this).scope().test(this);" id="dropzone">
+                        <div class="dz-message m-t-lg m-b-lg" addedfile="angular.element(this).scope().test(this);">
+                            <h1>Drop files here.</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" ng-repeat="doc in docList" id="{{doc.id}}">
+                    <div class="dropzone">
+                        {{doc.id}}
+                        文件名：
+                        文件哈希：
+                        大小：
+                        最后修改日期：
+                        状态: <strong ng-bind-html="doc.state"></strong>
+                        状态更新时间：
+                    </div>
+                </div>
+            </div>
+
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">文件哈希</label>
@@ -36,99 +62,70 @@
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" ng-click="upload();">Hi</button>
-            </div>
+            </div> -->
             <div class="form-group">
                 <button class="btn btn-primary" ng-click="test();">Oh.</button>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <input type="file" ng-file-select="getHash($files)" ngf-select ng-model="file"/>
-            </div>
-            
-            <input type="file" nv-file-select uploader="{FileUploader}"/>
+            </div> -->
         </div>
     </div>
 
     <div class=" animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
-
-
-                <div class="row">
-
-                    <div class="col-lg-12">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Custom responsive table </h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-group">
+                            <div onclick="upfile.click()" class="btn">
+                                <i class="fa fa-upload big-icon"></i>暂不支持拖拽
                             </div>
-                            <div class="ibox-content">
-                                <div class="row">
-                                    <div class="col-sm-9 m-b-xs">
-                                        <div data-toggle="buttons" class="btn-group">
-                                            <label class="btn btn-sm btn-white"> <input type="radio" id="option1" name="options"> Day </label>
-                                            <label class="btn btn-sm btn-white active"> <input type="radio" id="option2" name="options"> Week </label>
-                                            <label class="btn btn-sm btn-white"> <input type="radio" id="option3" name="options"> Month </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>状态</th>
-                                            <th>ID</th>
-                                            <th>预计处理时间</th>
-                                            <th>状态更新时间</th>
-                                            <th>备注</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="doc in docList" id="{{doc.id}}">
-                                            <td>{{doc.id |subhash}}</td>
-                                            <td ng-bind-html="doc.state"></td>
-                                            <td>{{doc.perdictTime |date}}</td>
-                                            <td>Patrick Smith</td>
-                                            <td>0800 051213</td>
-                                        </tr>
-                                        <tr>
-                                            <td ng-bind-html="state.Unknown"></td>
-                                            <td ng-bind-html="state.Applying"></td>
-                                            <td>Patrick Smith</td>
-                                            <td>Alice Jackson</td>
-                                            <td>0500 780909</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
+                            <input type="file" id="upfile" style="display:none" ng-model="file" onchange="angular.element(this).scope().getHash(this);"/>
                         </div>
                     </div>
-
-
-
-
+                </div>
             </div>
         </div>
     </div>
+
+
+    <div class=" animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-4" ng-repeat="doc in docList" id="{{doc.hash}}">
+                <div class="contact-box">
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/tmp.jpg">
+                            <div class="m-t-xs font-bold">{{doc.type}}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div>
+                            <h4 style="display: inline;"><strong>{{doc.name}}</strong></h4>
+                            <span ng-bind-html="doc.state" align="right"></span>
+                        </div>
+                        <p>最后修改: <strong>{{doc.lastModified|date}}</strong></p>
+                        <p>文件大小: <strong>{{doc.size |filesize}}</strong></p>
+                        <p>文件哈希: <strong title="{{doc.hash}}">{{doc.hash |subhash}}</strong></p>
+                        <p>备注: <input type="text" ng-model="doc.desc"></p>
+                        <div class="input-group m-b">
+                            <div class="input-group-btn" ng-if="doc.isReady">
+                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">{{doc.cost}}<span class="caret"></span></button>
+                                <ul class="dropdown-menu" style="z-index: 99">
+                                    <li ng-repeat="(key, value) in costMap"><a ng-click="doc.cost = value">{{value}}</a></li>
+                                </ul>
+                                
+                                <button ng-click="upload(doc);" class="btn btn-primary">提 交</button>
+                            </div>
+                            <button ng-if="doc.isOK" class="btn btn-primary" ng-click="console.log(doc.id, '啦啦啦啦啦');">查看证书</button>
+                            <button class="btn">取 消</button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

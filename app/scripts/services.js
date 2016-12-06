@@ -27,8 +27,8 @@ function APIService($http) {
       }
       return $http.get(API_ROUTER.docs + '?count=' + count + '&type=' + type)
     },
-    newDoc: function (doc, cost) {
-      return $http.post(API_ROUTER.docs, {proofWaitPeriod: cost,rawDocument: doc})
+    newDoc: function (doc, cost, meta) {
+      return $http.post(API_ROUTER.docs, {proofWaitPeriod: cost,rawDocument: doc, metadata: JSON.stringify(meta)})
     },
     checkState: function (id) {
       return $http.get(API_ROUTER.state(id))
@@ -72,7 +72,26 @@ function AlertService(){
   };
 }
 
+function CryptoService() {
+  const fmt = function (val) {
+    return val.toString(CryptoJS.enc.Hex)
+  };
+  const cryp = {
+    md5: function (res) {
+      return fmt(CryptoJS.MD5(res));
+    },
+    sha3: function (res) {
+      return fmt(CryptoJS.SHA3(res, {outputLength: 512}));
+    },
+    hash: function (res) {
+      return cryp.md5(res);
+    }
+  }
+  return cryp
+}
+
 angular
   .module('inspinia')
   .factory('alert', AlertService)
+  .factory('crypto', CryptoService)
   .factory('api', APIService)

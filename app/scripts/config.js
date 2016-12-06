@@ -36,7 +36,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                             serie: true,
                             name: 'angular-flot',
                             files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
-                        },
+                        }
                     ]);
                 }
             }
@@ -49,10 +49,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
                         {
-                            serie: true,
-                            name: 'angularFileUpload',
-                            files: ['js/plugins/angular-file-upload/angular-file-upload.min.js']
+                            files: ['js/plugins/crypto-js/crypto-js.js']
                         },
+                        {
+                            files: ['css/plugins/dropzone/basic.css','css/plugins/dropzone/dropzone.css','js/plugins/dropzone/dropzone.js']
+                        }
                     ]);
                 }
             }
@@ -86,12 +87,26 @@ function httpProvider($q, $injector) {
     return authRecoverer;
 };
 
-function subHashFilter () {  
+function subHashFilter () {
+    const max_hash_length = 24
     return function(h) {
-        if (h && h.length > 7) {
-            return h.substr(0, 7);
+        if (h && h.length > max_hash_length) {
+            return h.substr(0, max_hash_length) + '...';
         }
         return h
+    }
+}
+
+function FileSizeFilter() {
+    return function (size) {
+        var arr = ['B', 'KB', 'MB', "GB", 'TB'];
+        for (var i in arr) {
+            if (size < 1024) {
+                return size.toFixed(2) + ' ' + arr[i];
+            }
+            size /= 1024
+        }
+        return 'too big';
     }
 }
 
@@ -99,6 +114,7 @@ angular
     .module('inspinia')
     .config(config)
     .filter('subhash', subHashFilter)
+    .filter('filesize', FileSizeFilter)
     .factory('httpProvider', httpProvider)
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('httpProvider');
