@@ -484,7 +484,7 @@ function widgetFlotChart() {
 function POECtrl($scope, alert, api, crypto) {
     const State = {
         OK: '<i class="fa fa-check text-navy"></i>已完成',
-        Ready: `<i class="fa fa-circle-o text-navy"></i>已就绪`,
+        Ready: '<i class="fa fa-circle-o text-navy"></i>已就绪',
         Applying: '<i class="fa fa-spinner fa-spin text-navy"></i>申请中',
         Waiting: '<i class="fa fa-soccer-ball-o fa-spin text-navy" aria-hidden="true"></i>处理中',
         Unknown: '<i class="fa fa-question text-navy" aria-hidden="true"></i>未知',
@@ -597,6 +597,7 @@ function POECtrl($scope, alert, api, crypto) {
             filename = file.name.split(".")[0];
             var reader = new FileReader();
             reader.onload = function() {
+                console.log('typeof', typeof this.result);
                 var d = {
                     name: file.name,
                     size: file.size,
@@ -613,7 +614,7 @@ function POECtrl($scope, alert, api, crypto) {
                 
                 console.info('added.', $scope.docList);
             }
-            reader.readAsText(file);
+            reader.readAsBinaryString(file);
         } 
         //支持IE 7 8 9 10
         else if (typeof window.ActiveXObject != 'undefined'){
