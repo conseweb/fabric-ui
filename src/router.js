@@ -1,11 +1,7 @@
 import NotFound from './components/NotFound'
 import MainNav from './components/MainNav'
 
-import Login from './components/account/Login'
-import SignUp from './components/account/SignUp'
-
 import DashBoard from './components/DashBoard'
-import Account from './components/account/Account'
 import Chain from './components/blockchain/Chain'
 import Chaincode from './components/blockchain/Chaincode'
 import Network from './components/network/Network'
@@ -23,9 +19,6 @@ export function configRouter (router) {
         '/dashboard': {
           component: DashBoard
         },
-        '/account': {
-          component: Account
-        },
         '/chaincode': {
           component: Chaincode
         },
@@ -40,18 +33,12 @@ export function configRouter (router) {
         }
       }
     },
-    '/login': {
-      component: Login
-    },
-    '/signup': {
-      component: SignUp
-    },
     '*': {
       component: NotFound
     }
   })
 
   router.redirect({
-    '/': '/dashboard'
+    '/': '/block'
   })
 }
