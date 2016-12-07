@@ -542,7 +542,8 @@ function POECtrl($scope, alert, api, crypto) {
             type: doc.type,
             desc: doc.desc,
         }
-        api.newDoc(doc.hash, doc.cost, meta).then(function (resp) {
+        var docContent = doc.hash + ':' + doc.size;
+        api.newDoc(docContent, doc.cost, meta).then(function (resp) {
             alert.success(resp.data.documentId);
             doc.id = resp.data.documentId;
             doc.perdictTime = resp.data.perdictProofTime * 1000;
@@ -636,8 +637,14 @@ function POECtrl($scope, alert, api, crypto) {
         } else { 
             console.log('error');
         }
-    }
-    // $scope.uploader = new FileUploader();
+    };
+    $scope.checkDoc = function (doc) {
+        api.checkDoc(doc).then(function (resp) {
+            console.log('check doc', 'ok', resp);
+        }, function (resp) {
+            console.log('[data]', 'check failed', resp);
+        })
+    };
 }
 /**
  *

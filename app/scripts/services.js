@@ -4,6 +4,7 @@
 /// 
 function APIService($http) {
   const API_ROOT = 'http://192.168.5.105:9694/api/v1';
+  
   const API_ROUTER = {
     docs: API_ROOT + '/documents',
     result: API_ROOT + '/documents/result',
@@ -15,7 +16,7 @@ function APIService($http) {
   };
 
   return {
-    getDoc: function (doc) {
+    checkDoc: function (doc) {
       return $http.post(API_ROUTER.result, {rawDocument: doc})
     },
     getDocList: function (count, type) {
@@ -84,7 +85,7 @@ function CryptoService() {
       return fmt(CryptoJS.SHA3(res, {outputLength: 512}));
     },
     hash: function (res) {
-      return cryp.md5(res);
+      return cryp.sha3(res);
     }
   }
   return cryp

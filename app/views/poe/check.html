@@ -46,22 +46,12 @@
                             <h4 style="display: inline;"><strong>{{doc.name}}</strong></h4>
                             <span ng-bind-html="doc.state" align="right"></span>
                         </div>
-                        <p>最后修改: <strong>{{doc.lastModified|date}}</strong></p>
+                        <p>最后修改: <strong>{{doc.lastModified|mjdate}}</strong></p>
                         <p>文件大小: <strong>{{doc.size |filesize}}</strong></p>
                         <p>文件哈希: <strong title="{{doc.hash}}">{{doc.hash |subhash}}</strong></p>
-                        <p>备注: <input type="text" ng-model="doc.desc"></p>
-                        <div class="input-group m-b">
-                            <div class="input-group-btn" ng-if="doc.isReady">
-                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">{{doc.cost}}<span class="caret"></span></button>
-                                <ul class="dropdown-menu" style="z-index: 99">
-                                    <li ng-repeat="(key, value) in costMap"><a ng-click="doc.cost = value">{{value}}</a></li>
-                                </ul>
-                                
-                                <button ng-click="upload(doc);" class="btn btn-primary">提 交</button>
-                            </div>
-                            <button ng-if="doc.isOK" class="btn btn-primary" ng-click="console.log(doc.id, '啦啦啦啦啦');">查看证书</button>
-                            <button class="btn">取 消</button>
-                        </div>
+                        <p>备注:  <strong>{{doc.desc}}</strong></p>
+                        <button class="btn btn-primary" ng-click="checkDoc(doc.hash+':'+doc.size);">验 证</button>
+                        <button class="btn">取 消</button>
                     </div>
                     <div class="clearfix"></div>
                 </div>

@@ -58,6 +58,23 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
+        .state('index.check', {
+            url: "/check",
+            templateUrl: "views/poe/check.html",
+            data: { pageTitle: '检查' },
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['js/plugins/crypto-js/crypto-js.js']
+                        },
+                        {
+                            files: ['css/plugins/dropzone/basic.css','css/plugins/dropzone/dropzone.css','js/plugins/dropzone/dropzone.js']
+                        }
+                    ]);
+                }
+            }
+        })
         .state('index.config', {
             url: "/config",
             templateUrl: "views/config.html",
@@ -110,11 +127,41 @@ function FileSizeFilter() {
     }
 }
 
+Date.prototype.Format = function (fmt) {  
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
+function mjDateFilter() {
+    return function (ts) {
+        if (typeof ts === 'number') {
+            var date = new Date(ts);
+            console.log('type of ', typeof date);
+            return date.Format("yyyy-MM-dd hh:mm:ss.S");
+        }
+        if (typeof ts === 'object') {
+            return date.Format("yyyy-MM-dd hh:mm:ss.S");
+        }
+    }
+}
+
 angular
     .module('inspinia')
     .config(config)
     .filter('subhash', subHashFilter)
     .filter('filesize', FileSizeFilter)
+    .filter('mjdate', mjDateFilter)
     .factory('httpProvider', httpProvider)
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('httpProvider');
