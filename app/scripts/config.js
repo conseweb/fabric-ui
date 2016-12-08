@@ -16,10 +16,15 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 
     $ocLazyLoadProvider.config({
         // Set to true if you want to see what and when is dynamically loaded
-        debug: false
+        debug: true
     });
 
     $stateProvider
+        .state('cert', {
+            url: '/cert/:id',
+            templateUrl: 'views/poe/cert.html',
+            data: { pageTitle: '证书' },
+        })
         .state('index', {
             abstract: true,
             url: "/index",

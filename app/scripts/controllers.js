@@ -656,6 +656,19 @@ function POECtrl($scope, alert, api, crypto) {
         })
     };
 }
+
+function CertCtrl($scope, $stateParams, alert, api, crypto) {
+    const getDoc = function (id) {
+        api()
+    }
+    $scope.id = $stateParams.id;
+    $scope.doc = {
+        id: '123',
+        name: 'hello.txt',
+        type: 'lasdf/asd',
+        size: 123123,
+    }
+}
 /**
  *
  * Pass all functions into module
@@ -665,5 +678,6 @@ angular
     .controller('MainCtrl', MainCtrl)
     .controller('XCtrl', XCtrl)
     .controller('POECtrl', POECtrl)
+    .controller('CertCtrl', CertCtrl)
     .controller('widgetFlotChart', widgetFlotChart)
     .controller('flotChartCtrl', flotChartCtrl);
