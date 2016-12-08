@@ -641,8 +641,18 @@ function POECtrl($scope, alert, api, crypto) {
     $scope.checkDoc = function (doc) {
         api.checkDoc(doc).then(function (resp) {
             console.log('check doc', 'ok', resp);
+            if (resp.data.status === 'valid') {
+                alert.success('OK');
+            } else {
+                alert.warn(resp.data.message, resp.data.status);
+            }
         }, function (resp) {
             console.log('[data]', 'check failed', resp);
+            if (resp.data) {
+                alert.warn(resp.data.message, resp.data.status);
+            } else {
+                alert.httpFailed(resp);
+            }
         })
     };
 }
