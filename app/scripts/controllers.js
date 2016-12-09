@@ -661,12 +661,15 @@ function CertCtrl($scope, $stateParams, alert, api, crypto) {
     const getDoc = function (id) {
         api()
     }
+    const testId = '2aa0c146933591ca24e88a198e97ed833a1c7c9eab8e975aa7f2aa4670f27ae589a505852a99a03a181b5b56a3108b9b8b6d51f5414adcfbac5f0855b2b4c081';
     $scope.id = $stateParams.id;
     $scope.doc = {
-        id: '123',
-        name: 'hello.txt',
-        type: 'lasdf/asd',
-        size: 123123,
+        id: $stateParams.id,
+        name: 'doc.name',
+        size: 'doc.size',
+        lastModified: 'doc.lastModified',
+        type: 'doc.type',
+        desc: 'doc.desc',
     }
 }
 /**
