@@ -52,13 +52,29 @@
 				<div class="row">
 					<div class="col-sm-9">
 						<h3>
-							区块相关
+							证书信息
 						</h3>
-						<table class="table">
+						<table class="table" id="sign-cert">
 							<tbody>
 								<tr class="cert-kv">
-									<td class="cert-key">文件名</td>
+									<td class="cert-key">文件哈希</td>
+									<td class="cert-value">{{doc.sha256}}</td>
+								</tr>
+								<tr class="cert-kv">
+									<td class="cert-key">签名方</td>
+									<td class="cert-value">北京魔镜科技有限公司</td>
+								</tr>
+								<tr class="cert-kv">
+									<td class="cert-key">签名内容</td>
 									<td class="cert-value">{{doc.name}}</td>
+								</tr>
+								<tr class="cert-kv">
+									<td class="cert-key">签名公钥</td>
+									<td class="cert-value">{{doc.name}}</td>
+								</tr>
+								<tr class="cert-kv">
+									<td class="cert-key">区块交易地址</td>
+									<td class="cert-value">{{doc.tx}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -80,6 +96,60 @@
 		</div>
 	</div>
 </div>
+<canvas id="canvas"  width="200" height="200"></canvas>
+<script>
+	var canvas = document.getElementById("canvas");  
+	var context = canvas.getContext('2d');
+	var text = "文件已存在";
+	var companyName = "北京魔镜科技有限公司";
+   
+  // 绘制印章边框   
+	var width = canvas.width / 2;
+	var height = canvas.height / 2;
+	context.lineWidth = 5;
+	context.strokeStyle = "#FBB";
+	context.beginPath();
+	context.arc(width, height, 90, 0, Math.PI * 2);//宽、高、半径
+	context.stroke();
+ 
+	context.font = '27px 黑体';
+	context.textBaseline = 'middle';//设置文本的垂直对齐方式
+	context.textAlign = 'center'; //设置文本的水平对对齐方式
+	context.lineWidth=1;
+	context.strokeStyle = '#FBB';
+	context.strokeText('信链',width,height);
+ 
+    // 绘制印章名称   
+    context.font = '20px 宋体';
+    context.textBaseline = 'middle';//设置文本的垂直对齐方式
+    context.textAlign = 'center'; //设置文本的水平对对齐方式
+    context.lineWidth=1;
+    context.strokeStyle = '#FBB';
+    context.strokeText(text,width,height+60);
+ 
+    // 绘制印章单位   
+    context.translate(width,height);// 平移到此位置,
+    context.font = '23px 宋体'
+    var count = companyName.length;// 字数
+    var angle = 4*Math.PI/(4*(count - 1));// 字间角度   
+    var chars = companyName.split("");
+    var c;
+	for (var i = 0; i < count; i++) {
+	   c = chars[i];// 需要绘制的字符   
+	   if (i == 0) {
+	       context.rotate(angle * (count-1));
+	   } else{
+	       context.rotate(angle);
+	   }
+	   context.save();
+	   context.translate(70, 0);// 平移到此位置,此时字和x轴垂直，公司名称和最外圈的距离
+	   context.rotate(Math.PI / 2);// 旋转90度,让字平行于x轴
+	   context.strokeText(c, 0, 0);// 此点为字的中心点
+	   context.restore();
+	};
+
+	document.getElementById('sign-cert').style.backgroundImage = 'url("' + context.canvas.toDataURL() + '")';
+ </script>
 
 <style>
 body {
@@ -113,5 +183,12 @@ img {
 	word-wrap:break-word;
 	word-break:normal;
 	font-size: 20px;
+}
+canvas {
+	display: none;
+}
+#sign-cert {
+	background-repeat: no-repeat;
+	background-position: 70% 50%;
 }
 </style>
