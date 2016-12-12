@@ -32,7 +32,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
         .state('index.main', {
             url: "/main",
-            templateUrl: "views/dashboard.html",
+            templateUrl: "views/poe/list.html",
             data: { pageTitle: '账户总览' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
@@ -40,7 +40,16 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                         {
                             serie: true,
                             name: 'angular-flot',
-                            files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
+                            files: [
+                                'js/plugins/flot/jquery.flot.js',
+                                'js/plugins/flot/jquery.flot.time.js',
+                                'js/plugins/flot/jquery.flot.tooltip.min.js',
+                                'js/plugins/flot/jquery.flot.spline.js',
+                                'js/plugins/flot/jquery.flot.resize.js',
+                                'js/plugins/flot/jquery.flot.pie.js',
+                                'js/plugins/flot/curvedLines.js',
+                                'js/plugins/flot/angular-flot.js',
+                            ]
                         }
                     ]);
                 }

@@ -1,0 +1,151 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>账户总览</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" >
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="widget style1">
+                <div class="row">
+                    <div class="col-xs-4 text-center">
+                        <i class="fa fa-trophy fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span> 已收纳文件 </span>
+
+                        <h2 class="font-bold">4,232,826</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="widget style1 navy-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-chain fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span> 总区块数 </span>
+
+                        <h2 class="font-bold">345,234</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="widget style1 lazur-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-file-archive-o fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span> 今日已处理文件 </span>
+
+                        <h2 class="font-bold">260</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="widget style1 yellow-bg">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-life-ring fa-spin fa-5x"></i>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <span> 正在验证的文件 </span>
+
+                        <h2 class="font-bold">12</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-controller="flotChartCtrl as charts">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>文件增长</h5>
+
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="flot-chart">
+                        <div flot class="flot-chart-content" dataset="charts.flotChartData" options="charts.flotLineOptions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>文件类型占比</h5>
+
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <div class="flot-chart">
+                        <div flot class="flot-chart-content" dataset="charts.flotPieData" options="charts.flotPieOptions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-controller="POEListCtrl">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInUp">
+
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="row m-b-sm m-t-sm">
+                            <div class="col-md-1">
+                                <button type="button" ng-click="listDocs();" class="btn btn-white btn-sm" ><i class="fa fa-refresh"></i> Refresh</button>
+                            </div>
+                        </div>
+
+                        <div class="project-list">
+
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr ng-repeat="(id, doc) in docList" ng-click="jumpPage('/#/cert/'+id);">
+                                        <td class="project-status">
+                                            <span class="label label-primary">Active</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a>{{doc.name}}</a>
+                                            <br/>
+                                            <small>{{doc.size}}</small>
+                                        </td>
+                                        <td class="project-completion">
+                                                <small>Completion with: 48%</small>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                </div>
+                                        </td>
+                                        <td class="project-people">
+                                            <a href=""><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                            <a href=""><img alt="image" class="img-circle" src="img/a1.jpg"></a>
+                                            <a href=""><img alt="image" class="img-circle" src="img/a2.jpg"></a>
+                                            <a href=""><img alt="image" class="img-circle" src="img/a4.jpg"></a>
+                                            <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
+                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
