@@ -77,6 +77,7 @@ function CryptoService() {
   const fmt = function (val) {
     return val.toString(CryptoJS.enc.Hex)
   };
+
   const cryp = {
     md5: function (res) {
       return fmt(CryptoJS.MD5(res));
@@ -86,6 +87,70 @@ function CryptoService() {
     },
     hash: function (res) {
       return cryp.sha3(res);
+    },
+    sha1File: function (file, callback) {
+      var sha1 = CryptoJS.algo.SHA1.create();
+      var read = 0;
+      var unit = 1024 * 1024;
+      var blob;
+      var reader = new FileReader();
+      reader.readAsArrayBuffer(file.slice(read, read + unit));
+      reader.onload = function(e) {
+        var bytes = CryptoJS.lib.WordArray.create(e.target.result);
+        sha1.update(bytes);
+        read += unit;
+        if (read < file.size) {
+            blob = file.slice(read, read + unit);
+            reader.readAsArrayBuffer(blob);
+        } else {
+            var hash = sha1.finalize();
+            callback(hash.toString(CryptoJS.enc.Hex)); // print the result
+        }
+      }      
+    },
+    sha256File: function (file, callback) {
+      var sha256 = CryptoJS.algo.SHA256.create();
+      var read = 0;
+      var unit = 1024 * 1024;
+      var blob;
+      var reader = new FileReader();
+      reader.readAsArrayBuffer(file.slice(read, read + unit));
+      reader.onload = function(e) {
+        var bytes = CryptoJS.lib.WordArray.create(e.target.result);
+        sha256.update(bytes);
+        read += unit;
+        if (read < file.size) {
+            blob = file.slice(read, read + unit);
+            reader.readAsArrayBuffer(blob);
+        } else {
+            var hash = sha256.finalize();
+            callback(hash.toString(CryptoJS.enc.Hex)); // print the result
+        }
+      }      
+    },
+    sha3File: function (file, callback) {
+      var sha3 = CryptoJS.algo.SHA3.create();
+      var read = 0;
+      var unit = 1024 * 1024;
+      var blob;
+      var reader = new FileReader();
+      var retHash = '';
+      reader.readAsArrayBuffer(file.slice(read, read + unit));
+      reader.onload = function(e) {
+        var bytes = CryptoJS.lib.WordArray.create(e.target.result);
+        sha3.update(bytes);
+        read += unit;
+        if (read < file.size) {
+            blob = file.slice(read, read + unit);
+            reader.readAsArrayBuffer(blob);
+        } else {
+            var hash = sha3.finalize();
+            callback(hash.toString(CryptoJS.enc.Hex));
+        }
+      }
+    },
+    hashFile: function (file, callback) {
+      return cryp.sha256File(file, callback);
     }
   }
   return cryp

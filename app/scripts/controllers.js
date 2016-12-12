@@ -541,6 +541,7 @@ function POECtrl($scope, alert, api, crypto) {
             lastModified: doc.lastModified,
             type: doc.type,
             desc: doc.desc,
+            sha256: doc.hash,
         }
         var docContent = doc.hash + ':' + doc.size;
         api.newDoc(docContent, doc.cost, meta).then(function (resp) {
@@ -595,16 +596,13 @@ function POECtrl($scope, alert, api, crypto) {
         if (window.FileReader) {
             console.log('use window.FileReader');
             var file = input.files[0];
-            filename = file.name.split(".")[0];
-            var reader = new FileReader();
-            reader.onload = function() {
-                console.log('typeof', typeof this.result);
+            crypto.hashFile(file, function (fileHash) {
                 var d = {
                     name: file.name,
                     size: file.size,
                     lastModified: file.lastModified,
                     type: file.type,
-                    hash: crypto.hash(this.result),
+                    hash: fileHash,
                     desc: '',
                     state: State.Ready,
                     cost: '1m',
@@ -612,28 +610,26 @@ function POECtrl($scope, alert, api, crypto) {
                 };
                 Docs.add(d);
                 $scope.$digest();
-                
                 console.info('added.', $scope.docList);
-            }
-            reader.readAsBinaryString(file);
-        } 
-        //支持IE 7 8 9 10
-        else if (typeof window.ActiveXObject != 'undefined'){
-            console.log('use window.ActiveXObject');
-            var xmlDoc;
-            xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
-            xmlDoc.async = false; 
-            xmlDoc.load(input.value); 
-            console.log(xmlDoc.xml); 
-        } 
-        //支持FF
-        else if (document.implementation && document.implementation.createDocument) { 
-            console.log('use document.implementation');
-            var xmlDoc; 
-            xmlDoc = document.implementation.createDocument("", "", null); 
-            xmlDoc.async = false; 
-            xmlDoc.load(input.value); 
-            console.log(xmlDoc.xml);
+            });
+        // } 
+        // //支持IE 7 8 9 10
+        // else if (typeof window.ActiveXObject != 'undefined'){
+        //     console.log('use window.ActiveXObject');
+        //     var xmlDoc;
+        //     xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
+        //     xmlDoc.async = false; 
+        //     xmlDoc.load(input.value); 
+        //     console.log(xmlDoc.xml); 
+        // } 
+        // //支持FF
+        // else if (document.implementation && document.implementation.createDocument) { 
+        //     console.log('use document.implementation');
+        //     var xmlDoc; 
+        //     xmlDoc = document.implementation.createDocument("", "", null); 
+        //     xmlDoc.async = false; 
+        //     xmlDoc.load(input.value); 
+        //     console.log(xmlDoc.xml);
         } else { 
             console.log('error');
         }
