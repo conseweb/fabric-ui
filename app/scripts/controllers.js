@@ -635,10 +635,13 @@ function POECtrl($scope, alert, api, crypto) {
         }
     };
     $scope.checkDoc = function (doc) {
-        api.checkDoc(doc).then(function (resp) {
+        api.checkDoc(doc.hash+":"+doc.size).then(function (resp) {
             console.log('check doc', 'ok', resp);
             if (resp.data.status === 'valid') {
-                alert.success('OK');
+                alert.success(resp.data.doc.id, 'OK');
+                doc.id = resp.data.doc.id;
+                doc.isOK = true;
+                Docs.add(doc);
             } else {
                 alert.warn(resp.data.message, resp.data.status);
             }
