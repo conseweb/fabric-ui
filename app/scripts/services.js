@@ -119,7 +119,7 @@ function CryptoService() {
       var unit = 1024 * 1024;
       var blob;
       var reader = new FileReader();
-      reader.readAsArrayBuffer(file.slice(read, read + unit));
+      
       reader.onload = function(e) {
         var bytes = CryptoJS.lib.WordArray.create(e.target.result);
         sha256.update(bytes);
@@ -131,7 +131,20 @@ function CryptoService() {
             var hash = sha256.finalize();
             callback(hash.toString(CryptoJS.enc.Hex)); // print the result
         }
-      }      
+      };
+
+      // TODO: need to add onloadend event handler
+      // If we use onloadend, we need to check the readyState.
+      reader.onloadend = function(evt) {
+        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+          // document.getElementById('byte_content').textContent = evt.target.result;
+          // document.getElementById('byte_range').textContent = 
+          //     ['Read bytes: ', start + 1, ' - ', stop + 1,
+          //      ' of ', file.size, ' byte file'].join('');
+        }
+      };      
+
+      reader.readAsArrayBuffer(file.slice(read, read + unit));
     },
     sha3File: function (file, callback) {
       var sha3 = CryptoJS.algo.SHA3.create();
