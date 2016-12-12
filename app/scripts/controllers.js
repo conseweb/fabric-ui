@@ -657,16 +657,52 @@ function CertCtrl($scope, $stateParams, alert, api, crypto) {
     const getDoc = function (id) {
         api()
     }
-    const testId = '2aa0c146933591ca24e88a198e97ed833a1c7c9eab8e975aa7f2aa4670f27ae589a505852a99a03a181b5b56a3108b9b8b6d51f5414adcfbac5f0855b2b4c081';
     $scope.id = $stateParams.id;
+    $scope.isOK = false;
+    $scope.msg = '';
+
     $scope.doc = {
-        id: $stateParams.id,
-        name: 'doc.name',
-        size: 'doc.size',
-        lastModified: 'doc.lastModified',
-        type: 'doc.type',
-        desc: 'doc.desc',
+        id: $scope.id,
+        state: '',
     }
+
+    if (!$scope.id) {
+        $scope.state = 'wrong';
+        return;
+    }
+
+    api.getDoc($scope.id).then(function (resp) {
+        console.log('get doc', resp.data);
+        $scope.doc.status = resp.data.status;
+        $scope.doc.publicKey = resp.data.publicKey;
+        var docBody = resp.data.doc;
+        if (!docBody) {
+            alert.error('未找到文件信息');
+            return;
+        }
+        $scope.doc.blockDigest = docBody.blockDigest;
+        $scope.doc.submitTime = docBody.submitTime;
+        $scope.doc.proofTime = docBody.proofTime/1000/1000;
+        $scope.doc.txid = docBody.txid;
+        $scope.doc.sign = docBody.sign;
+
+        var meta = JSON.parse(docBody.metadata);
+        if (!meta) {
+            alert.error('获取附加信息错误');
+            return;
+        }
+        $scope.doc.name = meta.name;
+        $scope.doc.size = meta.size;
+        $scope.doc.lastModified = meta.lastModified;
+        $scope.doc.type = meta.type===''?'未知':meta.type;
+        $scope.doc.desc = meta.desc;
+        $scope.doc.sha256 = meta.sha256;
+        
+        $scope.isOK = true;
+        console.log('doc', $scope.doc);
+    }, function (resp) {    
+        ;
+    });
 }
 /**
  *

@@ -1,5 +1,5 @@
 <div ng-controller="CertCtrl">
-	<div id='cert'  class="wrapper wrapper-content">
+	<div id='cert' ng-if="isOK"  class="wrapper wrapper-content">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="page-header text-center">
@@ -21,27 +21,27 @@
 						</h3>
 						<table class="table">
 							<tbody>
-								<tr>
+								<tr class="cert-kv">
 									<td class="cert-key">文件编号</td>
-									<td class="cert-value">{{doc.id}}</td>
+									<td class="cert-value long-value">{{doc.id}}</td>
 								</tr>
-								<tr>
+								<tr class="cert-kv">
 									<td class="cert-key">文件名称</td>
 									<td class="cert-value">{{doc.name}}</td>
 								</tr>
-								<tr>
+								<tr class="cert-kv">
 									<td class="cert-key">文件大小</td>
-									<td class="cert-value">{{doc.size}}</td>
+									<td class="cert-value">{{doc.size}} ({{doc.size|filesize}})</td>
 								</tr>
-								<tr>
+								<tr class="cert-kv">
 									<td class="cert-key">最后修改时间</td>
-									<td class="cert-value">{{doc.lastModified}}</td>
+									<td class="cert-value">{{doc.lastModified|mjdate}}</td>
 								</tr>
-								<tr>
+								<tr class="cert-kv">
 									<td class="cert-key">文件类型</td>
 									<td class="cert-value">{{doc.type}}</td>
 								</tr>
-								<tr>
+								<tr class="cert-kv">
 									<td class="cert-key">备注</td>
 									<td class="cert-value">{{doc.desc}}</td>
 								</tr>
@@ -50,15 +50,15 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-9">
+					<div class="col-sm-12">
 						<h3>
 							证书信息
 						</h3>
 						<table class="table" id="sign-cert">
 							<tbody>
 								<tr class="cert-kv">
-									<td class="cert-key">文件哈希</td>
-									<td class="cert-value">{{doc.sha256}}</td>
+									<td class="cert-key">文件哈希(sha1-256)</td>
+									<td class="cert-value long-value">{{doc.sha256}}</td>
 								</tr>
 								<tr class="cert-kv">
 									<td class="cert-key">签名方</td>
@@ -66,21 +66,22 @@
 								</tr>
 								<tr class="cert-kv">
 									<td class="cert-key">签名内容</td>
-									<td class="cert-value">{{doc.name}}</td>
+									<td class="cert-value long-value">{{doc.sign}}</td>
 								</tr>
 								<tr class="cert-kv">
 									<td class="cert-key">签名公钥</td>
-									<td class="cert-value">{{doc.name}}</td>
+									<td class="cert-value long-value">{{doc.publicKey}}</td>
+								</tr>
+								<tr class="cert-kv">
+									<td class="cert-key">签名时间</td>
+									<td class="cert-value">{{doc.proofTime|mjdate}}</td>
 								</tr>
 								<tr class="cert-kv">
 									<td class="cert-key">区块交易地址</td>
-									<td class="cert-value">{{doc.tx}}</td>
+									<td class="cert-value">{{doc.txid}}</td>
 								</tr>
 							</tbody>
 						</table>
-					</div>
-					<div class="col-sm-2">
-			            	<!-- <img src="img/tmp.jpg"> -->
 					</div>
 				</div>
 			</div>
@@ -155,6 +156,13 @@
 body {
 	background-color: #fff;
 }
+canvas {
+	display: none;
+}
+#sign-cert {
+	background-repeat: no-repeat;
+	background-position: 70% 70%;
+}
 #cert {
 	max-width: 789px;
 	margin: auto;
@@ -180,15 +188,11 @@ img {
 }
 .cert-value {
 	max-width: 500px;
-	word-wrap:break-word;
-	word-break:normal;
+	word-wrap: break-word;
+	word-break: normal;
 	font-size: 20px;
 }
-canvas {
-	display: none;
-}
-#sign-cert {
-	background-repeat: no-repeat;
-	background-position: 70% 50%;
+.long-value {
+	font-size: 15px;	
 }
 </style>

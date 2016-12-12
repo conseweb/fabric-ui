@@ -9,32 +9,35 @@ function APIService($http) {
     docs: API_ROOT + '/documents',
     result: API_ROOT + '/documents/result',
     state: function (id) {
-      if (id) {
-        return API_ROOT + '/documents/' + id + "/status"
-      }
+      return API_ROOT + '/documents/' + id + "/status"
+    },
+    getDoc: function (id) {
+      return API_ROOT + '/documents/' + id + "/result"
     }
   };
 
   return {
     checkDoc: function (doc) {
-      return $http.post(API_ROUTER.result, {rawDocument: doc})
+      return $http.post(API_ROUTER.result, {rawDocument: doc});
     },
     getDocList: function (count, type) {
       if (!count || count < 0) {
-        count = 10
+        count = 10;
       }
       if (!type || type != 'register') {
-        type = 'proof'
+        type = 'proof';
       }
-      return $http.get(API_ROUTER.docs + '?count=' + count + '&type=' + type)
+      return $http.get(API_ROUTER.docs + '?count=' + count + '&type=' + type);
     },
     newDoc: function (doc, cost, meta) {
-      return $http.post(API_ROUTER.docs, {proofWaitPeriod: cost,rawDocument: doc, metadata: JSON.stringify(meta)})
+      return $http.post(API_ROUTER.docs, {proofWaitPeriod: cost,rawDocument: doc, metadata: JSON.stringify(meta)});
     },
     checkState: function (id) {
-      return $http.get(API_ROUTER.state(id))
+      return $http.get(API_ROUTER.state(id));
+    },
+    getDoc: function (id) {
+      return $http.get(API_ROUTER.getDoc(id));
     }
-
   };
 };
 

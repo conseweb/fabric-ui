@@ -123,7 +123,7 @@ function FileSizeFilter() {
     return function (size) {
         var arr = ['B', 'KB', 'MB', "GB", 'TB'];
         for (var i in arr) {
-            if (size < 1024) {
+            if (size < 980) {
                 return size.toFixed(2) + ' ' + arr[i];
             }
             size /= 1024
@@ -150,6 +150,7 @@ Date.prototype.Format = function (fmt) {
 
 function mjDateFilter() {
     return function (ts) {
+        console.log('format time', ts, typeof ts);
         if (typeof ts === 'number') {
             var date = new Date(ts);
             console.log('type of ', typeof date);
@@ -158,6 +159,7 @@ function mjDateFilter() {
         if (typeof ts === 'object') {
             return date.Format("yyyy-MM-dd hh:mm:ss.S");
         }
+        return ts;
     }
 }
 
