@@ -35,10 +35,10 @@ function flotChartCtrl() {
                 [201606, 10],
                 [201607, 234],
                 [201608, 456],
-                [201609, 704],
+                [201609, 504],
                 [201610, 984],
                 [201611, 1125],
-                [201612, 1459],
+                [201612, 3859],
             ]
         }
     ];
@@ -153,38 +153,41 @@ function flotChartCtrl() {
     this.flotPieOptions = pieOptions;
 }
 
-function POEListCtrl($scope, api, alert) {
-    $scope.docList = {
-        '123123': {
-            name: 'testfiel',
-            state: '以证明',
-        },
-    };
+const POEState = {
+    OK: '<i class="fa fa-check text-navy"></i>已完成',
+    Ready: '<i class="fa fa-circle-o text-navy"></i>已就绪',
+    Applying: '<i class="fa fa-spinner fa-spin text-navy"></i>申请中',
+    Waiting: '<i class="fa fa-soccer-ball-o fa-spin text-navy" aria-hidden="true"></i>处理中',
+    Unknown: '<i class="fa fa-question text-navy" aria-hidden="true"></i>未知',
+};
+
+function POEListCtrl($scope, api, alert, filetype) {
+    $scope.docList = {};
     $scope.listDocs = function () {
         api.getDocList(15, 'proof').then(function (resp) {
             console.log('doclist: ', resp.data);
-            var docs = resp.data;
+            var docs = resp.data.docs;
             for (var i in docs) {
                 var doc = docs[i];
+                var meta = JSON.parse(doc.metadata);
+                for (var k in meta) {
+                    doc[k] = meta[k];
+                }
+                doc.filetype = filetype.get(doc);
+                doc.proofTime = doc.proofTime / 1000 / 1000;
+                doc.submitTime = doc.submitTime / 1000 / 1000;
                 $scope.docList[doc.id] = doc;
             }
         }, alert.httpFailed)
     };
     $scope.jumpPage = function (url) {
         console.log('jump to', url);
-        // window.open(url); 
+        window.open(url); 
     };
+    $scope.listDocs();
 }
 
 function POECtrl($scope, alert, api, crypto) {
-    const State = {
-        OK: '<i class="fa fa-check text-navy"></i>已完成',
-        Ready: '<i class="fa fa-circle-o text-navy"></i>已就绪',
-        Applying: '<i class="fa fa-spinner fa-spin text-navy"></i>申请中',
-        Waiting: '<i class="fa fa-soccer-ball-o fa-spin text-navy" aria-hidden="true"></i>处理中',
-        Unknown: '<i class="fa fa-question text-navy" aria-hidden="true"></i>未知',
-    };
-
     $scope.costMap = {
         '1440 c': '1m',
         '144 c': '10m',
@@ -215,7 +218,7 @@ function POECtrl($scope, alert, api, crypto) {
                 if (doc.id === id) {
                     doc.state = state;
                     doc.isReady = false;
-                    if (state === State.OK) {
+                    if (state === POEState.OK) {
                         doc.perdictTime = '';
                         doc.isOK = true;
                     }
@@ -243,7 +246,7 @@ function POECtrl($scope, alert, api, crypto) {
             alert.success(resp.data.documentId);
             doc.id = resp.data.documentId;
             doc.perdictTime = resp.data.perdictProofTime * 1000;
-            doc.state = State.Applying;
+            doc.state = POEState.Applying;
             $scope.addDoc(doc);
         }, alert.httpFailed);
     };
@@ -264,15 +267,15 @@ function POECtrl($scope, alert, api, crypto) {
                 api.checkState(id).then(function (resp) {
                     console.log('status', resp.data)
                     if (resp.data.status === 'wait') {
-                        Docs.setState(id, State.Waiting);
+                        Docs.setState(id, POEState.Waiting);
                         setTimeout(getStatus(id, 10), 5 * 1000);
                     } else if (resp.data.status === 'ok') {
-                        Docs.setState(id, State.OK);
+                        Docs.setState(id, POEState.OK);
                         console.log('ok', id)
                     }
                 }, function (resp) {
                     if (resp.status === 404) {
-                        Docs.setState(id, State.Applying);
+                        Docs.setState(id, POEState.Applying);
                         setTimeout(getStatus(id, tty--), 1500)
                     }
                 })
@@ -299,7 +302,7 @@ function POECtrl($scope, alert, api, crypto) {
                     type: file.type,
                     hash: fileHash,
                     desc: '',
-                    state: State.Ready,
+                    state: POEState.Ready,
                     cost: '1m',
                     isReady: true,
                 };
