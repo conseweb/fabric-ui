@@ -8,6 +8,12 @@
  */
 function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdleProvider, KeepaliveProvider) {
 
+    function depResolve(options) {
+        return function ($ocLazyLoad) {
+            return $ocLazyLoad.load(options);
+        }
+    }
+
     // Configure Idle settings
     IdleProvider.idle(5); // in seconds
     IdleProvider.timeout(120); // in seconds
@@ -23,86 +29,113 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('cert', {
             url: '/cert/:id',
             templateUrl: 'views/poe/cert.html',
-            data: { pageTitle: '证书' },
+            data: {pageTitle: '证书'},
         })
         .state('index', {
             abstract: true,
+            resolve: {
+                controllers: depResolve([
+                    {
+                        serie: true,
+                        files: [
+                            "scripts/controllers/index/flotChartCtrl.js",
+                            "scripts/controllers/index/POElistCtrl.js"
+                        ]
+                    }
+
+                ])
+            },
             url: "/index",
             templateUrl: "views/common/content.html",
         })
         .state('index.main', {
             url: "/main",
             templateUrl: "views/poe/list.html",
-            data: { pageTitle: '账户总览' },
+            data: {pageTitle: '账户总览'},
             resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            serie: true,
-                            name: 'angular-flot',
-                            files: [
-                                'js/plugins/flot/jquery.flot.js',
-                                'js/plugins/flot/jquery.flot.time.js',
-                                'js/plugins/flot/jquery.flot.tooltip.min.js',
-                                'js/plugins/flot/jquery.flot.spline.js',
-                                'js/plugins/flot/jquery.flot.resize.js',
-                                'js/plugins/flot/jquery.flot.pie.js',
-                                'js/plugins/flot/curvedLines.js',
-                                'js/plugins/flot/angular-flot.js',
-                            ]
-                        }
-                    ]);
-                }
+                MainController: depResolve([{
+                    files: ["scripts/controllers/index/POECtrl.js"]
+                }]),
+                loadPlugin: depResolve([
+                    {
+                        serie: true,
+                        name: 'angular-flot',
+                        files: [
+                            'js/plugins/flot/jquery.flot.js',
+                            'js/plugins/flot/jquery.flot.time.js',
+                            'js/plugins/flot/jquery.flot.tooltip.min.js',
+                            'js/plugins/flot/jquery.flot.spline.js',
+                            'js/plugins/flot/jquery.flot.resize.js',
+                            'js/plugins/flot/jquery.flot.pie.js',
+                            'js/plugins/flot/curvedLines.js',
+                            'js/plugins/flot/angular-flot.js',
+                        ]
+                    }
+                ])
             }
         })
         .state('index.upload', {
             url: "/upload",
             templateUrl: "views/poe/upload.html",
-            data: { pageTitle: '存证' },
+            data: {pageTitle: '存证'},
             resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            files: ['js/plugins/crypto-js/crypto-js.js']
-                        },
-                        {
-                            files: ['css/plugins/dropzone/basic.css','css/plugins/dropzone/dropzone.css','js/plugins/dropzone/dropzone.js']
-                        }
-                    ]);
-                }
+                UploadController: depResolve([{
+                    files: ["scripts/controllers/index/POECtrl.js"]
+                }]),
+                loadPlugin: depResolve([
+                    {
+                        files: [
+                            'js/plugins/crypto-js/crypto-js.js'
+                        ]
+                    },
+                    {
+                        files: [
+                            'css/plugins/dropzone/basic.css',
+                            'css/plugins/dropzone/dropzone.css',
+                            'js/plugins/dropzone/dropzone.js'
+                        ]
+                    }
+                ])
             }
         })
         .state('index.check', {
             url: "/check",
             templateUrl: "views/poe/check.html",
-            data: { pageTitle: '检查' },
+            data: {pageTitle: '检查'},
             resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            files: ['js/plugins/crypto-js/crypto-js.js']
-                        },
-                        {
-                            files: ['css/plugins/dropzone/basic.css','css/plugins/dropzone/dropzone.css','js/plugins/dropzone/dropzone.js']
-                        }
-                    ]);
-                }
+                CheckController: depResolve([{
+                    files: ["scripts/controllers/index/POECtrl.js"]
+                }]),
+                loadPlugin: depResolve([
+                    {
+                        files: [
+                            'js/plugins/crypto-js/crypto-js.js'
+                        ]
+                    },
+                    {
+                        files: [
+                            'css/plugins/dropzone/basic.css',
+                            'css/plugins/dropzone/dropzone.css',
+                            'js/plugins/dropzone/dropzone.js'
+                        ]
+                    }
+                ])
             }
         })
         .state('index.config', {
             url: "/config",
             templateUrl: "views/config.html",
-            data: { pageTitle: '设置' }
+            data: {pageTitle: '设置'}
         })
         .state('login', {
             url: "/login",
             templateUrl: "views/user/login.html",
-            data: { pageTitle: '登录' }
+            data: {pageTitle: '登录'}
         })
         .state('register', {
             url: "/register",
             templateUrl: "views/user/register.html",
-            data: { pageTitle: '注册' }
+            data: {pageTitle: '注册'}
         })
 }
 
@@ -118,9 +151,9 @@ function httpProvider($q, $injector) {
     return authRecoverer;
 };
 
-function subHashFilter () {
+function subHashFilter() {
     const max_hash_length = 24
-    return function(h) {
+    return function (h) {
         if (h && h.length > max_hash_length) {
             return h.substr(0, max_hash_length) + '...';
         }
@@ -141,7 +174,7 @@ function FileSizeFilter() {
     }
 }
 
-Date.prototype.Format = function (fmt) {  
+Date.prototype.Format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1, //月份 
         "d+": this.getDate(), //日 
@@ -153,7 +186,7 @@ Date.prototype.Format = function (fmt) {
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
 
@@ -182,6 +215,6 @@ angular
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('httpProvider');
     }])
-    .run(function($rootScope, $state) {
+    .run(function ($rootScope, $state) {
         $rootScope.$state = $state;
     });
