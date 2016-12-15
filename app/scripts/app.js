@@ -9,8 +9,11 @@
         'ui.bootstrap',                 // Ui Bootstrap
         'pascalprecht.translate',       // Angular Translate
         'ngIdle',                       // Idle timer
-        'ngSanitize'                    // ngSanitize
-    ])
+        'ngSanitize',                    // ngSanitize
+        'controllers',
+        'services',
+        'filters'
+    ]);
 })();
 
 // Other libraries are loaded dynamically in the config.js file using the library ocLazyLoad
