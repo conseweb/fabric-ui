@@ -10,7 +10,7 @@
 // const API_ROOT = (process.env.NODE_ENV === 'production') ? '/api' : 'http://192.168.5.105:9375/api';
 const API_ROOT = 'http://192.168.5.105:9375/api';
 
-export defult UserCtrl = function ($scope, $http) {
+export default UserCtrl = function ($scope, $http) {
 
   $scope.nickname = '';
   $scope.email = '';
