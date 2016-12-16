@@ -181,5 +181,42 @@
                 }
             })
         };
+
+        $scope.handleFileSelect = function (evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+
+            var files = evt.dataTransfer.files; // FileList object.
+
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            for (var i = 0, f; f = files[i]; i++) {
+                output.push(
+                    '<li><strong>', 
+                    escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, ' bytes, last modified: ',
+                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                    '</li>'
+                );
+                $scope.getHash(f);
+            }
+            document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+        };
+        $scope.handleDragOver = function (evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+        };
+        $scope.handleChange = function (evt) {
+            console.log(evt);
+            $scope.getHash(this);
+        };
+
+        // Setup the dnd listeners.
+        var dropZone = document.getElementById('drop_zone');
+        var upfile = document.getElementById('upfile');
+        dropZone.addEventListener('dragover', $scope.handleDragOver, false);
+        dropZone.addEventListener('drop', $scope.handleFileSelect, false);
+        upfile.addEventListener('change', $scope.handleChange, false);
     }
 }(angular));

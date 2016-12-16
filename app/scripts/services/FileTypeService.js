@@ -14,46 +14,46 @@
             FileTypes: {
                 Unknown: {
                     name: 'archive',
-                    icon: 'file-archive-o',
+                    icon: 'fa-file-archive-o',
                 },
                 Image: {
                     name: 'image',
-                    icon: 'file-image-o',
+                    icon: 'fa-file-image-o',
                 },
                 Sound: {
                     name: 'sound',
-                    icon: 'file-sound-o',
+                    icon: 'fa-file-sound-o',
                 },
                 Movie: {
                     name: 'movie',
-                    icon: 'file-movie-o',
+                    icon: 'fa-file-movie-o',
                 },
                 Pdf: {
                     name: 'pdf',
-                    icon: 'file-pdf-o',
+                    icon: 'fa-file-pdf-o',
                 },
                 Excel: {
                     name: 'excel',
-                    icon: 'file-excel-o',
+                    icon: 'fa-file-excel-o',
                 },
                 Word: {
                     name: 'word',
-                    icon: 'file-word-o',
+                    icon: 'fa-file-word-o',
                 },
                 Zip: {
                     name: 'zip',
-                    icon: 'file-zip-o',
+                    icon: 'fa-file-zip-o',
                 },
                 Text: {
                     name: 'text',
-                    icon: 'file-text-o',
+                    icon: 'fa-file-text-o',
                 },
                 Code: {
                     name: 'code',
-                    icon: 'file-code-o',
+                    icon: 'fa-file-code-o',
                 },
             },
-            getType: function (file) {
+            get: function (file) {
                 if (file.type !== '') {
                     return ft.getTypeByFType(file.type);
                 }
@@ -82,7 +82,7 @@
                 }
             },
             getTypeByFType: function (ftype) {
-                var typePre = ftype.substring(0, ftype.indexOf('/') + 1);
+                var typePre = ftype.substring(0, ftype.indexOf('/'));
                 switch (typePre) {
                     case 'image':
                         return ft.FileTypes.Image;
@@ -102,10 +102,12 @@
                                 return ft.FileTypes.Word;
                             case 'zip':
                                 return ft.FileTypes.Zip;
+                            default:
+                                return ft.FileTypes.Unknown;
                         }
                 }
             }
         };
-        return ft.FileTypes.Unknown;
+        return ft;
     }
 }(angular));

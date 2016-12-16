@@ -19,7 +19,8 @@
     }
 
     function APIService($http) {
-        const API_ROOT = 'http://192.168.5.105:9694/api/v1';
+        // const API_ROOT = 'http://192.168.5.105:9694/api/v1';
+        const API_ROOT = 'http://u5.mj:9375/poe';
 
         const API_ROUTER = {
             docs: API_ROOT + '/documents',
@@ -29,7 +30,8 @@
             },
             getDoc: function (id) {
                 return API_ROOT + '/documents/' + id + "/result"
-            }
+            },
+            normalInfo: API_ROOT + '/stat/normal'
         };
 
         return {
@@ -55,7 +57,10 @@
             },
             getDoc: function (id) {
                 return $http.get(API_ROUTER.getDoc(id));
-            }
+            },
+            getInfo: function () {
+                return $http.get(API_ROUTER.normalInfo);
+            },
         };
     };
 
