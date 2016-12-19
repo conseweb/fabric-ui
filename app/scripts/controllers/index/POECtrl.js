@@ -198,7 +198,7 @@
                     f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                     '</li>'
                 );
-                $scope.getHash(f);
+                $scope.getHash({files: [f]});
             }
             document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
         };
