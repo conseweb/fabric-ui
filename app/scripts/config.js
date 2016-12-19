@@ -30,6 +30,14 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: '/cert/:id',
             templateUrl: 'views/poe/cert.html',
             data: {pageTitle: '证书'},
+            resolve: {
+                CertController: depResolve([
+                    {
+                        serie: true,
+                        files: ["scripts/controllers/index/CertCtrl.js"]
+                    }
+                ])
+            }
         })
         .state('index', {
             abstract: true,

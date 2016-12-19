@@ -6,7 +6,7 @@
 "use strict";
 (function (angular, undefined) {
 
-    angular.module("controllers", ['services', 'diretives'])
+    angular.module("controllers")
         .controller("CertCtrl", CertCtrl);
 
     function CertCtrl($scope, $stateParams, alert, api, crypto) {
