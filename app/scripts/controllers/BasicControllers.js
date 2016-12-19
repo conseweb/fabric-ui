@@ -9,7 +9,7 @@
     var controllerModule = angular.module("controllers", [])
         .config(config)
         .controller("MainCtrl", MainCtrl)
-        .controller("XCtrl", XCtrl);
+        .controller("XCtrl", XCtrl)
 
     //配置控制器模块
     function config($controllerProvider) {
