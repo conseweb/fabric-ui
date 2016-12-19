@@ -8,7 +8,7 @@
 
     angular.module("controllers").controller("POEListCtrl", POEListCtrl);
 
-    function POEListCtrl($scope, api, alert) {
+    function POEListCtrl($scope, api, alert, filetype) {
         $scope.docList = {};
             $scope.info = {
                 blocks: 0,
