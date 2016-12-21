@@ -181,6 +181,13 @@
                 }
             })
         };
+        $scope.removeDoc = function (doc) {
+            var index = $scope.docList.indexOf(doc);
+            
+            if (index >= 0) {
+                $scope.docList.splice(index, 1);
+            }
+        };
 
         $scope.handleFileSelect = function (evt) {
             evt.stopPropagation();

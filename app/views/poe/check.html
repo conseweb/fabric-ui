@@ -57,7 +57,7 @@
                         <button ng-if="!doc.isOK" class="btn btn-primary" ng-click="checkDoc(doc);">验 证</button>
                         <a ng-if="doc.isOK" href="/#/cert/{{doc.id}}" target="_blank" class="btn btn-primary">查看证书</a>
 
-                        <button class="btn">取 消</button>
+                        <button class="btn" ng-click="removeDoc(doc);">取 消</button>
                     </div>
                     <div class="clearfix"></div>
                 </div>
