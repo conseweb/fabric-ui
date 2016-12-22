@@ -51,7 +51,7 @@
                             serie: true,
                             files: [
                                 "scripts/controllers/index/flotChartCtrl.js",
-                                "scripts/controllers/index/POElistCtrl.js"
+                                "scripts/controllers/index/POEListCtrl.js"
                             ]
                         }
 
