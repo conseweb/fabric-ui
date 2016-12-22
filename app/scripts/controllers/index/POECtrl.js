@@ -215,7 +215,7 @@
             evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
         };
         $scope.handleChange = function (evt) {
-            console.log(evt);
+            console.log('handleChange:', evt);
             $scope.getHash(this);
         };
 
