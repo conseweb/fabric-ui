@@ -7,6 +7,8 @@ module.exports = function (grunt) {
     // Show grunt task time
     require('time-grunt')(grunt);
 
+    grunt.loadNpmTasks('grunt-karma');
+
     // Configurable paths for the app
     var appConfig = {
         app: 'app',
@@ -18,6 +20,13 @@ module.exports = function (grunt) {
 
         // Project settings
         inspinia: appConfig,
+
+        //The grunt karma settings
+        karma: {
+            'unit-test': {
+                configFile: 'karma.conf.js'
+            }
+        },
 
         // The grunt server settings
         connect: {
