@@ -126,23 +126,19 @@ module.exports = function (grunt) {
                             'styles/patterns/*.*',
                             'img/{,*/}*.*',
                             'scripts/*/{,**/}*.js',
-                            'js/{,**/}*.js'
+                            'js/{,**/}*.js',
+                            'fonts/{,**/}*.*'
                         ]
                     },
                     {
                         expand: true,
                         dot: true,
-                        cwd: 'bower_components/fontawesome',
-                        src: ['fonts/*.*'],
-                        dest: '<%= inspinia.dist %>'
-                    },
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: 'bower_components/bootstrap',
-                        src: ['fonts/*.*'],
-                        dest: '<%= inspinia.dist %>'
-                    },
+                        cwd: '<%= inspinia.app %>/font-awesome/',
+                        dest: '<%= inspinia.dist %>',
+                        src: [
+                            '{,**/}*.*'
+                        ]
+                    }
                 ]
             },
             styles: {
@@ -156,7 +152,7 @@ module.exports = function (grunt) {
         filerev: {
             dist: {
                 src: [
-                    '<%= inspinia.dist %>/scripts/*.js',
+                    '<%= inspinia.dist %>/scripts/{,*/}*.js',
                     '<%= inspinia.dist %>/styles/{,*/}*.css',
                     '<%= inspinia.dist %>/styles/fonts/*'
                 ]
