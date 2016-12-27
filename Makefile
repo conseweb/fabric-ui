@@ -1,7 +1,7 @@
 PWD := $(shell pwd)
 APP := farmer-ui
 DEV_IMAGE := ckeyer/dev:node
-IMAGE_NAME := conseweb/farmer-ui
+IMAGE_NAME := hub.conseweb.com:5000/poe-ui
 
 ifdef GIT_COMMIT
 GIT_COMMIT := $(shell echo $(GIT_COMMIT)|cut -b -7)

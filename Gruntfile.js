@@ -125,7 +125,7 @@ module.exports = function (grunt) {
                             'views/{,*/}*.html',
                             'styles/patterns/*.*',
                             'img/{,*/}*.*',
-                            'scripts/*/{,**/}*.js',
+                            'scripts/{,**/}*.js',
                             'js/{,**/}*.js',
                             'fonts/{,**/}*.*'
                         ]
@@ -152,7 +152,6 @@ module.exports = function (grunt) {
         filerev: {
             dist: {
                 src: [
-                    '<%= inspinia.dist %>/scripts/{,*/}*.js',
                     '<%= inspinia.dist %>/styles/{,*/}*.css',
                     '<%= inspinia.dist %>/styles/fonts/*'
                 ]
