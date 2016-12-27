@@ -20,7 +20,7 @@
 
     function APIService($http) {
         // const API_ROOT = 'http://192.168.5.105:9694/api/v1';
-        const API_ROOT = 'http://u5.mj:9375/poe';
+        const API_ROOT = '/poe/v1';
 
         const API_ROUTER = {
             docs: API_ROOT + '/documents',
