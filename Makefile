@@ -1,6 +1,6 @@
 PWD := $(shell pwd)
-APP := farmer-ui
-IMAGE := ckeyer/dev:node
+APP := wallet-ui
+DEV_IMAGE := ckeyer/dev:node
 
 ifdef GIT_COMMIT
 GIT_COMMIT := $(shell echo $(GIT_COMMIT)|cut -b -7)
@@ -13,6 +13,9 @@ GIT_BRANCH := $(notdir $(GIT_BRANCH))
 else
 GIT_BRANCH_TMP := $(shell git rev-parse HEAD | git branch -a --contains | grep remotes | grep -o "[^ ]\+\( \+[^ ]\+\)*")
 GIT_BRANCH := $(notdir $(GIT_BRANCH_TMP))
+ifeq ($(GIT_BRANCH),)
+GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+endif
 endif
 
 PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
@@ -20,21 +23,23 @@ PACKAGE_NAME := $(APP)-$(GIT_COMMIT).tgz
 INSTALL_DIR := /opt/data
 
 echo:
-	env
 	echo $(GIT_COMMIT)
 	echo $(GIT_BRANCH)
 
-build-pack:
+build:
 	docker run --rm \
 	 --name init-ui \
-	 -v $(INSTALL_DIR):$(INSTALL_DIR) \
 	 -v $(PWD):/opt/$(APP) \
 	 -w /opt/$(APP) \
-	 $(IMAGE) make pack
+	 $(DEV_IMAGE) make build-local
 
-pack: echo clean
+build-local: echo clean
 	npm install
 	grunt build
+
+build-pack: build pack
+
+pack:
 	tar zcf $(INSTALL_DIR)/$(PACKAGE_NAME) ./dist/
 
 install:
@@ -43,3 +48,6 @@ install:
 clean:
 	-rm -rf .tmp
 	-rm -rf dist
+
+push:
+	rsync -vaz --delete --exclude=.git ./ root@demo.conseweb.com:/data/www/wallet/
