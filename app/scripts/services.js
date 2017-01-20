@@ -3,7 +3,7 @@
 /// api
 /// 
 function APIService($http) {
-  const API_ROOT = 'http://192.168.5.105:9375/api';
+  const API_ROOT = '/api';
   const API_ROUTER = {
     getUser: API_ROOT + '/account',
     login: API_ROOT + '/account/login',
