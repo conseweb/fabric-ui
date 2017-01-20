@@ -177,7 +177,6 @@ function LepuscoinCtrl($scope, alert, api, user, contacts) {
     };
     $scope.getBalance = function () {
         console.log('[data]', '[...]')
-        console.log('hello', process.env);
         $scope.init();
         api.queryBalances($scope.ownAddrs).then(function (resp) {
             console.log("query balance: ", resp.data);

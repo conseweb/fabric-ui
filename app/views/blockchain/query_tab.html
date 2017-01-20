@@ -38,8 +38,8 @@
             <th>交易输出索引</th>
         </tr>
         </thead>
-        <tbody ng-repeat="acc in txList">
-        <tr class="gradeX">
+        <tbody>
+        <tr class="gradeX" ng-repeat="acc in txList">
             <td>{{acc.addr}}</td>
             <td>{{acc.balance}}</td>
             <td><a ng-click="toTxHash(acc.pre_tx_hash);">{{acc.pre_tx_hash}}</a></td>
@@ -55,7 +55,6 @@
         <tr>
             <th>时间</th>
             <th>转出地址</th>
-            <th>地址余额</th>
             <th>收款地址</th>
             <th>收款金额</th>
             <th>上次交易</th>
@@ -64,8 +63,8 @@
         <tbody>
         <tr class="gradeX pre_tx_hash" ng-repeat="tx in historyTxs|orderBy:tx.timestamp:'desc'" id="{{tx.hash}}">
             <td>{{tx.time}}</td>
-            <td>{{tx.fromAddr}}</td>
-            <td>{{tx.balance}}</td>
+            <td ng-if="tx.fromAddr!==''">{{tx.fromAddr}}</td>
+            <td ng-if="tx.fromAddr===''">coinbase</td>
             <td>{{tx.toAddr}}</td>
             <td>{{tx.amount}}</td>
             <td>

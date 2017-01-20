@@ -3,7 +3,7 @@
 /// api
 /// 
 function APIService($http) {
-  const API_ROOT = '/api';
+  const API_ROOT = 'http://wallet.conseweb.com:9375/api';
   const API_ROUTER = {
     getUser: API_ROOT + '/account',
     login: API_ROOT + '/account/login',
