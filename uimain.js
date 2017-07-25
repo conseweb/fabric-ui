@@ -30,6 +30,7 @@ var options = {
 
 options = _.extend({
   // ADDITIONAL CUSTOM SETTINGS
+  debug: true
 }, options);
 
 // ############################################################################################
@@ -44,7 +45,7 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
   mainWindow = new BrowserWindow({width: 1100, height: 600});
   // mainWindow.loadURL(path.join('file://', __dirname, options.views_dir, options.root_view));
-  mainWindow.loadURL("http://localhost:9000")
+  mainWindow.loadURL("http://0.0.0.0:9000")
   if(options.debug) { mainWindow.openDevTools(); }
   // Cleanup when window is closed
   mainWindow.on('closed', function() { 

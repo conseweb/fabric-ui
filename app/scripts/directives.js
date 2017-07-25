@@ -12,7 +12,7 @@ function pageTitle($rootScope, $timeout) {
         link: function(scope, element) {
             var listener = function(event, toState, toParams, fromState, fromParams) {
                 // Default title - load on Dashboard 1
-                var title = '信链 | LepCoin';
+                var title = '信链';
                 // Create your own title pattern
                 if (toState.data && toState.data.pageTitle) title = '信链 | ' + toState.data.pageTitle;
                 $timeout(function() {
