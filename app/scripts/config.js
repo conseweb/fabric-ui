@@ -19,7 +19,7 @@
         IdleProvider.idle(5); // in seconds
         IdleProvider.timeout(120); // in seconds
 
-        $urlRouterProvider.otherwise("/index/main");
+        $urlRouterProvider.otherwise("/index/vault");
 
         $ocLazyLoadProvider.config({
             // Set to true if you want to see what and when is dynamically loaded
@@ -32,31 +32,31 @@
                 url: "/index",
                 templateUrl: "views/common/content.html",
             })
-            .state('index.main', {
-                url: "/main",
-                templateUrl: "views/dashboard.html",
-                data: { pageTitle: '账户总览' },
-                resolve: {
-                    loadPlugin: function ($ocLazyLoad) {
-                        return $ocLazyLoad.load([
-                            {
-                                serie: true,
-                                name: 'angular-flot',
-                                files: [
-                                    'js/plugins/flot/jquery.flot.js',
-                                    'js/plugins/flot/jquery.flot.time.js',
-                                    'js/plugins/flot/jquery.flot.tooltip.min.js',
-                                    'js/plugins/flot/jquery.flot.spline.js',
-                                    'js/plugins/flot/jquery.flot.resize.js',
-                                    'js/plugins/flot/jquery.flot.pie.js',
-                                    'js/plugins/flot/curvedLines.js',
-                                    'js/plugins/flot/angular-flot.js'
-                                ]
-                            },
-                        ]);
-                    }
-                }
-            })
+            // .state('index.main', {
+            //     url: "/main",
+            //     templateUrl: "views/dashboard.html",
+            //     data: { pageTitle: '账户总览' },
+            //     resolve: {
+            //         loadPlugin: function ($ocLazyLoad) {
+            //             return $ocLazyLoad.load([
+            //                 {
+            //                     serie: true,
+            //                     name: 'angular-flot',
+            //                     files: [
+            //                         'js/plugins/flot/jquery.flot.js',
+            //                         'js/plugins/flot/jquery.flot.time.js',
+            //                         'js/plugins/flot/jquery.flot.tooltip.min.js',
+            //                         'js/plugins/flot/jquery.flot.spline.js',
+            //                         'js/plugins/flot/jquery.flot.resize.js',
+            //                         'js/plugins/flot/jquery.flot.pie.js',
+            //                         'js/plugins/flot/curvedLines.js',
+            //                         'js/plugins/flot/angular-flot.js'
+            //                     ]
+            //                 },
+            //             ]);
+            //         }
+            //     }
+            // })
             .state('index.vault', {
                 url: "/vault",
                 templateUrl: "views/vault.html",
@@ -78,44 +78,44 @@
                 templateUrl: "views/market.html",
                 data: { pageTitle: '交易所' }
             })
-            .state('index.block', {
-                url: "/block",
-                templateUrl: "views/blockchain/block.html",
-                data: { pageTitle: '账本' }
-            })
-            .state('index.appstore', {
-                url: "/appstore",
-                templateUrl: "views/appstore.html",
-                data: { pageTitle: '应用商店' }
-            })
-            .state('index.net', {
-                url: "/net",
-                templateUrl: "views/blockchain/net.html",
-                data: { pageTitle: '网络' }
-            })
+            // .state('index.block', {
+            //     url: "/block",
+            //     templateUrl: "views/blockchain/block.html",
+            //     data: { pageTitle: '账本' }
+            // })
+            // .state('index.appstore', {
+            //     url: "/appstore",
+            //     templateUrl: "views/appstore.html",
+            //     data: { pageTitle: '应用商店' }
+            // })
+            // .state('index.net', {
+            //     url: "/net",
+            //     templateUrl: "views/blockchain/net.html",
+            //     data: { pageTitle: '网络' }
+            // })
             .state('index.config', {
                 url: "/config",
                 templateUrl: "views/config.html",
                 data: { pageTitle: '设置' }
             })
-            .state('stela', {
-                url: "/stela",
-                templateUrl: "views/stela.html",
-                data: { pageTitle: 'Stela演示' },
-                resolve: {
-                    loadPlugin: function ($ocLazyLoad) {
-                        return $ocLazyLoad.load([
-                            {
-                                files: [
-                                    'css/plugins/dropzone/basic.css',
-                                    'css/plugins/dropzone/dropzone.css',
-                                    'js/plugins/dropzone/dropzone.js'
-                                ]
-                            }
-                        ]);
-                    }
-                }
-            })
+            // .state('stela', {
+            //     url: "/stela",
+            //     templateUrl: "views/stela.html",
+            //     data: { pageTitle: 'Stela演示' },
+            //     resolve: {
+            //         loadPlugin: function ($ocLazyLoad) {
+            //             return $ocLazyLoad.load([
+            //                 {
+            //                     files: [
+            //                         'css/plugins/dropzone/basic.css',
+            //                         'css/plugins/dropzone/dropzone.css',
+            //                         'js/plugins/dropzone/dropzone.js'
+            //                     ]
+            //                 }
+            //             ]);
+            //         }
+            //     }
+            // })
             .state('login', {
                 url: "/login",
                 templateUrl: "views/user/login.html",
