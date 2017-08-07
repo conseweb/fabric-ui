@@ -66,6 +66,9 @@ function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
         user.set(resp.data);
         $state.go('login');
     }, alert.httpFailed)
+  },
+  $scope.thisYear = function () {
+      return new Date().getFullYear()
   }
 };
 
