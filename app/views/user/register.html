@@ -15,10 +15,10 @@
                 <input type="password" class="form-control" placeholder="用户密码" required="" ng-model="password">
             </div>
             <div class="form-group">
-                <input type="email" class="form-control" placeholder="邮箱地址" required="" ng-model="email">
+                <input type="email" class="form-control" placeholder="邮箱地址" required="" ng-model="email" name="email">
             </div>
             <div class="form-group">
-                <button class="btn btn-primary block full-width m-b" ng-click="sendCaptchaMail()">获取验证码</button>
+                <button class="btn btn-primary block full-width m-b" ng-click="sendCaptchaMail()" ng-disabled="regForm.email.$invalid">获取验证码</button>
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="验证码" ng-model="captcha">
