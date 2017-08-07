@@ -9,13 +9,13 @@
  */
 function pageTitle($rootScope, $timeout) {
     return {
-        link: function(scope, element) {
-            var listener = function(event, toState, toParams, fromState, fromParams) {
+        link: function (scope, element) {
+            var listener = function (event, toState, toParams, fromState, fromParams) {
                 // Default title - load on Dashboard 1
                 var title = '信链';
                 // Create your own title pattern
                 if (toState.data && toState.data.pageTitle) title = '信链 | ' + toState.data.pageTitle;
-                $timeout(function() {
+                $timeout(function () {
                     element.text(title);
                 });
             };
@@ -30,9 +30,9 @@ function pageTitle($rootScope, $timeout) {
 function sideNavigation($timeout) {
     return {
         restrict: 'A',
-        link: function(scope, element) {
+        link: function (scope, element) {
             // Call the metsiMenu plugin and plug it to sidebar navigation
-            $timeout(function(){
+            $timeout(function () {
                 element.metisMenu();
             });
         }
@@ -62,11 +62,11 @@ function iboxTools($timeout) {
                     ibox.find('[id^=map-]').resize();
                 }, 50);
             };
-                // Function for close ibox
-                $scope.closebox = function () {
-                    var ibox = $element.closest('div.ibox');
-                    ibox.remove();
-                }
+            // Function for close ibox
+            $scope.closebox = function () {
+                var ibox = $element.closest('div.ibox');
+                ibox.remove();
+            }
         }
     };
 }
@@ -106,7 +106,7 @@ function iboxToolsFullScreen($timeout) {
                 $('body').toggleClass('fullscreen-ibox-mode');
                 button.toggleClass('fa-expand').toggleClass('fa-compress');
                 ibox.toggleClass('fullscreen');
-                setTimeout(function() {
+                setTimeout(function () {
                     $(window).trigger('resize');
                 }, 100);
             }
@@ -116,7 +116,7 @@ function iboxToolsFullScreen($timeout) {
 
 /**
  * minimalizaSidebar - Directive for minimalize sidebar
-*/
+ */
 function minimalizaSidebar($timeout) {
     return {
         restrict: 'A',
@@ -132,7 +132,7 @@ function minimalizaSidebar($timeout) {
                         function () {
                             $('#side-menu').fadeIn(400);
                         }, 200);
-                } else if ($('body').hasClass('fixed-sidebar')){
+                } else if ($('body').hasClass('fixed-sidebar')) {
                     $('#side-menu').hide();
                     setTimeout(
                         function () {
@@ -148,6 +148,47 @@ function minimalizaSidebar($timeout) {
 };
 
 /**
+ * 拖拽读取私钥文件内容
+ * jQuery 对事件传过来的dataTransfer需要调用 e.originalEvent.dataTransfer
+ * @author isLishude
+ * @see https://api.jquery.com/category/events/event-object/
+ * @todo 存储到indexedDB或者localStorage
+ * @todo 对拖拽文件进行验证
+ */
+
+function dragToUpPrikey($timeout) {
+    return {
+        restrict: 'E',
+        templateUrl: 'views/blockchain/km_tab.html',
+        scope: {},
+        link: function (scope, element, attr) {
+            element.on('dragover', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            element.on('drop', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var file = e.originalEvent.dataTransfer.files[0];
+                console.log(file.type)
+                if(file.type !== 'text/plain'){
+                    console.log(file.type)
+                    return false;
+                }
+                var reader = new FileReader();
+                var txt = ''
+                reader.onload = function () {
+                    txt = reader.result;
+                    console.log(txt)
+                }
+                reader.readAsText(file)
+            })
+        }
+    }
+
+}
+
+/**
  *
  * Pass all functions into module
  */
@@ -157,4 +198,5 @@ angular
     .directive('sideNavigation', sideNavigation)
     .directive('iboxTools', iboxTools)
     .directive('minimalizaSidebar', minimalizaSidebar)
-    .directive('iboxToolsFullScreen', iboxToolsFullScreen);
+    .directive('iboxToolsFullScreen', iboxToolsFullScreen)
+    .directive('upkey', dragToUpPrikey);

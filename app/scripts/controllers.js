@@ -11,8 +11,9 @@
 /// Services' functions
 
 /// Controllers
-function MainCtrl($scope, $http) {
+function MainCtrl($scope, $http, $rootScope) {
     this.userName = '飞骐';
+    $rootScope.getFullYear = new Date().getFullYear();
 };
 
 function UserCtrl($scope, $state, alert, api, user, lepuscoin) {
